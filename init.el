@@ -21,7 +21,7 @@
 (setq use-package-always-ensure t)
 (use-package key-chord)
 (use-package company)
-
+(use-package magit)
 ;;;;;;;;;;;;;;;;;;;KeyChords;;;;;;;;;;;;;;;;;;
 
 (global-set-key (kbd "M-n")
