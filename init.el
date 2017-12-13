@@ -22,6 +22,7 @@
 (use-package key-chord)
 (use-package company)
 (use-package magit)
+(use-package omnisharp)
 ;;;;;;;;;;;;;;;;;;;KeyChords;;;;;;;;;;;;;;;;;;
 
 (global-set-key (kbd "M-n")
@@ -100,3 +101,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+
+
+(setq omnisharp-server-executable-path "C:\\Users\\Mugen\\AppData\\Roaming\\.emacs.d\\omnisharp\\OmniSharp.exe")
