@@ -23,6 +23,8 @@
 (use-package company)
 (use-package magit)
 (use-package omnisharp)
+(use-package flycheck)
+
 ;;;;;;;;;;;;;;;;;;;KeyChords;;;;;;;;;;;;;;;;;;
 
 (global-set-key (kbd "M-n")
@@ -51,7 +53,7 @@
     (setq c-basic-offset 4)
     (setq truncate-lines t)
     (setq tab-width 4)
-    (setq evil-shift-width 4)
+    (setq evil-shift-width 4)    
     (local-set-key (kbd "C-c C-c") 'recompile))
 
 
@@ -59,6 +61,7 @@
 (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)
 
 (add-hook 'csharp-mode-hook 'omnisharp-mode)
+(add-hook 'csharp-mode-hook 'flycheck-mode)
 (eval-after-load
  'company
  '(add-to-list 'company-backends 'company-omnisharp))
@@ -94,6 +97,7 @@
  '(ansi-color-names-vector
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
  '(custom-enabled-themes (quote (deeper-blue)))
+ '(omnisharp-eldoc-support nil)
  '(package-selected-packages (quote (omnisharp monokai-theme key-chord company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -104,4 +108,4 @@
 
 
 
-(setq omnisharp-server-executable-path "C:\\Users\\Mugen\\AppData\\Roaming\\.emacs.d\\omnisharp\\OmniSharp.exe")
+;;(setq omnisharp-server-executable-path "C:\\Users\\Mugen\\AppData\\Roaming\\.emacs.d\\omnisharp\\OmniSharp.exe")
