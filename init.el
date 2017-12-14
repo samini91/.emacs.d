@@ -1,21 +1,19 @@
 (package-initialize)
-
 (require 'package)
-(require 'use-package)
 
 ;;;;;;;;;;;;Melpa;;;;;;;;;;;;;;;;
-(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-                    (not (gnutls-available-p))))
-       (url (concat (if no-ssl "http" "https") "://melpa.org/packages/")))
-  (add-to-list 'package-archives (cons "melpa" url) t))
-(when (< emacs-major-version 24)
- ;; For important compatibility libraries like cl-lib
-  (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/")))
-(package-initialize)
-;;Stable
-(add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(setq
+ package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                    ("org" . "http://orgmode.org/elpa/")
+                    ("melpa" . "http://melpa.org/packages/")
+                    ("melpa-stable" . "http://stable.melpa.org/packages/"))
+ package-archive-priorities '(("melpa-stable" . 1)))
 
+(package-initialize)
+(when (not package-archive-contents)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(require 'use-package)
 
 ;;;;;;;;;;;; Automatically downloads "use-package" packages if missing;;;;;;;;;;
 (setq use-package-always-ensure t)
@@ -24,6 +22,7 @@
 (use-package magit)
 (use-package omnisharp)
 (use-package flycheck)
+(use-package ensime)
 
 ;;;;;;;;;;;;;;;;;;;KeyChords;;;;;;;;;;;;;;;;;;
 
@@ -53,9 +52,8 @@
     (setq c-basic-offset 4)
     (setq truncate-lines t)
     (setq tab-width 4)
-    (setq evil-shift-width 4)    
+    (setq evil-shift-width 4)
     (local-set-key (kbd "C-c C-c") 'recompile))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;C Sharp Mode;;;;;;;;;;;;;;;;;;;;;;
 (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)
