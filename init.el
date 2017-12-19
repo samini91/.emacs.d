@@ -23,6 +23,12 @@
 (use-package omnisharp)
 (use-package flycheck)
 (use-package ensime)
+(use-package yasnippet)
+(use-package async)
+(use-package auto-complete)
+(use-package csharp-mode)
+(use-package dash)
+(use-package popup)
 
 ;;;;;;;;;;;;;;;;;;;KeyChords;;;;;;;;;;;;;;;;;;
 
