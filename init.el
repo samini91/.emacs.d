@@ -7,7 +7,9 @@
                     ("org" . "http://orgmode.org/elpa/")
                     ("melpa" . "http://melpa.org/packages/")
                     ("melpa-stable" . "http://stable.melpa.org/packages/"))
- package-archive-priorities '(("melpa-stable" . 1)))
+;; For Stable Packages
+;; package-archive-priorities '(("melpa-stable" . 1)))
+package-archive-priorities '(("melpa" . 1)))
 
 (package-initialize)
 (when (not package-archive-contents)
@@ -58,7 +60,7 @@
 (add-hook 'after-init-hook 'global-company-mode)
   (defun my-csharp-mode-setup ()
     (setq indent-tabs-mode nil)
-    (setq c-syntactic-indentation t)
+    (setq c-syntactic-indentation f)
     (c-set-style "ellemtel")
     (setq c-basic-offset 4)
     (setq truncate-lines t)
