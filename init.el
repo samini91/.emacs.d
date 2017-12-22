@@ -49,6 +49,11 @@
 (key-chord-define-global ";s" 'switch-to-buffer)
 (key-chord-define-global ";w" 'other-window)
 
+(global-set-key (kbd "C-x <up>") 'windmove-up)
+(global-set-key (kbd "C-x <down>") 'windmove-down)
+(global-set-key (kbd "C-x <left>") 'windmove-left)
+(global-set-key (kbd "C-x <right>") 'windmove-right)
+
 ;;;;;;;;;;;;;;;;;;;;Company-Mode;;;;;;;;;;;;;;;;;;
 (add-hook 'after-init-hook 'global-company-mode)
   (defun my-csharp-mode-setup ()
