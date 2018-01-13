@@ -4,7 +4,7 @@
 ;;;;;;;;;;;;Melpa;;;;;;;;;;;;;;;;
 (setq
  package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                    ("org" . "http://orgmode.org/elpa/")
+                    ;; ("org" . "http://orgmode.org/elpa/")
                     ("melpa" . "http://melpa.org/packages/")
                     ("melpa-stable" . "http://stable.melpa.org/packages/"))
 ;; For Stable Packages
@@ -98,6 +98,9 @@ package-archive-priorities '(("melpa" . 1)))
 (tool-bar-mode -1)
 ;; No Word Wrap
 (add-hook 'diff-mode-hook (lambda () (setq truncate-lines t)))
+;; No bell sound
+(setq visible-bell 1)
+
 
 ;;;;;;;;;;;;; Custom Theme ;;;;;;;;;;;;;;;
 (custom-set-variables
@@ -116,7 +119,5 @@ package-archive-priorities '(("melpa" . 1)))
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
-
 
 ;;(setq omnisharp-server-executable-path "C:\\Users\\Mugen\\AppData\\Roaming\\.emacs.d\\omnisharp\\OmniSharp.exe")
