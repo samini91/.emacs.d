@@ -39,11 +39,14 @@ package-archive-priorities '(("melpa" . 1)))
               (interactive)
               (ignore-errors (next-line 5))))
 
+(define-key ensime-mode-map (kbd "M-n") nil)
+
 (global-set-key (kbd "M-p")
              (lambda ()
               (interactive)
               (ignore-errors (previous-line 5))))
 
+(define-key ensime-mode-map (kbd "M-p") nil)
 
 (key-chord-mode 1)
 (setq key-chord-two-keys-delay .040)
@@ -111,6 +114,7 @@ package-archive-priorities '(("melpa" . 1)))
  '(ansi-color-names-vector
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
  '(custom-enabled-themes (quote (deeper-blue)))
+ '(ensime-startup-notification nil)
  '(omnisharp-eldoc-support nil)
  '(package-selected-packages (quote (omnisharp monokai-theme key-chord company))))
 (custom-set-faces
