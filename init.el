@@ -31,6 +31,7 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package csharp-mode)
 (use-package dash)
 (use-package popup)
+(use-package helm)
 
 ;;;;;;;;;;;;;;;;;;;KeyChords;;;;;;;;;;;;;;;;;;
 
@@ -52,6 +53,7 @@ package-archive-priorities '(("melpa" . 1)))
 (setq key-chord-two-keys-delay .040)
 
 (key-chord-define-global ";s" 'switch-to-buffer)
+(key-chord-define-global ";a" 'helm-buffers-list)
 (key-chord-define-global ";w" 'other-window)
 
 (global-set-key (kbd "C-x <up>") 'windmove-up)
