@@ -106,8 +106,14 @@ package-archive-priorities '(("melpa" . 1)))
 
 ;; Moves Backup Files to another directory
 (setq backup-directory-alist `(("." . ,(concat user-emacs-directory "backups"))))
-(setq auto-save-file-name-transforms `((".*" "~/backups/" t)))
+(setq auto-save-file-name-transforms `((".*" "~/" t)))
 (setq create-lockfiles nil)
+
+;; Save All Func
+ (defun save-all ()
+    (interactive)
+    (save-some-buffers t))
+
 
 ;;;;;;;;;;;;; Custom Theme ;;;;;;;;;;;;;;;
 (custom-set-variables
