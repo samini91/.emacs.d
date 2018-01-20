@@ -104,6 +104,10 @@ package-archive-priorities '(("melpa" . 1)))
 ;; No bell sound
 (setq visible-bell 1)
 
+;; Moves Backup Files to another directory
+(setq backup-directory-alist `(("." . ,(concat user-emacs-directory "backups"))))
+(setq auto-save-file-name-transforms `((".*" "~/backups/" t)))
+(setq create-lockfiles nil)
 
 ;;;;;;;;;;;;; Custom Theme ;;;;;;;;;;;;;;;
 (custom-set-variables
