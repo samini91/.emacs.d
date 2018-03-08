@@ -56,7 +56,6 @@ package-archive-priorities '(("melpa" . 1)))
 (key-chord-define-global ";s" 'switch-to-buffer)
 (key-chord-define-global ";a" 'helm-buffers-list)
 (key-chord-define-global ";w" 'other-window)
-(key-chord-define-global ";a" 'helm-buffers-list)
 
 (global-set-key (kbd "C-x <up>") 'windmove-up)
 (global-set-key (kbd "C-x <down>") 'windmove-down)
