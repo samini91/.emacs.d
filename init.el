@@ -110,8 +110,9 @@ package-archive-priorities '(("melpa" . 1)))
 (tool-bar-mode -1)
 ;; No Word Wrap
 (add-hook 'diff-mode-hook (lambda () (setq truncate-lines t)))
-;; No bell sound
-(setq visible-bell 1)
+
+;; No bell
+(setq ring-bell-function 'ignore)
 
 ;; Moves Backup Files to another directory
 (setq backup-directory-alist `(("." . ,(concat user-emacs-directory "backups"))))
