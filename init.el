@@ -4,10 +4,13 @@
 ;;;;;;;;;;;;Melpa;;;;;;;;;;;;;;;;
 (setq
  package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                    ("org" . "http://orgmode.org/elpa/")
+                    ;; ("org" . "http://orgmode.org/elpa/")
                     ("melpa" . "http://melpa.org/packages/")
                     ("melpa-stable" . "http://stable.melpa.org/packages/"))
- package-archive-priorities '(("melpa" . 1)))
+;; For Stable Packages
+;; package-archive-priorities '(("melpa-stable" . 1)))
+package-archive-priorities '(("melpa" . 1)))
+
 
 (package-initialize)
 (when (not package-archive-contents)
@@ -29,6 +32,7 @@
 (use-package csharp-mode)
 (use-package dash)
 (use-package popup)
+(use-package helm)
 
 ;;;;;;;;;;;;;;;;;;;KeyChords;;;;;;;;;;;;;;;;;;
 
@@ -37,18 +41,27 @@
               (interactive)
               (ignore-errors (next-line 5))))
 
+(define-key ensime-mode-map (kbd "M-n") nil)
+
 (global-set-key (kbd "M-p")
              (lambda ()
               (interactive)
               (ignore-errors (previous-line 5))))
 
+(define-key ensime-mode-map (kbd "M-p") nil)
 
 (key-chord-mode 1)
 (setq key-chord-two-keys-delay .040)
 
 (key-chord-define-global ";s" 'switch-to-buffer)
+(key-chord-define-global ";a" 'helm-buffers-list)
 (key-chord-define-global ";w" 'other-window)
 (key-chord-define-global ";a" 'helm-buffers-list)
+
+(global-set-key (kbd "C-x <up>") 'windmove-up)
+(global-set-key (kbd "C-x <down>") 'windmove-down)
+(global-set-key (kbd "C-x <left>") 'windmove-left)
+(global-set-key (kbd "C-x <right>") 'windmove-right)
 
 (global-set-key (kbd "C-x <up>") 'windmove-up)
 (global-set-key (kbd "C-x <down>") 'windmove-down)
@@ -98,6 +111,19 @@
 (tool-bar-mode -1)
 ;; No Word Wrap
 (add-hook 'diff-mode-hook (lambda () (setq truncate-lines t)))
+;; No bell sound
+(setq visible-bell 1)
+
+;; Moves Backup Files to another directory
+(setq backup-directory-alist `(("." . ,(concat user-emacs-directory "backups"))))
+(setq auto-save-file-name-transforms `((".*" "~/" t)))
+(setq create-lockfiles nil)
+
+;; Save All Func
+ (defun save-all ()
+    (interactive)
+    (save-some-buffers t))
+
 
 
 ;; Moves Backup Files to another directory
@@ -121,6 +147,7 @@
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
  '(custom-enabled-themes (quote (deeper-blue)))
  '(omnisharp-auto-complete-want-documentation nil)
+ '(ensime-startup-notification nil)
  '(omnisharp-eldoc-support nil)
 ;; '(omnisharp-expected-server-version "1.26.3")
  '(package-selected-packages (quote (helm omnisharp monokai-theme key-chord company))))
@@ -130,7 +157,5 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
-
 
 ;;(setq omnisharp-server-executable-path "C:\\Users\\Mugen\\AppData\\Roaming\\.emacs.d\\omnisharp\\OmniSharp.exe")
