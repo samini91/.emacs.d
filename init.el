@@ -82,6 +82,7 @@ package-archive-priorities '(("melpa" . 1)))
 ;;;;;;;;;;;;;;;;;;;;;;C Sharp Mode;;;;;;;;;;;;;;;;;;;;;;
 (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)
 (define-key csharp-mode-map (kbd "C-.") 'omnisharp-run-code-action-refactoring)
+(define-key csharp-mode-map (quote [f12]) 'omnisharp-go-to-definition)
 
 (add-hook 'csharp-mode-hook 'omnisharp-mode)
 (add-hook 'csharp-mode-hook 'flycheck-mode)
