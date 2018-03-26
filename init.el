@@ -33,6 +33,7 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package dash)
 (use-package popup)
 (use-package helm)
+(use-package helm-projectile)
 
 ;;;;;;;;;;;;;;;;;;;KeyChords;;;;;;;;;;;;;;;;;;
 
@@ -56,6 +57,7 @@ package-archive-priorities '(("melpa" . 1)))
 (key-chord-define-global ";s" 'switch-to-buffer)
 (key-chord-define-global ";a" 'helm-buffers-list)
 (key-chord-define-global ";w" 'other-window)
+(key-chord-define-global ";q" 'helm-projectile)
 
 (global-set-key (kbd "C-x <up>") 'windmove-up)
 (global-set-key (kbd "C-x <down>") 'windmove-down)
@@ -69,6 +71,7 @@ package-archive-priorities '(("melpa" . 1)))
 
 ;;;;;;;;;;;;;;;;;;;;Company-Mode;;;;;;;;;;;;;;;;;;
 (add-hook 'after-init-hook 'global-company-mode)
+(add-hook 'after-init-hook 'projectile-mode)
   (defun my-csharp-mode-setup ()
     (setq indent-tabs-mode nil)
     (setq c-syntactic-indentation f)
@@ -147,10 +150,9 @@ package-archive-priorities '(("melpa" . 1)))
  '(ansi-color-names-vector
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
  '(custom-enabled-themes (quote (deeper-blue)))
- '(omnisharp-auto-complete-want-documentation nil)
  '(ensime-startup-notification nil)
+ '(omnisharp-auto-complete-want-documentation nil)
  '(omnisharp-eldoc-support nil)
-;; '(omnisharp-expected-server-version "1.26.3")
  '(package-selected-packages (quote (helm omnisharp monokai-theme key-chord company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
