@@ -34,6 +34,7 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package popup)
 (use-package helm)
 (use-package helm-projectile)
+(use-package swiper-helm)
 
 ;;;;;;;;;;;;;;;;;;;KeyChords;;;;;;;;;;;;;;;;;;
 
@@ -54,7 +55,7 @@ package-archive-priorities '(("melpa" . 1)))
 (key-chord-mode 1)
 (setq key-chord-two-keys-delay .040)
 
-(key-chord-define-global ";s" 'switch-to-buffer)
+(key-chord-define-global ";s" 'swiper-helm)
 (key-chord-define-global ";a" 'helm-buffers-list)
 (key-chord-define-global ";w" 'other-window)
 (key-chord-define-global ";q" 'helm-projectile)
