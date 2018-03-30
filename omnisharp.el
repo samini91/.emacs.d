@@ -5,12 +5,20 @@
     (setq c-basic-offset 4)
     (setq truncate-lines t)
     (setq tab-width 4)
+    (setq comment-start "/* "
+	  comment-end " */"
+	  comment-style 'multi-line
+	  comment-empty-lines t)
     (setq evil-shift-width 4))
 
 ;;;;;;;;;;;;;;;;;;;;;;C Sharp Mode;;;;;;;;;;;;;;;;;;;;;;
 (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)
 (define-key csharp-mode-map (kbd "C-.") 'omnisharp-run-code-action-refactoring)
 (define-key csharp-mode-map (kbd "<f12>") 'omnisharp-go-to-definition)
+
+(define-key csharp-mode-map (kbd "C-c C-c") 'comment-region)
+(define-key csharp-mode-map (kbd "C-c C-d") 'uncomment-region)
+
 
 (add-hook 'csharp-mode-hook 'omnisharp-mode)
 (add-hook 'csharp-mode-hook 'flycheck-mode)
