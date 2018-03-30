@@ -1,6 +1,20 @@
 (package-initialize)
 (require 'package)
 
+;;;;;;;;;;;;; Allows specific setting loading ;;;;;;;;;;;;;;;;;;;;;
+(defconst user-init-dir
+  (cond ((boundp 'user-emacs-directory)
+         user-emacs-directory)
+        ((boundp 'user-init-directory)
+         user-init-directory)
+        (t "~/.emacs.d/")))
+
+(defun load-user-file (file)
+  (interactive "f")
+  "Load a file in current user's configuration directory"
+  (load-file (expand-file-name file user-init-dir)))
+
+
 ;;;;;;;;;;;;Melpa;;;;;;;;;;;;;;;;
 (setq
  package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -36,21 +50,18 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package helm-projectile)
 (use-package swiper-helm)
 
-;;;;;;;;;;;;;;;;;;;KeyChords;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;Universal KeyChords;;;;;;;;;;;;;;;;;;
 
 (global-set-key (kbd "M-n")
             (lambda ()
               (interactive)
               (ignore-errors (next-line 5))))
 
-(define-key ensime-mode-map (kbd "M-n") nil)
-
 (global-set-key (kbd "M-p")
-             (lambda ()
-              (interactive)
-              (ignore-errors (previous-line 5))))
-
-(define-key ensime-mode-map (kbd "M-p") nil)
+		(lambda ()
+		  (interactive)
+		  (ignore-errors (previous-line 5))))
 
 (key-chord-mode 1)
 (setq key-chord-two-keys-delay .040)
@@ -60,39 +71,20 @@ package-archive-priorities '(("melpa" . 1)))
 (key-chord-define-global ";w" 'other-window)
 (key-chord-define-global ";q" 'helm-projectile)
 
-(global-set-key (kbd "C-x <up>") 'windmove-up)
-(global-set-key (kbd "C-x <down>") 'windmove-down)
-(global-set-key (kbd "C-x <left>") 'windmove-left)
-(global-set-key (kbd "C-x <right>") 'windmove-right)
+(global-set-key (kbd "C-x rl") 'helm-bookmarks )
 
 (global-set-key (kbd "C-x <up>") 'windmove-up)
 (global-set-key (kbd "C-x <down>") 'windmove-down)
 (global-set-key (kbd "C-x <left>") 'windmove-left)
 (global-set-key (kbd "C-x <right>") 'windmove-right)
 
-;;;;;;;;;;;;;;;;;;;;Company-Mode;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;Global-Modes;;;;;;;;;;;;;;;;;;
 (add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook 'projectile-mode)
-  (defun my-csharp-mode-setup ()
-    (setq indent-tabs-mode nil)
-    (setq c-syntactic-indentation f)
-    (c-set-style "ellemtel")
-    (setq c-basic-offset 4)
-    (setq truncate-lines t)
-    (setq tab-width 4)
-    (setq evil-shift-width 4)
-    (local-set-key (kbd "C-c C-c") 'recompile))
 
-;;;;;;;;;;;;;;;;;;;;;;C Sharp Mode;;;;;;;;;;;;;;;;;;;;;;
-(add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)
-(define-key csharp-mode-map (kbd "C-.") 'omnisharp-run-code-action-refactoring)
-(define-key csharp-mode-map (kbd "<f12>") 'omnisharp-go-to-definition)
 
-(add-hook 'csharp-mode-hook 'omnisharp-mode)
-(add-hook 'csharp-mode-hook 'flycheck-mode)
-(eval-after-load
- 'company
- '(add-to-list 'company-backends 'company-omnisharp))
+
+
 
 ;;;;;;;;;;;;; Miscelanous Functions ;;;;;;;;;;;;;;
 
@@ -113,25 +105,14 @@ package-archive-priorities '(("melpa" . 1)))
 (menu-bar-mode -1)
 (toggle-scroll-bar -1)
 (tool-bar-mode -1)
-;; No Word Wrap
-(add-hook 'diff-mode-hook (lambda () (setq truncate-lines t)))
 
 ;; No bell
 (setq ring-bell-function 'ignore)
 
-;; Moves Backup Files to another directory
-(setq backup-directory-alist `(("." . ,(concat user-emacs-directory "backups"))))
-(setq auto-save-file-name-transforms `((".*" "~/" t)))
-(setq create-lockfiles nil)
+;; No Word Wrap
+(add-hook 'diff-mode-hook (lambda () (setq truncate-lines t)))
 
-;; Save All Func
- (defun save-all ()
-    (interactive)
-    (save-some-buffers t))
-
-
-
-;; Moves Backup Files to another directory
+;;;;;;;;;; Moves Backup Files to another directory ;;;;;;;;;;
 (setq backup-directory-alist `(("." . ,(concat user-emacs-directory "backups"))))
 (setq auto-save-file-name-transforms `((".*" "~/" t)))
 (setq create-lockfiles nil)
@@ -152,6 +133,7 @@ package-archive-priorities '(("melpa" . 1)))
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
  '(custom-enabled-themes (quote (deeper-blue)))
  '(ensime-startup-notification nil)
+ '(ensime-typecheck-idle-interval 0.1)
  '(omnisharp-auto-complete-want-documentation nil)
  '(omnisharp-eldoc-support nil)
  '(package-selected-packages (quote (helm omnisharp monokai-theme key-chord company))))
@@ -162,4 +144,8 @@ package-archive-priorities '(("melpa" . 1)))
  ;; If there is more than one, they won't work right.
  )
 
-;;(setq omnisharp-server-executable-path "C:\\Users\\Mugen\\AppData\\Roaming\\.emacs.d\\omnisharp\\OmniSharp.exe")
+;;;;;;;;;;;;;;;Load in specific settings;;;;;;;;;;;;;;;;;;;
+(load-user-file "omnisharp.el")
+(load-user-file "ensime.el")
+
+
