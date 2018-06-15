@@ -49,6 +49,7 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package helm)
 (use-package helm-projectile)
 (use-package swiper-helm)
+(use-package smartparens)
 
 
 ;;;;;;;;;;;;;;;;;;;Universal KeyChords;;;;;;;;;;;;;;;;;;
@@ -73,6 +74,8 @@ package-archive-priorities '(("melpa" . 1)))
 
 (global-set-key (kbd "C-x rl") 'helm-bookmarks )
 
+(global-set-key (kbd "C-x g") 'magit-status )
+
 (global-set-key (kbd "C-x <up>") 'windmove-up)
 (global-set-key (kbd "C-x <down>") 'windmove-down)
 (global-set-key (kbd "C-x <left>") 'windmove-left)
@@ -81,15 +84,14 @@ package-archive-priorities '(("melpa" . 1)))
 ;;;;;;;;;;;;;;;;;;;;Global-Modes;;;;;;;;;;;;;;;;;;
 (add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook 'projectile-mode)
-
-
-
-
+(setq company-idle-delay '0)
 
 ;;;;;;;;;;;;; Miscelanous Functions ;;;;;;;;;;;;;;
 
 ;; Causes buffer to always have the latest version (if using an external editor)
 (global-auto-revert-mode t)
+
+(setq ediff-split-window-function 'split-window-horizontally) ;; gonna try this out
 
 ;; Jump to Init File
 (defun init-file ()
@@ -131,9 +133,19 @@ package-archive-priorities '(("melpa" . 1)))
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
+ '(company-backends
+   (quote
+    (company-omnisharp company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
+		       (company-dabbrev-code company-gtags company-etags company-keywords)
+		       company-oddmuse company-dabbrev)))
+ '(company-frontends
+   (quote
+    (company-pseudo-tooltip-unless-just-one-frontend company-echo-metadata-frontend company-preview-if-just-one-frontend)))
+
  '(custom-enabled-themes (quote (deeper-blue)))
  '(ensime-startup-notification nil)
  '(ensime-typecheck-idle-interval 0.1)
+ '(global-company-mode t)
  '(omnisharp-auto-complete-want-documentation nil)
  '(omnisharp-eldoc-support nil)
  '(package-selected-packages (quote (helm omnisharp monokai-theme key-chord company))))
