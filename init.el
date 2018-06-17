@@ -76,10 +76,11 @@ package-archive-priorities '(("melpa" . 1)))
 
 (global-set-key (kbd "C-x g") 'magit-status )
 
-(global-set-key (kbd "C-x <up>") 'windmove-up)
-(global-set-key (kbd "C-x <down>") 'windmove-down)
-(global-set-key (kbd "C-x <left>") 'windmove-left)
-(global-set-key (kbd "C-x <right>") 'windmove-right)
+;;(global-set-key (kbd "C-x <up>") 'windmove-up)
+(global-set-key (kbd "C-x j") 'windmove-up)
+(global-set-key (kbd "C-x k") 'windmove-down)
+(global-set-key (kbd "C-x h") 'windmove-left)
+(global-set-key (kbd "C-x l") 'windmove-right)
 
 ;;;;;;;;;;;;;;;;;;;;Global-Modes;;;;;;;;;;;;;;;;;;
 (add-hook 'after-init-hook 'global-company-mode)
