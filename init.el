@@ -86,6 +86,7 @@ package-archive-priorities '(("melpa" . 1)))
 (add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook 'projectile-mode)
 (setq company-idle-delay '0)
+(setq company-tooltip-idle-delay '0)
 
 ;;;;;;;;;;;;; Miscelanous Functions ;;;;;;;;;;;;;;
 
@@ -149,6 +150,8 @@ package-archive-priorities '(("melpa" . 1)))
  '(global-company-mode t)
  '(omnisharp-auto-complete-want-documentation nil)
  '(omnisharp-eldoc-support nil)
+ '(omnisharp-company-match-type (quote company-match-server))
+ '(org-startup-truncated t)
  '(package-selected-packages (quote (helm omnisharp monokai-theme key-chord company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
