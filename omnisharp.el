@@ -18,13 +18,14 @@
 
 (define-key csharp-mode-map (kbd "C-c C-c") 'comment-region)
 (define-key csharp-mode-map (kbd "C-c C-d") 'uncomment-region)
-
+(key-chord-define csharp-mode-map  ";t" 'omnisharp-current-type-information)
 
 (add-hook 'csharp-mode-hook 'omnisharp-mode)
 (add-hook 'csharp-mode-hook 'flycheck-mode)
 (eval-after-load
  'company
  '(add-to-list 'company-backends 'company-omnisharp))
+
 
 
 ;;(setq omnisharp-server-executable-path "C:\\Users\\Mugen\\AppData\\Roaming\\.emacs.d\\omnisharp\\OmniSharp.exe")
