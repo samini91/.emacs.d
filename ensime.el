@@ -29,9 +29,10 @@ Repeated invocations toggle between the two most recently open buffers."
 
 (define-key ensime-mode-map (kbd "C-c C-c") 'comment-region)
 (define-key ensime-mode-map (kbd "C-c C-d") 'uncomment-region)
-
+(define-key ensime-mode-map  (kbd "C-.") 'ensime-import-type-at-point)
 (key-chord-define ensime-mode-map ";e" 'ensime-print-errors-at-point)
 (key-chord-define ensime-mode-map ";t" 'ensime-type-at-point)
+
 
 ;;(key-chord-define ensime-mode-map ";r" 'ensime-repl)
 ;;(key-chord-define ensime-mode-map ";r" 'ensime-inf-run-scala)
