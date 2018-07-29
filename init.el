@@ -50,6 +50,7 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package helm-projectile)
 (use-package swiper-helm)
 (use-package smartparens)
+(use-package restclient)
 
 
 ;;;;;;;;;;;;;;;;;;;Universal KeyChords;;;;;;;;;;;;;;;;;;
