@@ -83,6 +83,8 @@ package-archive-priorities '(("melpa" . 1)))
 (global-set-key (kbd "C-x h") 'windmove-left)
 (global-set-key (kbd "C-x l") 'windmove-right)
 
+(global-unset-key (kbd "C-x C-c"))
+
 ;;;;;;;;;;;;;;;;;;;;Global-Modes;;;;;;;;;;;;;;;;;;
 (add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook 'projectile-mode)
