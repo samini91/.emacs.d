@@ -40,6 +40,11 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package omnisharp)
 (use-package flycheck)
 (use-package ensime)
+(use-package irony)
+(use-package company-irony)
+(use-package company-irony-c-headers)
+(use-package irony-eldoc)
+(use-package flycheck-irony)
 (use-package yasnippet)
 (use-package async)
 (use-package auto-complete)
@@ -131,6 +136,7 @@ package-archive-priorities '(("melpa" . 1)))
 
 
 ;;;;;;;;;;;;; Custom Theme ;;;;;;;;;;;;;;;
+(set-face-attribute 'default nil :height 100)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -140,20 +146,19 @@ package-archive-priorities '(("melpa" . 1)))
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
  '(company-backends
    (quote
-    (company-omnisharp company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
+    (company-omnisharp company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files company-irony
 		       (company-dabbrev-code company-gtags company-etags company-keywords)
 		       company-oddmuse company-dabbrev)))
  '(company-frontends
    (quote
     (company-pseudo-tooltip-unless-just-one-frontend company-echo-metadata-frontend company-preview-if-just-one-frontend)))
-
  '(custom-enabled-themes (quote (deeper-blue)))
  '(ensime-startup-notification nil)
  '(ensime-typecheck-idle-interval 0.1)
  '(global-company-mode t)
  '(omnisharp-auto-complete-want-documentation nil)
- '(omnisharp-eldoc-support nil)
  '(omnisharp-company-match-type (quote company-match-server))
+ '(omnisharp-eldoc-support nil)
  '(org-startup-truncated t)
  '(package-selected-packages (quote (helm omnisharp monokai-theme key-chord company))))
 (custom-set-faces
@@ -164,7 +169,9 @@ package-archive-priorities '(("melpa" . 1)))
  )
 
 ;;;;;;;;;;;;;;;Load in specific settings;;;;;;;;;;;;;;;;;;;
+(load-user-file "irony.el")
 (load-user-file "omnisharp.el")
 (load-user-file "ensime.el")
+
 
 
