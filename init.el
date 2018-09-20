@@ -72,6 +72,7 @@ package-archive-priorities '(("melpa" . 1)))
 
 (global-set-key (kbd "<f5>") (lambda ()
                                (interactive)
+			       (save-all)
                                (setq-local compilation-read-command nil)
                                (call-interactively 'compile)))
 
