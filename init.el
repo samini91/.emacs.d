@@ -70,6 +70,11 @@ package-archive-priorities '(("melpa" . 1)))
 		  (interactive)
 		  (ignore-errors (previous-line 5))))
 
+(global-set-key (kbd "<f5>") (lambda ()
+                               (interactive)
+                               (setq-local compilation-read-command nil)
+                               (call-interactively 'compile)))
+
 (key-chord-mode 1)
 (setq key-chord-two-keys-delay .040)
 
