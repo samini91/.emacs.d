@@ -56,6 +56,8 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package swiper-helm)
 (use-package smartparens)
 (use-package restclient)
+(use-package meghanada)
+
 
 
 ;;;;;;;;;;;;;;;;;;;Universal KeyChords;;;;;;;;;;;;;;;;;;
@@ -87,7 +89,6 @@ package-archive-priorities '(("melpa" . 1)))
 (global-set-key (kbd "C-x rl") 'helm-bookmarks )
 
 (global-set-key (kbd "C-x g") 'magit-status )
-(global-set-key (kbd "C-x C-g") 'magit-status ) 
 
 ;;(global-set-key (kbd "C-x <up>") 'windmove-up)
 (global-set-key (kbd "C-x k") 'windmove-up)
@@ -143,7 +144,10 @@ package-archive-priorities '(("melpa" . 1)))
 
 
 ;;;;;;;;;;;;; Custom Theme ;;;;;;;;;;;;;;;
-(set-face-attribute 'default nil :height 100)
+
+;;;We can change the size of the text with this function
+;;(set-face-attribute 'default nil :height 100)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -167,7 +171,9 @@ package-archive-priorities '(("melpa" . 1)))
  '(omnisharp-company-match-type (quote company-match-server))
  '(omnisharp-eldoc-support nil)
  '(org-startup-truncated t)
- '(package-selected-packages (quote (helm omnisharp monokai-theme key-chord company))))
+ '(package-selected-packages
+   (quote
+    (meghanada-mode Meghanada-Mode cl-lib meghanada kotlin-mode helm omnisharp monokai-theme key-chord company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -179,6 +185,7 @@ package-archive-priorities '(("melpa" . 1)))
 (load-user-file "irony.el")
 (load-user-file "omnisharp.el")
 (load-user-file "ensime.el")
+(load-user-file "meghanada.el")
 
 
 

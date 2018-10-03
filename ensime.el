@@ -53,4 +53,3 @@ Repeated invocations toggle between the two most recently open buffers."
 (add-hook 'scala-mode-hook 'my-scala-mode-setup t)
 (add-hook 'scala-mode-hook 'ensime)
 
-(add-hook 'java-mode-hook 'ensime)
