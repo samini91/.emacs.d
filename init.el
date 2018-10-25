@@ -36,18 +36,44 @@ package-archive-priorities '(("melpa" . 1)))
 (setq use-package-always-ensure t)
 (use-package key-chord)
 (use-package company)
-(use-package magit)
-(use-package omnisharp)
 (use-package flycheck)
-(use-package ensime)
-(use-package irony)
+(use-package magit)
+(use-package yasnippet)
+(use-package async)
+
+(use-package omnisharp
+  :ensure t
+  :config
+  (load-user-file "omnisharp.el")
+  (setq omnisharp-auto-complete-want-documentation nil)
+  (setq omnisharp-company-match-type (quote company-match-server))
+  (setq omnisharp-eldoc-support nil)
+  (add-hook 'omnisharp-mode-hook
+	    (lambda ()
+	      (setq-local company-backends (list 'company-omnisharp))))
+  )
+
+(use-package ensime
+  :ensure t
+  :config
+  (load-user-file "ensime.el")
+  (setq ensime-typecheck-idle-interval 0)
+  (setq ensime-startup-notification nil)
+  )
+
+(use-package irony
+  :ensure t
+  :config
+  (load-user-file "irony.el")
+  (add-hook 'irony-mode-hook
+	    (lambda ()
+	      (setq-local company-backends (list 'company-irony))))
+  )
+
 (use-package company-irony)
 (use-package company-irony-c-headers)
 (use-package irony-eldoc)
 (use-package flycheck-irony)
-(use-package yasnippet)
-(use-package async)
-(use-package auto-complete)
 (use-package csharp-mode)
 (use-package dash)
 (use-package popup)
@@ -56,9 +82,51 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package swiper-helm)
 (use-package smartparens)
 (use-package restclient)
-(use-package meghanada)
 
 
+(use-package lsp-mode
+  :ensure t
+  :config
+  (add-hook 'lsp-mode-hook 'flycheck-mode t)
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode t)
+    (add-hook 'lsp-mode-hook
+	    (lambda ()
+	      (setq-local company-backends (list 'company-lsp))))
+  )
+(use-package lsp-ui
+  :ensure t
+  :config
+  (setq lsp-ui-sideline-update-mode 'point)
+  (setq lsp-ui-sideline-delay 0)
+  )
+
+(use-package lsp-javascript-typescript
+  :ensure t
+  :config
+  ;;;;Javascript;;;;;
+  (add-hook 'js-mode-hook #'lsp-javascript-typescript-enable)
+  (add-hook 'typescript-mode-hook #'lsp-javascript-typescript-enable) ;; for typescript support
+  (add-hook 'js3-mode-hook #'lsp-javascript-typescript-enable) ;; for js3-mode support
+  (add-hook 'rjsx-mode #'lsp-javascript-typescript-enable) ;; for rjsx-mode support
+  )
+
+(use-package company-lsp
+  :after  company
+  :ensure t
+  :config
+  (setq company-lsp-cache-candidates t
+        company-lsp-async t))
+
+(use-package lsp-java
+  :ensure t
+  :config  
+  (add-hook 'java-mode-hook
+	    (lambda ()
+	      (setq-local company-backends (list 'company-lsp))))
+
+  (add-hook 'java-mode-hook 'lsp-java-enable)
+  (add-hook 'java-mode-hook 'flycheck-mode)
+  (add-hook 'java-mode-hook 'lsp-ui-mode))
 
 ;;;;;;;;;;;;;;;;;;;Universal KeyChords;;;;;;;;;;;;;;;;;;
 
@@ -155,37 +223,10 @@ package-archive-priorities '(("melpa" . 1)))
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
- '(company-backends
-   (quote
-    (company-omnisharp company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files company-irony
-		       (company-dabbrev-code company-gtags company-etags company-keywords)
-		       company-oddmuse company-dabbrev)))
- '(company-frontends
-   (quote
-    (company-pseudo-tooltip-unless-just-one-frontend company-echo-metadata-frontend company-preview-if-just-one-frontend)))
  '(custom-enabled-themes (quote (deeper-blue)))
- '(ensime-startup-notification nil)
- '(ensime-typecheck-idle-interval 0.1)
- '(global-company-mode t)
- '(omnisharp-auto-complete-want-documentation nil)
- '(omnisharp-company-match-type (quote company-match-server))
- '(omnisharp-eldoc-support nil)
- '(org-startup-truncated t)
- '(package-selected-packages
-   (quote
-    (meghanada-mode Meghanada-Mode cl-lib meghanada kotlin-mode helm omnisharp monokai-theme key-chord company))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
  )
 
-;;;;;;;;;;;;;;;Load in specific settings;;;;;;;;;;;;;;;;;;;
-(load-user-file "irony.el")
-(load-user-file "omnisharp.el")
-(load-user-file "ensime.el")
-(load-user-file "meghanada.el")
+;;(load-user-file "meghanada.el")
 
 
 
