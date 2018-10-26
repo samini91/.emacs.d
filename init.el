@@ -82,6 +82,11 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package swiper-helm)
 (use-package smartparens)
 (use-package restclient)
+(use-package org-jira
+  :config
+  ;;(setq jiralib-url "https://???.atlassian.net")
+  )
+(use-package helm-jira)
 
 
 (use-package lsp-mode
@@ -127,6 +132,12 @@ package-archive-priorities '(("melpa" . 1)))
   (add-hook 'java-mode-hook 'lsp-java-enable)
   (add-hook 'java-mode-hook 'flycheck-mode)
   (add-hook 'java-mode-hook 'lsp-ui-mode))
+
+(use-package lsp-html
+  :ensure t
+  :config  
+  (add-hook 'html-mode-hook #'lsp-html-enable)
+  (add-hook 'html-mode-hook 'lsp-ui-mode))
 
 ;;;;;;;;;;;;;;;;;;;Universal KeyChords;;;;;;;;;;;;;;;;;;
 
@@ -224,9 +235,17 @@ package-archive-priorities '(("melpa" . 1)))
  '(ansi-color-names-vector
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
  '(custom-enabled-themes (quote (deeper-blue)))
- )
+ '(package-selected-packages
+   (quote
+    (helm-jira org-jira lsp-html use-package swiper-helm smartparens restclient omnisharp meghanada magit lsp-ui lsp-javascript-typescript lsp-java kotlin-mode key-chord irony-eldoc helm-projectile flycheck-kotlin flycheck-irony ensime eglot company-lsp company-irony-c-headers company-irony))))
 
 ;;(load-user-file "meghanada.el")
 
 
 
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
