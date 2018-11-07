@@ -79,6 +79,7 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package popup)
 (use-package helm)
 (use-package helm-projectile)
+(use-package helm-rg)
 (use-package swiper-helm)
 (use-package smartparens)
 (use-package restclient)
@@ -162,8 +163,9 @@ package-archive-priorities '(("melpa" . 1)))
 
 (key-chord-define-global ";s" 'swiper-helm)
 (key-chord-define-global ";a" 'helm-buffers-list)
-(key-chord-define-global ";w" 'other-window)
+(key-chord-define-global ";w" 'helm-projectile-rg)
 (key-chord-define-global ";q" 'helm-projectile)
+(key-chord-define-global ";e" 'helm-semantic-or-imenu)
 
 (global-set-key (kbd "C-x rl") 'helm-bookmarks )
 
@@ -237,7 +239,7 @@ package-archive-priorities '(("melpa" . 1)))
  '(custom-enabled-themes (quote (deeper-blue)))
  '(package-selected-packages
    (quote
-    (helm-jira org-jira lsp-html use-package swiper-helm smartparens restclient omnisharp meghanada magit lsp-ui lsp-javascript-typescript lsp-java kotlin-mode key-chord irony-eldoc helm-projectile flycheck-kotlin flycheck-irony ensime eglot company-lsp company-irony-c-headers company-irony))))
+    (helm-rg helm-rp helm-ag helm-jira org-jira lsp-html use-package swiper-helm smartparens restclient omnisharp meghanada magit lsp-ui lsp-javascript-typescript lsp-java kotlin-mode key-chord irony-eldoc helm-projectile flycheck-kotlin flycheck-irony ensime eglot company-lsp company-irony-c-headers company-irony))))
 
 ;;(load-user-file "meghanada.el")
 
