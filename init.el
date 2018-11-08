@@ -165,7 +165,7 @@ package-archive-priorities '(("melpa" . 1)))
 (key-chord-define-global ";a" 'helm-buffers-list)
 (key-chord-define-global ";w" 'helm-projectile-rg)
 (key-chord-define-global ";q" 'helm-projectile)
-(key-chord-define-global ";e" 'helm-semantic-or-imenu)
+(key-chord-define-global ";f" 'helm-semantic-or-imenu)
 
 (global-set-key (kbd "C-x rl") 'helm-bookmarks )
 
