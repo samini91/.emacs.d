@@ -181,6 +181,7 @@ package-archive-priorities '(("melpa" . 1)))
 
 ;;;;;;;;;;;;;;;;;;;;Global-Modes;;;;;;;;;;;;;;;;;;
 (add-hook 'after-init-hook 'global-company-mode)
+(add-hook 'after-init-hook 'show-paren-mode)
 (add-hook 'after-init-hook 'projectile-mode)
 (setq company-idle-delay '0)
 (setq company-tooltip-idle-delay '0)
