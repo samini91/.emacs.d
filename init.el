@@ -187,6 +187,12 @@ package-archive-priorities '(("melpa" . 1)))
 (setq company-idle-delay '0)
 (setq company-tooltip-idle-delay '0)
 
+;;;;;;;;;;;;;;;;;;Org Mode;;;;;;;;;;;;;;;;;;
+(defun org-html-header-readtheorg ()
+  (interactive)
+  (insert "#+SETUPFILE: ~/.emacs.d/org-html-themes/setup/theme-readtheorg.setup")
+  )
+
 ;;;;;;;;;;;;; Miscelanous Functions ;;;;;;;;;;;;;;
 
 ;; Causes buffer to always have the latest version (if using an external editor)
