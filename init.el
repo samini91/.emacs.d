@@ -1,7 +1,7 @@
 (package-initialize)
 (require 'package)
 
-;;;;;;;;;;;;; Allows specific setting loading ;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;; Allows specific setting loading ;;;;;;;;;;;;;;;
 (defconst user-init-dir
   (cond ((boundp 'user-emacs-directory)
          user-emacs-directory)
@@ -9,13 +9,7 @@
          user-init-directory)
         (t "~/.emacs.d/")))
 
-(defun load-user-file (file)
-  (interactive "f")
-  "Load a file in current user's configuration directory"
-  (load-file (expand-file-name file user-init-dir)))
-
-
-;;;;;;;;;;;;Melpa;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;; Melpa ;;;;;;;;;;;;;;;
 (setq
  package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                     ;; ("org" . "http://orgmode.org/elpa/")
@@ -25,46 +19,167 @@
 ;; package-archive-priorities '(("melpa-stable" . 1)))
 package-archive-priorities '(("melpa" . 1)))
 
-
+;;;;;;;;;;;;;;; Use-Package ;;;;;;;;;;;;;;;
 (package-initialize)
 (when (not package-archive-contents)
   (package-refresh-contents)
   (package-install 'use-package))
 (require 'use-package)
 
-;;;;;;;;;;;; Automatically downloads "use-package" packages if missing;;;;;;;;;;
+;;;;;;;;;;;; Automatically downloads "use-package" packages if missing ;;;;;;;;;;
 (setq use-package-always-ensure t)
-(use-package key-chord)
-(use-package company)
+
+(use-package hydra)
+
+(use-package key-chord
+  :config
+  (key-chord-mode 1)
+  (setq key-chord-two-keys-delay .040)
+  ;;;;;;;;;;;;;;; Helm KeyChords ;;;;;;;;;;;;;;;
+  (key-chord-define-global ";s" 'swiper-helm)
+  (key-chord-define-global ";a" 'helm-buffers-list)
+  (key-chord-define-global ";w" 'helm-projectile-rg)
+  (key-chord-define-global ";q" 'helm-projectile)
+  (key-chord-define-global ";f" 'helm-semantic-or-imenu)
+  (key-chord-define-global ";d" 'helm-show-kill-ring)
+  (key-chord-define-global ";z" 'helm-rg)
+  )
+
+(use-package company
+  :config
+  (add-hook 'after-init-hook 'global-company-mode)
+  )
+
 (use-package flycheck)
-(use-package magit)
+(use-package dash)
+(use-package popup)
+(use-package helm)
+(use-package helm-projectile)
+(use-package helm-rg)
+(use-package swiper-helm)
+(use-package smartparens)
+(use-package restclient)
+(use-package helm-jira)
+(use-package org-jira
+  :config
+  ;;(setq jiralib-url "https://???.atlassian.net")
+  )
+
+(use-package org-download
+  :config
+  (add-hook 'dired-mode-hook 'org-download-enable)
+  )
+
+
+(use-package magit
+  :config
+  (global-set-key (kbd "C-x g") 'magit-status )
+  )
+
 (use-package yasnippet)
 (use-package async)
 
+;;;;;;;;;;;; C Sharp ;;;;;;;;;;;;
+(use-package csharp-mode)
 (use-package omnisharp
   :ensure t
   :config
-  (load-user-file "omnisharp.el")
+  (defun my-csharp-mode-setup ()
+    (setq indent-tabs-mode nil)
+    (setq c-syntactic-indentation f)
+    (c-set-style "ellemtel")
+    (setq c-basic-offset 4)
+    (setq truncate-lines t)
+    (setq tab-width 4)
+    (setq comment-start "/* "
+	  comment-end " */"
+	  comment-style 'multi-line
+	  comment-empty-lines t)
+    (setq evil-shift-width 4))
+
   (setq omnisharp-auto-complete-want-documentation nil)
   (setq omnisharp-company-match-type (quote company-match-server))
   (setq omnisharp-eldoc-support nil)
+
+  (define-key csharp-mode-map (kbd "C-.") 'omnisharp-run-code-action-refactoring)
+  (define-key csharp-mode-map (kbd "<f12>") 'omnisharp-go-to-definition)
+
+  (define-key csharp-mode-map (kbd "C-c C-c") 'comment-region)
+  (define-key csharp-mode-map (kbd "C-c C-d") 'uncomment-region)
+  (key-chord-define csharp-mode-map  ";t" 'omnisharp-current-type-information)
+
+  (add-hook 'csharp-mode-hook 'omnisharp-mode)
+  (add-hook 'csharp-mode-hook 'flycheck-mode)
+  (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)
   (add-hook 'omnisharp-mode-hook
 	    (lambda ()
 	      (setq-local company-backends (list 'company-omnisharp))))
   )
 
+;;;;;;;;;;;; Scala ;;;;;;;;;;;;
 (use-package ensime
   :ensure t
   :config
-  (load-user-file "ensime.el")
+
+  (defun my-scala-mode-setup ()
+  (setq comment-start "/* "
+	  comment-end " */"
+	  comment-style 'multi-line
+	  comment-empty-lines t)
+  )
+  
   (setq ensime-typecheck-idle-interval 0)
   (setq ensime-startup-notification nil)
+
+  (define-key ensime-mode-map (kbd "M-n") nil)
+  (define-key ensime-mode-map (kbd "M-p") nil)
+  (define-key ensime-mode-map (kbd "C-c C-c") 'comment-region)
+  (define-key ensime-mode-map (kbd "C-c C-d") 'uncomment-region)
+  (define-key ensime-mode-map  (kbd "C-.") 'ensime-import-type-at-point)
+  (key-chord-define ensime-mode-map ";e" 'ensime-print-errors-at-point)
+  (key-chord-define ensime-mode-map ";t" 'ensime-type-at-point)
+
+  (add-hook 'scala-mode-hook 'my-scala-mode-setup t)
+  (add-hook 'scala-mode-hook 'ensime)
   )
 
+;;;;;;;;;;;; C/C++ ;;;;;;;;;;;;
 (use-package irony
   :ensure t
   :config
-  (load-user-file "irony.el")
+  (add-hook 'c-mode-hook
+            (lambda ()
+	      (unless (file-exists-p "Makefile")
+		(set (make-local-variable 'compile-command)
+                     ;; emulate make's .c.o implicit pattern rule, but with
+                     ;; different defaults for the CC, CPPFLAGS, and CFLAGS
+                     ;; variables:
+                     ;; $(CC) -c -o $@ $(CPPFLAGS) $(CFLAGS) $<
+		     (let ((file (file-name-nondirectory buffer-file-name)))
+                       (format "%s -c -o %s.o %s %s %s"
+                               (or (getenv "CC") "gcc")
+                               (file-name-sans-extension file)
+                               (or (getenv "CPPFLAGS") "-DDEBUG=9")
+                               (or (getenv "CFLAGS") "-ansi -pedantic -Wall -g")
+			       file))))))
+
+  ;; Windows performance tweaks
+  ;;
+  (when (boundp 'w32-pipe-read-delay)
+    (setq w32-pipe-read-delay 0))
+  ;; Set the buffer size to 64K on Windows (from the original 4K)
+  (when (boundp 'w32-pipe-buffer-size)
+    (setq irony-server-w32-pipe-buffer-size (* 64 1024)))
+
+  (key-chord-define c-mode-map ";t" 'irony-get-type)
+
+  (add-hook 'c++-mode-hook 'irony-mode)
+  (add-hook 'c++-mode-hook 'flycheck-mode)
+  (add-hook 'c-mode-hook 'irony-eldoc)
+  (add-hook 'c-mode-hook 'irony-mode)
+  (add-hook 'c-mode-hook 'flycheck-mode)
+  (add-hook 'c-mode-hook 'irony-eldoc)
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
   (add-hook 'irony-mode-hook
 	    (lambda ()
 	      (setq-local company-backends (list 'company-irony))))
@@ -74,22 +189,10 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package company-irony-c-headers)
 (use-package irony-eldoc)
 (use-package flycheck-irony)
-(use-package csharp-mode)
-(use-package dash)
-(use-package popup)
-(use-package helm)
-(use-package helm-projectile)
-(use-package helm-rg)
-(use-package swiper-helm)
-(use-package smartparens)
-(use-package restclient)
-(use-package org-jira
-  :config
-  ;;(setq jiralib-url "https://???.atlassian.net")
-  )
-(use-package helm-jira)
 
 
+
+;;;;;;;;;;;; LSP ;;;;;;;;;;;;
 (use-package lsp-mode
   :ensure t
   :config
@@ -106,6 +209,14 @@ package-archive-priorities '(("melpa" . 1)))
   (setq lsp-ui-sideline-delay 0)
   )
 
+(use-package company-lsp
+  :after  company
+  :ensure t
+  :config
+  (setq company-lsp-cache-candidates t
+        company-lsp-async t))
+
+;;;;;;;;;;;; Lsp-Javascript ;;;;;;;;;;;;
 (use-package lsp-javascript-typescript
   :ensure t
   :config
@@ -115,14 +226,7 @@ package-archive-priorities '(("melpa" . 1)))
   (add-hook 'js3-mode-hook #'lsp-javascript-typescript-enable) ;; for js3-mode support
   (add-hook 'rjsx-mode #'lsp-javascript-typescript-enable) ;; for rjsx-mode support
   )
-
-(use-package company-lsp
-  :after  company
-  :ensure t
-  :config
-  (setq company-lsp-cache-candidates t
-        company-lsp-async t))
-
+;;;;;;;;;;;; Lsp-Java ;;;;;;;;;;;;
 (use-package lsp-java
   :ensure t
   :config  
@@ -133,14 +237,18 @@ package-archive-priorities '(("melpa" . 1)))
   (add-hook 'java-mode-hook 'lsp-java-enable)
   (add-hook 'java-mode-hook 'flycheck-mode)
   (add-hook 'java-mode-hook 'lsp-ui-mode))
-
+;;;;;;;;;;;; Lsp-Html ;;;;;;;;;;;;
 (use-package lsp-html
   :ensure t
   :config  
   (add-hook 'html-mode-hook #'lsp-html-enable)
   (add-hook 'html-mode-hook 'lsp-ui-mode))
 
-;;;;;;;;;;;;;;;;;;;Universal KeyChords;;;;;;;;;;;;;;;;;;
+
+
+
+
+;;;;;;;;;;;;;;; Universal KeyChords ;;;;;;;;;;;;;;;
 
 (global-set-key (kbd "M-n")
             (lambda ()
@@ -158,21 +266,10 @@ package-archive-priorities '(("melpa" . 1)))
                                (setq-local compilation-read-command nil)
                                (call-interactively 'compile)))
 
-(key-chord-mode 1)
-(setq key-chord-two-keys-delay .040)
-
-(key-chord-define-global ";s" 'swiper-helm)
-(key-chord-define-global ";a" 'helm-buffers-list)
-(key-chord-define-global ";w" 'helm-projectile-rg)
-(key-chord-define-global ";q" 'helm-projectile)
-(key-chord-define-global ";f" 'helm-semantic-or-imenu)
-(key-chord-define-global ";d" 'helm-show-kill-ring)
-(key-chord-define-global ";z" 'helm-rg)
 
 (global-set-key (kbd "C-x rl") 'helm-bookmarks )
 
-(global-set-key (kbd "C-x g") 'magit-status )
-
+;;;;;;;;;;;;;;; Window Navigation ;;;;;;;;;;;;;;;
 ;;(global-set-key (kbd "C-x <up>") 'windmove-up)
 (global-set-key (kbd "C-x k") 'windmove-up)
 (global-set-key (kbd "C-x j") 'windmove-down)
@@ -181,8 +278,7 @@ package-archive-priorities '(("melpa" . 1)))
 
 (global-unset-key (kbd "C-x C-c"))
 
-;;;;;;;;;;;;;;;;;;;;Global-Modes;;;;;;;;;;;;;;;;;;
-(add-hook 'after-init-hook 'global-company-mode)
+;;;;;;;;;;;;;;;;;;;; Global-Modes ;;;;;;;;;;;;;;;;;;
 (add-hook 'after-init-hook 'show-paren-mode)
 (add-hook 'after-init-hook 'projectile-mode)
 (setq company-idle-delay '0)
@@ -199,13 +295,7 @@ package-archive-priorities '(("melpa" . 1)))
 ;; Causes buffer to always have the latest version (if using an external editor)
 (global-auto-revert-mode t)
 
-(setq ediff-split-window-function 'split-window-horizontally) ;; gonna try this out
-
-;; Jump to Init File
-(defun init-file ()
-  "Edit the `user-init-file', in another window."
-  (interactive)
-  (find-file-other-window user-init-file))
+(setq ediff-split-window-function 'split-window-horizontally)
 
 ;; Removes Splash Screen
 (setq inhibit-startup-message t)
@@ -219,9 +309,6 @@ package-archive-priorities '(("melpa" . 1)))
 ;; No bell
 (setq ring-bell-function 'ignore)
 
-;; No Word Wrap
-(add-hook 'diff-mode-hook (lambda () (setq truncate-lines t)))
-
 ;;;;;;;;;; Moves Backup Files to another directory ;;;;;;;;;;
 (setq backup-directory-alist `(("." . ,(concat user-emacs-directory "backups"))))
 (setq auto-save-file-name-transforms `((".*" "~/" t)))
@@ -231,6 +318,18 @@ package-archive-priorities '(("melpa" . 1)))
  (defun save-all ()
     (interactive)
     (save-some-buffers t))
+
+;; Jump to Init File
+(defun init-file ()
+  "Edit the `user-init-file', in another window."
+  (interactive)
+  (find-file-other-window user-init-file))
+
+(defun load-user-file (file)
+  (interactive "f")
+  "Load a file in current user's configuration directory"
+  (load-file (expand-file-name file user-init-dir)))
+
 
 
 ;;;;;;;;;;;;;;;;;;Custom File;;;;;;;;;;;;;;;;;;
