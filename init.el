@@ -98,12 +98,12 @@ package-archive-priorities '(("melpa" . 1)))
 
 ;;;;;;;;;;;; Emacs-Lisp ;;;;;;;;;;
 
-;;(defhydra hydra-emacs-lisp-menu (:color blue)
-;;  "Emacs Commands"
-;;  ("e" 'eval-buffer "Eval Buffer" :color blue)
-;;  )
+(defhydra hydra-emacs-lisp-menu (:hint nil)
+  "Emacs Commands"
+  ("e" eval-buffer "Eval Buffer" :color blue)
+  )
 
-;;(key-chord-define emacs-lisp-mode-map ";c" #'hydra-emacs-lisp-menu/body)
+(key-chord-define emacs-lisp-mode-map ";c" 'hydra-emacs-lisp-menu/body)
 
 ;;;;;;;;;;;; C Sharp ;;;;;;;;;;;;
 (use-package csharp-mode)
