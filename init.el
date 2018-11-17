@@ -43,12 +43,22 @@ package-archive-priorities '(("melpa" . 1)))
   ;;;;;;;;;;;;;;; Helm KeyChords ;;;;;;;;;;;;;;;
   (key-chord-define-global ";s" 'swiper-helm)
   (key-chord-define-global ";a" 'helm-buffers-list)
-  (key-chord-define-global ";w" 'helm-projectile-rg)
-  (key-chord-define-global ";q" 'helm-projectile)
   (key-chord-define-global ";f" 'helm-semantic-or-imenu)
   (key-chord-define-global ";d" 'helm-show-kill-ring)
-  (key-chord-define-global ";z" 'helm-rg)
+
+  (defhydra hydra-global-helm (:color blue :hint nil)
+  "Helm"
+  ("s" swiper-helm "Swiper-Helm")
+  ("a" helm-buffers-list "Buffer-List")
+  ("w" helm-projectile-rg "RipGrep-Projectile")
+  ("q" helm-projectile "Projectile")
+  ("f" helm-semantic-or-imenu "Functions")
+  ("d" helm-show-kill-ring "Kill-Ring")
+  ("z" helm-rg "RipGrep")
   )
+  (key-chord-define-global ";f" 'hydra-global-helm/body)
+
+)
 
 (use-package company
   :config
