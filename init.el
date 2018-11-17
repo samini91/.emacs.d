@@ -73,7 +73,16 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package flycheck)
 (use-package dash)
 (use-package popup)
-(use-package undo-tree)
+(use-package undo-tree
+  :config
+
+  (defhydra hydra-undo-tree-menu (:hint nil)
+    "Undo Tree"
+    ("v" undo-tree-visualize "Visualize" :color blue)
+    )
+  (key-chord-define-global ";u" 'hydra-undo-tree-menu/body)
+
+  )
 (use-package helm)
 (use-package helm-projectile)
 (use-package helm-rg)
@@ -136,13 +145,15 @@ package-archive-priorities '(("melpa" . 1)))
   (setq omnisharp-auto-complete-want-documentation nil)
   (setq omnisharp-company-match-type (quote company-match-server))
   (setq omnisharp-eldoc-support nil)
-
+  (setq omnisharp-imenu-support t)
+  
   (define-key csharp-mode-map (kbd "C-.") 'omnisharp-run-code-action-refactoring)
   (define-key csharp-mode-map (kbd "<f12>") 'omnisharp-go-to-definition)
 
   (define-key csharp-mode-map (kbd "C-c C-c") 'comment-region)
   (define-key csharp-mode-map (kbd "C-c C-d") 'uncomment-region)
   (key-chord-define csharp-mode-map  ";t" 'omnisharp-current-type-information)
+
 
   (add-hook 'csharp-mode-hook 'omnisharp-mode)
   (add-hook 'csharp-mode-hook 'flycheck-mode)
@@ -325,8 +336,6 @@ package-archive-priorities '(("melpa" . 1)))
   (interactive)
   (insert "#+SETUPFILE: ~/.emacs.d/org-html-themes/setup/theme-readtheorg.setup")
   )
-
-
 
 ;;;;;;;;;;;;; Dired Functions ;;;;;;;;;;;;;;
 (defhydra hydra-buffer-menu (:color pink
