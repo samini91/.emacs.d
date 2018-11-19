@@ -71,6 +71,11 @@ package-archive-priorities '(("melpa" . 1)))
   )
 
 (use-package flycheck)
+(use-package multiple-cursors
+  :config
+  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+  )
 (use-package dash)
 (use-package popup)
 (use-package undo-tree
@@ -95,6 +100,8 @@ package-archive-priorities '(("melpa" . 1)))
   ;;(setq jiralib-url "https://???.atlassian.net")
   )
 
+
+(use-package pdf-tools)
 (use-package org-download
   :config
   (add-hook 'dired-mode-hook 'org-download-enable)
