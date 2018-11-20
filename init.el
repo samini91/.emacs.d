@@ -129,7 +129,7 @@ package-archive-priorities '(("melpa" . 1)))
   ("e" eval-buffer "Eval Buffer" :color blue)
   )
 
-(key-chord-define emacs-lisp-mode-map ";c" 'hydra-emacs-lisp-menu/body)
+(key-chord-define emacs-lisp-mode-map ";x" 'hydra-emacs-lisp-menu/body)
 
 ;;;;;;;;;;;; C Sharp ;;;;;;;;;;;;
 (use-package csharp-mode)
@@ -192,6 +192,8 @@ package-archive-priorities '(("melpa" . 1)))
   (define-key ensime-mode-map  (kbd "C-.") 'ensime-import-type-at-point)
   (key-chord-define ensime-mode-map ";e" 'ensime-print-errors-at-point)
   (key-chord-define ensime-mode-map ";t" 'ensime-type-at-point)
+
+  (key-chord-define ensime-mode-map ";x" 'sbt-hydra)
 
   (add-hook 'scala-mode-hook 'my-scala-mode-setup t)
   (add-hook 'scala-mode-hook 'ensime)
