@@ -111,6 +111,7 @@ package-archive-priorities '(("melpa" . 1)))
   :config
   (global-set-key (kbd "C-x g") 'magit-status )
   )
+(use-package magithub)
 
 (use-package yasnippet)
 (use-package async)
