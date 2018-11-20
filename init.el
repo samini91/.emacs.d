@@ -111,9 +111,21 @@ package-archive-priorities '(("melpa" . 1)))
   :config
   (global-set-key (kbd "C-x g") 'magit-status )
   )
-(use-package magithub)
+;;(use-package magithub)
 
-(use-package yasnippet)
+(use-package treemacs
+  :defer t
+  )
+(use-package treemacs-projectile
+    :defer t
+  )
+
+(use-package yasnippet
+  :config
+  (yas-global-mode t)
+  )
+;;(use-package yasnippet-snippets)
+
 (use-package async)
 
 ;;;;;;;;;;;; Zoom In-Out;;;;;;;;;;
