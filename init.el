@@ -55,8 +55,18 @@ package-archive-priorities '(("melpa" . 1)))
   ("f" helm-semantic-or-imenu "Functions")
   ("d" helm-show-kill-ring "Kill-Ring")
   ("z" helm-rg "RipGrep")
+
   )
   (key-chord-define-global ";f" 'hydra-global-helm/body)
+
+  (defhydra hydra-global-bookmarks (:color blue :hint nil)
+    "Bookmarks"
+    ("b" helm-bookmarks "Bookmarks")
+    ("s" bookmark-set "Set Bookmark")
+    )
+  (key-chord-define-global ";b" 'hydra-global-bookmarks/body)
+
+  
 
 )
 
@@ -109,7 +119,8 @@ package-archive-priorities '(("melpa" . 1)))
 
 (use-package magit
   :config
-  (global-set-key (kbd "C-x g") 'magit-status )
+  (global-set-key (kbd "C-x g") 'magit-status)
+  (key-chord-define-global ";m" 'magit-status)
   )
 ;;(use-package magithub)
 
@@ -335,8 +346,6 @@ package-archive-priorities '(("melpa" . 1)))
                                (setq-local compilation-read-command nil)
                                (call-interactively 'compile)))
 
-
-(global-set-key (kbd "C-x rl") 'helm-bookmarks )
 
 ;;;;;;;;;;;;;;; Window Navigation ;;;;;;;;;;;;;;;
 ;;(global-set-key (kbd "C-x <up>") 'windmove-up)
