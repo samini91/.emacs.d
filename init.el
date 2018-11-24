@@ -98,7 +98,10 @@ package-archive-priorities '(("melpa" . 1)))
   (key-chord-define-global ";u" 'hydra-undo-tree-menu/body)
 
   )
-(use-package helm)
+(use-package helm
+  :config
+  (global-set-key (kbd "M-x") 'helm-M-x)
+)
 (use-package helm-projectile)
 (use-package helm-rg)
 (use-package swiper-helm)
