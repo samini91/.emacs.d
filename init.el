@@ -188,7 +188,25 @@ package-archive-priorities '(("melpa" . 1)))
   (define-key csharp-mode-map (kbd "C-c C-d") 'uncomment-region)
   (key-chord-define csharp-mode-map  ";t" 'omnisharp-current-type-information)
 
+  (defhydra hydra-c-sharp-menu (:hint nil)
+    "Omnisharp Commands"
+    ("u" omnisharp-find-usages "Find Usages" :color blue)
+    ("l" omnisharp-reload-solution "Reload Solution" :color blue)
+    ("r" omnisharp-rename "Rename" :color blue)
+    ("e" omnisharp-solution-errors "Solution Errors" :color blue)
+    )
 
+  (key-chord-define csharp-mode-map ";c" 'hydra-c-sharp-menu/body)
+
+    (defhydra hydra-c-sharp-execute-menu (:hint nil)
+    "Execute Commands"
+    ("r" omnisharp-reload-solution "Reload Solution" :color blue)
+    ("f" omnisharp-code-format-entire-file "Format Entire File" :color blue)
+    ("r" omnisharp-code-format-region "Format Region" :color blue)
+    )
+
+  (key-chord-define csharp-mode-map ";x" 'hydra-c-sharp-execute-menu/body)
+  
   (add-hook 'csharp-mode-hook 'omnisharp-mode)
   (add-hook 'csharp-mode-hook 'flycheck-mode)
   (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)
