@@ -67,6 +67,12 @@ package-archive-priorities '(("melpa" . 1)))
   (key-chord-define-global ";b" 'hydra-global-bookmarks/body)
 
   
+  (defhydra hydra-global-execute (:color blue :hint nil)
+    "Execute"
+    ("j" hydra-jira-menu/body "Hydra-Jira")
+    )
+   
+    (key-chord-define-global ";x" 'hydra-global-execute/body)
 
 )
 
@@ -111,6 +117,13 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package org-jira
   :config
   ;;(setq jiralib-url "https://???.atlassian.net")
+
+    (defhydra hydra-jira-menu (:hint nil)
+    "Org Jira"
+    ("g" org-jira-get-issues "Get all issues" :color blue)
+    )
+  ;;(key-chord-define csharp-mode-map ";j" 'hydra-c-sharp-menu/body)
+  
   )
 
 
@@ -195,7 +208,7 @@ package-archive-priorities '(("melpa" . 1)))
     ("r" omnisharp-rename "Rename" :color blue)
     ("e" omnisharp-solution-errors "Solution Errors" :color blue)
     
-    ("f" omnisharp-code-format-entire-file "Format Entire File" :color blue) ;; create another head
+    ("f" omnisharp-code-format-entire-file "Format Entire File" :color blue)
     ("g" omnisharp-code-format-region "Format Region" :color blue)
     )
 
@@ -378,10 +391,32 @@ package-archive-priorities '(("melpa" . 1)))
 (setq company-tooltip-idle-delay '0)
 
 ;;;;;;;;;;;;;;;;;;Org Mode;;;;;;;;;;;;;;;;;;
+
+
 (defun org-html-header-readtheorg ()
   (interactive)
-  (insert "#+SETUPFILE: ~/.emacs.d/org-html-themes/setup/theme-readtheorg.setup")
+  (insert "#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup")
   )
+
+(defun org-html-header-bigblow ()
+  (interactive)
+  (insert "#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-bigblow.setup")
+  )
+
+(defhydra hydra-org-menu (:hint nil)
+    "Org Mode Commands"
+    ("t" hydra-org-html-menu/body "Html" :color blue)
+    )
+
+(defhydra hydra-org-html-menu (:hint nil)
+    "Html"
+    ("r" org-html-header-readtheorg "Read the Org Header" :color blue)
+    ("b" org-html-header-bigblow "Big Blow Header" :color blue)
+    ("h" org-html-export-to-html "Export to Html" :color blue) 
+    )
+
+(define-key org-mode-map ";c" 'hydra-org-menu/body)
+
 
 ;;;;;;;;;;;;; Dired Functions ;;;;;;;;;;;;;;
 (defhydra hydra-buffer-menu (:color pink
