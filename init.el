@@ -119,10 +119,10 @@ package-archive-priorities '(("melpa" . 1)))
   :config
   (add-hook 'dired-mode-hook 'org-download-enable)
   )
+(use-package htmlize)
 
 (use-package magit
   :config
-  (global-set-key (kbd "C-x g") 'magit-status)
   (key-chord-define-global ";m" 'magit-status)
   )
 ;;(use-package magithub)
@@ -156,7 +156,7 @@ package-archive-priorities '(("melpa" . 1)))
   ("e" eval-buffer "Eval Buffer" :color blue)
   )
 
-(key-chord-define emacs-lisp-mode-map ";x" 'hydra-emacs-lisp-menu/body)
+(key-chord-define emacs-lisp-mode-map ";c" 'hydra-emacs-lisp-menu/body)
 
 ;;;;;;;;;;;; C Sharp ;;;;;;;;;;;;
 (use-package csharp-mode)
@@ -194,19 +194,13 @@ package-archive-priorities '(("melpa" . 1)))
     ("l" omnisharp-reload-solution "Reload Solution" :color blue)
     ("r" omnisharp-rename "Rename" :color blue)
     ("e" omnisharp-solution-errors "Solution Errors" :color blue)
+    
+    ("f" omnisharp-code-format-entire-file "Format Entire File" :color blue) ;; create another head
+    ("g" omnisharp-code-format-region "Format Region" :color blue)
     )
 
   (key-chord-define csharp-mode-map ";c" 'hydra-c-sharp-menu/body)
 
-    (defhydra hydra-c-sharp-execute-menu (:hint nil)
-    "Execute Commands"
-    ("r" omnisharp-reload-solution "Reload Solution" :color blue)
-    ("f" omnisharp-code-format-entire-file "Format Entire File" :color blue)
-    ("r" omnisharp-code-format-region "Format Region" :color blue)
-    )
-
-  (key-chord-define csharp-mode-map ";x" 'hydra-c-sharp-execute-menu/body)
-  
   (add-hook 'csharp-mode-hook 'omnisharp-mode)
   (add-hook 'csharp-mode-hook 'flycheck-mode)
   (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)
@@ -238,7 +232,7 @@ package-archive-priorities '(("melpa" . 1)))
   (key-chord-define ensime-mode-map ";e" 'ensime-print-errors-at-point)
   (key-chord-define ensime-mode-map ";t" 'ensime-type-at-point)
 
-  (key-chord-define ensime-mode-map ";x" 'sbt-hydra)
+  (key-chord-define ensime-mode-map ";c" 'sbt-hydra)
 
   (add-hook 'scala-mode-hook 'my-scala-mode-setup t)
   (add-hook 'scala-mode-hook 'ensime)
