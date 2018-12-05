@@ -72,6 +72,7 @@ package-archive-priorities '(("melpa" . 1)))
     ("j" hydra-jira-menu/body "Hydra-Jira")
     ("e" eshell "Eshell")
     ("i" init-file "Init-File")
+    ("r" replace-string "Replace String")
     )
   
   (key-chord-define-global ";x" 'hydra-global-execute/body)
@@ -487,7 +488,7 @@ _~_: modified
 (defun init-file ()
   "Edit the `user-init-file', in another window."
   (interactive)
-  (find-file-other-window user-init-file))
+  (find-file user-init-file))
 
 (defun load-user-file (file)
   (interactive "f")
