@@ -327,16 +327,6 @@ package-archive-priorities '(("melpa" . 1)))
   (setq company-lsp-cache-candidates t
         company-lsp-async t))
 
-;;;;;;;;;;;; Lsp-Javascript ;;;;;;;;;;;;
-(use-package lsp-javascript-typescript
-  :ensure t
-  :config
-  ;;;;Javascript;;;;;
-  (add-hook 'js-mode-hook #'lsp-javascript-typescript-enable)
-  (add-hook 'typescript-mode-hook #'lsp-javascript-typescript-enable) ;; for typescript support
-  (add-hook 'js3-mode-hook #'lsp-javascript-typescript-enable) ;; for js3-mode support
-  (add-hook 'rjsx-mode #'lsp-javascript-typescript-enable) ;; for rjsx-mode support
-  )
 ;;;;;;;;;;;; Lsp-Java ;;;;;;;;;;;;
 (use-package lsp-java
   :ensure t
@@ -348,16 +338,13 @@ package-archive-priorities '(("melpa" . 1)))
   (add-hook 'java-mode-hook 'lsp-java-enable)
   (add-hook 'java-mode-hook 'flycheck-mode)
   (add-hook 'java-mode-hook 'lsp-ui-mode))
-;;;;;;;;;;;; Lsp-Html ;;;;;;;;;;;;
-(use-package lsp-html
-  :ensure t
-  :config  
-  (add-hook 'html-mode-hook #'lsp-html-enable)
-  (add-hook 'html-mode-hook 'lsp-ui-mode))
 
-
-
-
+;;;;;;;;;;;;;;;; Lsp-Dap;;;;;;;;;;;;;;;;;; 
+(use-package dap-mode
+  :ensure t :after lsp-mode
+  :config
+  (dap-mode t)
+  (dap-ui-mode t))
 
 ;;;;;;;;;;;;;;; Universal KeyChords ;;;;;;;;;;;;;;;
 
