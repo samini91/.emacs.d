@@ -325,19 +325,18 @@ package-archive-priorities '(("melpa" . 1)))
   :ensure t
   :config
   (setq company-lsp-cache-candidates t
-        company-lsp-async t))
+        company-lsp-async t)
+
+  (push 'company-lsp company-backends)
+  )
+
 
 ;;;;;;;;;;;; Lsp-Java ;;;;;;;;;;;;
 (use-package lsp-java
   :ensure t
-  :config  
-  (add-hook 'java-mode-hook
-	    (lambda ()
-	      (setq-local company-backends (list 'company-lsp))))
-
-  (add-hook 'java-mode-hook 'lsp-java-enable)
-  (add-hook 'java-mode-hook 'flycheck-mode)
-  (add-hook 'java-mode-hook 'lsp-ui-mode))
+  :config
+  (add-hook 'java-mode-hook 'lsp)
+)
 
 ;;;;;;;;;;;;;;;; Lsp-Dap;;;;;;;;;;;;;;;;;; 
 (use-package dap-mode
