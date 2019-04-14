@@ -70,9 +70,11 @@ package-archive-priorities '(("melpa" . 1)))
   (defhydra hydra-global-execute (:color blue :hint nil)
     "Execute"
     ("j" hydra-jira-menu/body "Hydra-Jira")
-    ("e" eshell "Eshell")
+    ("e" projectile-run-eshell "Projectile Eshell")
+    ("s" eshell "Eshell")
     ("i" init-file "Init-File")
     ("r" replace-string "Replace String")
+    ("m" helm-make-projectile "Makefile")
     )
   
   (key-chord-define-global ";x" 'hydra-global-execute/body)
@@ -117,6 +119,7 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package smartparens)
 (use-package restclient)
 (use-package helm-jira)
+(use-package helm-make)
 (use-package org-jira
   :config
   ;;(setq jiralib-url "https://???.atlassian.net")
@@ -144,11 +147,10 @@ package-archive-priorities '(("melpa" . 1)))
 ;;(use-package magithub)
 
 (use-package treemacs
-  :defer t
+  :config
+  (key-chord-define-global ";l" 'treemacs)
   )
-(use-package treemacs-projectile
-    :defer t
-  )
+(use-package treemacs-projectile)
 
 (use-package yasnippet
   :config
@@ -173,6 +175,51 @@ package-archive-priorities '(("melpa" . 1)))
   )
 
 (key-chord-define emacs-lisp-mode-map ";c" 'hydra-emacs-lisp-menu/body)
+
+;;;;;;;;;;;; Haskell ;;;;;;;;;;;;
+(use-package haskell-mode)
+(use-package intero
+  :config
+  (add-hook 'haskell-mode-hook 'intero-mode)
+
+  (define-key haskell-mode-map (kbd "<f12>") 'intero-goto-definition)
+  (key-chord-define haskell-mode-map  ";t" 'intero-type-at)
+  
+  (define-key intero-mode-map (kbd "C-c C-c") nil)
+  (define-key haskell-mode-map (kbd "C-c C-c") 'comment-region)
+  (define-key haskell-mode-map (kbd "C-c C-d") 'uncomment-region)
+
+  (defhydra hydra-haskell-menu (:hint nil)
+    "Haskell Commands"
+    ("u" intero-uses-at "Find Usages" :color blue)
+    ("l" intero-restart "Reload Intero" :color blue)
+    ("c" intero-repl-eval-region "Repl Eval Region" :color blue)
+    ("s" intero-apply-suggestions "Apply Suggestions" :color blue)
+    ("r" intero-repl "Repl" :color blue)
+    )
+  
+  (key-chord-define haskell-mode-map ";c" 'hydra-haskell-menu/body)
+  )
+
+(use-package ghc)
+(use-package haskell-snippets)
+(use-package company-cabal
+  :config
+  (push 'company-cabal company-backends)
+  )
+(use-package company-ghci
+    :config
+  (push 'company-ghci company-backends)
+  )
+(use-package company-ghc
+    :config
+  (push 'company-ghc company-backends)
+  )
+(use-package hindent)
+(use-package hlint-refactor)
+(use-package helm-hoogle)
+(use-package flycheck-haskell)
+
 
 ;;;;;;;;;;;; C Sharp ;;;;;;;;;;;;
 (use-package csharp-mode)
@@ -334,9 +381,13 @@ package-archive-priorities '(("melpa" . 1)))
 ;;;;;;;;;;;; Lsp-Java ;;;;;;;;;;;;
 (use-package lsp-java
   :ensure t
+
   :config
   (add-hook 'java-mode-hook 'lsp)
 )
+
+;;;;;;;;;;;; Lsp-Python ;;;;;;;;;;;;
+(add-hook 'python-mode-hook 'lsp)
 
 ;;;;;;;;;;;;;;;; Lsp-Dap;;;;;;;;;;;;;;;;;; 
 (use-package dap-mode
@@ -357,11 +408,16 @@ package-archive-priorities '(("melpa" . 1)))
 		  (interactive)
 		  (ignore-errors (previous-line 5))))
 
+
+(setq compilation-always-kill t)
 (global-set-key (kbd "<f5>") (lambda ()
                                (interactive)
 			       (save-all)
                                (setq-local compilation-read-command nil)
-                               (call-interactively 'compile)))
+			       (projectile-with-default-dir (projectile-project-root)
+				 (call-interactively 'compile))))
+
+
 
 
 ;;;;;;;;;;;;;;; Window Navigation ;;;;;;;;;;;;;;;
@@ -408,6 +464,9 @@ package-archive-priorities '(("melpa" . 1)))
 
 
 ;;;;;;;;;;;;; Dired Functions ;;;;;;;;;;;;;;
+(define-key dired-mode-map (kbd "<DEL>") 'dired-up-directory)
+
+;;;;;;;;;;;;; Buffer Management ;;;;;;;;;;;;;;;;;;;
 (defhydra hydra-buffer-menu (:color pink
                              :hint nil)
   "
