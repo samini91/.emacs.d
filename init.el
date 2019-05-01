@@ -127,8 +127,8 @@ package-archive-priorities '(("melpa" . 1)))
     (defhydra hydra-jira-menu (:hint nil)
     "Org Jira"
     ("g" org-jira-get-issues "Get all issues" :color blue)
+    ("i" org-jira-get-issue "Get issue" :color blue)
     )
-  ;;(key-chord-define csharp-mode-map ";j" 'hydra-c-sharp-menu/body)
   
   )
 
