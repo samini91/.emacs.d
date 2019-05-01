@@ -144,7 +144,8 @@ package-archive-priorities '(("melpa" . 1)))
   :config
   (key-chord-define-global ";m" 'magit-status)
   )
-;;(use-package magithub)
+(use-package forge
+  :after magit)
 
 (use-package treemacs
   :config
