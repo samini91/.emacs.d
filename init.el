@@ -222,6 +222,30 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package helm-hoogle)
 (use-package flycheck-haskell)
 
+;;;;;;;;;;;; PureScript ;;;;;;;;;
+
+(use-package flycheck-purescript)
+(use-package psci)
+(use-package purescript-mode)
+(use-package psc-ide
+  :config
+  (add-hook 'purescript-mode-hook
+  (lambda ()
+    (psc-ide-mode)
+    (flycheck-mode)
+    (turn-on-purescript-indentation)))
+
+  (key-chord-define purescript-mode-map  ";t" 'psc-ide-show-type)
+
+  (defhydra hydra-purescript-menu (:hint nil)
+    "Purescript Commands"
+    ("l" psc-ide-server-start "Start Server" :color blue)
+    ("q" psc-ide-server-quit "Quit Server" :color blue)
+    ("b" psc-ide-rebuild "Rebuild" :color blue)
+    )
+  (setq psc-ide-rebuild-on-save t)
+  (key-chord-define purescript-mode-map ";c" 'hydra-purescript-menu/body)
+  )
 
 ;;;;;;;;;;;; C Sharp ;;;;;;;;;;;;
 (use-package csharp-mode)
@@ -397,6 +421,20 @@ package-archive-priorities '(("melpa" . 1)))
   :config
   (dap-mode t)
   (dap-ui-mode t))
+
+
+
+;;;;;;;;;;;;;;; Docker ;;;;;;;;;;;;;;;;;;
+(use-package docker)
+(use-package docker-api)
+(use-package docker-tramp)
+(use-package helm-tramp)
+
+;;;;;;;;;;;;;;;; Kubernetes ;;;;;;;;;;;;;;
+(use-package k8s-mode)
+(use-package kubernetes)
+(use-package kubernetes-helm)
+(use-package kubernetes-tramp)
 
 ;;;;;;;;;;;;;;; Universal KeyChords ;;;;;;;;;;;;;;;
 
