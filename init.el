@@ -75,6 +75,7 @@ package-archive-priorities '(("melpa" . 1)))
     ("i" init-file "Init-File")
     ("r" replace-string "Replace String")
     ("m" helm-make-projectile "Makefile")
+    ("w" ace-window "Window Management")
     )
   
   (key-chord-define-global ";x" 'hydra-global-execute/body)
@@ -461,6 +462,15 @@ package-archive-priorities '(("melpa" . 1)))
 
 
 ;;;;;;;;;;;;;;; Window Navigation ;;;;;;;;;;;;;;;
+
+(use-package ace-window
+  :config
+  (key-chord-define-global ";w" 'ace-window)
+  )
+(load-user-file "framemove.el")
+(require 'framemove)
+(windmove-default-keybindings)
+(setq framemove-hook-into-windmove t)
 ;;(global-set-key (kbd "C-x <up>") 'windmove-up)
 (global-set-key (kbd "C-x k") 'windmove-up)
 (global-set-key (kbd "C-x j") 'windmove-down)
