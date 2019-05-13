@@ -9,6 +9,12 @@
          user-init-directory)
         (t "~/.emacs.d/")))
 
+;;;;;;;;;;;;;; Load Files ;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun load-user-file (file)
+  (interactive "f")
+  "Load a file in current user's configuration directory"
+  (load-file (expand-file-name file user-init-dir)))
+
 ;;;;;;;;;;;;;;; Melpa ;;;;;;;;;;;;;;;
 (setq
  package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -563,7 +569,8 @@ _~_: modified
 (setq frame-title-format '("Gorgeous"))
 ;; remove bars
 (menu-bar-mode -1)
-(toggle-scroll-bar -1)
+(customize-set-variable 'scroll-bar-mode nil)
+(customize-set-variable 'horizontal-scroll-bar-mode nil)
 (tool-bar-mode -1)
 
 ;; No bell
@@ -584,13 +591,6 @@ _~_: modified
   "Edit the `user-init-file', in another window."
   (interactive)
   (find-file user-init-file))
-
-(defun load-user-file (file)
-  (interactive "f")
-  "Load a file in current user's configuration directory"
-  (load-file (expand-file-name file user-init-dir)))
-
-
 
 ;;;;;;;;;;;;;;;;;;Custom File;;;;;;;;;;;;;;;;;;
 (setq custom-file "~/.emacs.d/custom.el")
