@@ -473,6 +473,7 @@ package-archive-priorities '(("melpa" . 1)))
   :config
   (key-chord-define-global ";w" 'ace-window)
   (add-hook 'after-init-hook 'ace-window-mode)
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
   )
 (load-user-file "framemove.el")
 (require 'framemove)
