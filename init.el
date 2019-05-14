@@ -472,6 +472,7 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package ace-window
   :config
   (key-chord-define-global ";w" 'ace-window)
+  (add-hook 'after-init-hook 'ace-window-mode)
   )
 (load-user-file "framemove.el")
 (require 'framemove)
