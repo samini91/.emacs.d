@@ -306,33 +306,38 @@ package-archive-priorities '(("melpa" . 1)))
   )
 
 ;;;;;;;;;;;; Scala ;;;;;;;;;;;;
-(use-package ensime
-  :ensure t
-  :config
 
-  (defun my-scala-mode-setup ()
-  (setq comment-start "/* "
-	  comment-end " */"
-	  comment-style 'multi-line
-	  comment-empty-lines t)
-  )
-  
-  (setq ensime-typecheck-idle-interval 0)
-  (setq ensime-startup-notification nil)
+(use-package scala-mode)
+(use-package sbt-mode)
+(use-package lsp-scala)
 
-  (define-key ensime-mode-map (kbd "M-n") nil)
-  (define-key ensime-mode-map (kbd "M-p") nil)
-  (define-key ensime-mode-map (kbd "C-c C-c") 'comment-region)
-  (define-key ensime-mode-map (kbd "C-c C-d") 'uncomment-region)
-  (define-key ensime-mode-map  (kbd "C-.") 'ensime-import-type-at-point)
-  (key-chord-define ensime-mode-map ";e" 'ensime-print-errors-at-point)
-  (key-chord-define ensime-mode-map ";t" 'ensime-type-at-point)
-
-  (key-chord-define ensime-mode-map ";c" 'sbt-hydra)
-
-  (add-hook 'scala-mode-hook 'my-scala-mode-setup t)
-  (add-hook 'scala-mode-hook 'ensime)
-  )
+;;(use-package ensime
+;;  :ensure t
+;;  :config
+;;
+;;  (defun my-scala-mode-setup ()
+;;  (setq comment-start "/* "
+;;	  comment-end " */"
+;;	  comment-style 'multi-line
+;;	  comment-empty-lines t)
+;;  )
+;;  
+;;  (setq ensime-typecheck-idle-interval 0)
+;;  (setq ensime-startup-notification nil)
+;;
+;;  (define-key ensime-mode-map (kbd "M-n") nil)
+;;  (define-key ensime-mode-map (kbd "M-p") nil)
+;;  (define-key ensime-mode-map (kbd "C-c C-c") 'comment-region)
+;;  (define-key ensime-mode-map (kbd "C-c C-d") 'uncomment-region)
+;;  (define-key ensime-mode-map  (kbd "C-.") 'ensime-import-type-at-point)
+;;  (key-chord-define ensime-mode-map ";e" 'ensime-print-errors-at-point)
+;;  (key-chord-define ensime-mode-map ";t" 'ensime-type-at-point)
+;;
+;;  (key-chord-define ensime-mode-map ";c" 'sbt-hydra)
+;;
+;;  (add-hook 'scala-mode-hook 'my-scala-mode-setup t)
+;;  (add-hook 'scala-mode-hook 'ensime)
+;;  )
 
 ;;;;;;;;;;;; C/C++ ;;;;;;;;;;;;
 (use-package irony
