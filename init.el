@@ -137,8 +137,22 @@ package-archive-priorities '(("melpa" . 1)))
     ("i" org-jira-get-issue "Get issue" :color blue)
     )
   
-  )
+    )
+(use-package auctex
+  :defer t ;; need to defer it
+  :config
+  (require 'tex-site)
+  (setq TeX-PDF-mode t)
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  
+)
 
+(use-package company-auctex
+  :defer t 
+  :config
+  (push 'company-auctex company-backends)
+  )
 
 (use-package pdf-tools)
 (use-package org-download
