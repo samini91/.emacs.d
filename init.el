@@ -400,7 +400,8 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package irony-eldoc)
 (use-package flycheck-irony)
 
-
+;;;;;;;;;;;PowerShell;;;;;;;;;;
+(use-package powershell )
 
 ;;;;;;;;;;;; LSP ;;;;;;;;;;;;
 (use-package lsp-mode
