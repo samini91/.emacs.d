@@ -126,7 +126,10 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package smartparens)
 (use-package restclient)
 (use-package helm-jira)
-(use-package helm-make)
+(use-package helm-make
+  :config
+  (setq helm-make-named-buffer t)
+  )
 (use-package org-jira
   :config
   ;;(setq jiralib-url "https://???.atlassian.net")
