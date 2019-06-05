@@ -77,7 +77,7 @@ package-archive-priorities '(("melpa" . 1)))
     "Execute"
     ("j" hydra-jira-menu/body "Hydra-Jira")
     ("e" projectile-run-eshell "Projectile Eshell")
-    ("s" eshell "Eshell")
+    ("s" (lambda () (interactive) (eshell) (rename-uniquely) ) "Eshell")
     ("i" init-file "Init-File")
     ("r" replace-string "Replace String")
     ("m" helm-make-projectile "Makefile")
