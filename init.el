@@ -104,6 +104,17 @@ package-archive-priorities '(("melpa" . 1)))
   (global-set-key (kbd "C->") 'mc/mark-next-like-this)
   (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
   )
+
+;; Rectanlge Edits
+(global-set-key (kbd "C-S-R") 'hydra-rectangle-execute/body)
+
+(defhydra hydra-rectangle-execute (:color blue :hint nil)
+  "Rectanlge Edits"
+  ("w" copy-rectangle-as-kill "Copy")
+  ("k" kill-rectangle "Kill")
+  ("y" yank-rectangle "Yank")
+  )
+
 (use-package dash)
 (use-package popup)
 (use-package undo-tree
