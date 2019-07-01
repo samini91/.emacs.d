@@ -319,13 +319,20 @@ package-archive-priorities '(("melpa" . 1)))
   (define-key csharp-mode-map (kbd "C-c C-d") 'uncomment-region)
   (key-chord-define csharp-mode-map  ";t" 'omnisharp-current-type-information)
 
+  (defun open-in-visual-studio ()
+    "Opens file in visual studios make sure you have the desired version of devenv.exe"
+    (interactive)
+    ;;(shell-command (concat "devenv.exe /\Edit " (buffer-file-name)))
+    (shell-command (concat "devenv.exe /\Edit " (file-name-nondirectory(buffer-file-name))))
+    )
+
   (defhydra hydra-c-sharp-menu (:hint nil)
     "Omnisharp Commands"
     ("u" omnisharp-find-usages "Find Usages" :color blue)
     ("l" omnisharp-reload-solution "Reload Solution" :color blue)
     ("r" omnisharp-rename "Rename" :color blue)
     ("e" omnisharp-solution-errors "Solution Errors" :color blue)
-    
+    ("o" open-in-visual-studio "Open in Visual Studio" :color blue)
     ("f" omnisharp-code-format-entire-file "Format Entire File" :color blue)
     ("g" omnisharp-code-format-region "Format Region" :color blue)
     )
