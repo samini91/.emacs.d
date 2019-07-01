@@ -257,6 +257,13 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package helm-hoogle)
 (use-package flycheck-haskell)
 
+;;;;;;;;;;; Elm ;;;;;;;;;;;;;;;;;
+(use-package elm-mode
+  :config
+  (add-hook 'elm-mode-hook 'flycheck-mode t)
+  )
+(use-package flycheck-elm)
+
 ;;;;;;;;;;;; PureScript ;;;;;;;;;
 
 (use-package flycheck-purescript)
@@ -337,7 +344,7 @@ package-archive-priorities '(("melpa" . 1)))
 
 (use-package scala-mode)
 (use-package sbt-mode)
-(use-package lsp-scala)
+;;(use-package lsp-scala)
 
 ;;(use-package ensime
 ;;  :ensure t
@@ -528,7 +535,7 @@ package-archive-priorities '(("melpa" . 1)))
 
 ;;;;;;;;;;;;;;;;;;Org Mode;;;;;;;;;;;;;;;;;;
 
-
+(use-package org-pomodoro)
 (defun org-html-header-readtheorg ()
   (interactive)
   (insert "#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup")
@@ -540,18 +547,19 @@ package-archive-priorities '(("melpa" . 1)))
   )
 
 (defhydra hydra-org-menu (:hint nil)
-    "Org Mode Commands"
-    ("t" hydra-org-html-menu/body "Html" :color blue)
+  "Org Mode Commands"
+  ("p" org-pomodoro "Pomodoro" :color blue)
+  ("t" hydra-org-html-menu/body "Html" :color blue)
     )
 
 (defhydra hydra-org-html-menu (:hint nil)
     "Html"
     ("r" org-html-header-readtheorg "Read the Org Header" :color blue)
     ("b" org-html-header-bigblow "Big Blow Header" :color blue)
-    ("h" org-html-export-to-html "Export to Html" :color blue) 
+    ("h" org-html-export-to-html "Export to Html" :color blue)
     )
 
-(define-key org-mode-map ";c" 'hydra-org-menu/body)
+(key-chord-define org-mode-map ";c" 'hydra-org-menu/body)
 
 
 ;;;;;;;;;;;;; Dired Functions ;;;;;;;;;;;;;;
