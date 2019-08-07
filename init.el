@@ -203,6 +203,12 @@ package-archive-priorities '(("melpa" . 1)))
   ("g" text-scale-increase "in")
   ("l" text-scale-decrease "out"))
 
+
+;;;;;;;;;;;;HTML;;;;;;;;;;;;;;;
+ (add-hook 'html-mode-hook
+        (lambda ()
+          (set (make-local-variable 'sgml-basic-offset) 4)))
+
 ;;;;;;;;;;;; Emacs-Lisp ;;;;;;;;;;
 
 (defhydra hydra-emacs-lisp-menu (:hint nil)
@@ -477,7 +483,8 @@ package-archive-priorities '(("melpa" . 1)))
   (dap-mode t)
   (dap-ui-mode t))
 
-
+;;;;;;;;;;;;;;; LeetCode;;;;;;;;;;;;;;;;
+(use-package leetcode)
 
 ;;;;;;;;;;;;;;; Docker ;;;;;;;;;;;;;;;;;;
 (use-package docker)
