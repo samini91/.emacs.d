@@ -434,6 +434,13 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package irony-eldoc)
 (use-package flycheck-irony)
 
+;;;;;;;;;;;Html;;;;;;;;;;;;;;;
+
+(add-hook 'html-mode-hook
+;;	  (setq 'web-mode-markup-indent-offset 4)
+;;	  )
+(lambda () (set (make-local-variable 'sgml-basic-offset) 4)))
+
 ;;;;;;;;;;;PowerShell;;;;;;;;;;
 (use-package powershell )
 
@@ -446,6 +453,8 @@ package-archive-priorities '(("melpa" . 1)))
     (add-hook 'lsp-mode-hook
 	    (lambda ()
 	      (setq-local company-backends (list 'company-lsp))))
+    (add-hook 'javascript-mode-hook 'lsp)
+    (add-hook 'html-mode-hook 'lsp)
   )
 (use-package lsp-ui
   :ensure t
@@ -464,7 +473,6 @@ package-archive-priorities '(("melpa" . 1)))
   (push 'company-lsp company-backends)
   )
 
-
 ;;;;;;;;;;;; Lsp-Java ;;;;;;;;;;;;
 (use-package lsp-java
   :ensure t
@@ -472,6 +480,15 @@ package-archive-priorities '(("melpa" . 1)))
   :config
   (add-hook 'java-mode-hook 'lsp)
 )
+
+;;;;;;;;;;;; Javascript ;;;;;;;;;;;;
+
+(define-key js-mode-map (kbd "C-c C-c") 'comment-region)
+(define-key js-mode-map (kbd "C-c C-d") 'uncomment-region)
+
+;;;;;;;;;;;; SQL ;;;;;;;;;;;;;;;;;;
+(define-key sql-mode-map (kbd "C-c C-c") 'comment-region)
+(define-key sql-mode-map (kbd "C-c C-d") 'uncomment-region)
 
 ;;;;;;;;;;;; Lsp-Python ;;;;;;;;;;;;
 (add-hook 'python-mode-hook 'lsp)
@@ -549,7 +566,7 @@ package-archive-priorities '(("melpa" . 1)))
 
 ;;;;;;;;;;;;;;;;;;Org Mode;;;;;;;;;;;;;;;;;;
 
-(use-package org-pomodoro)
+;;(use-package org-pomodoro)
 (defun org-html-header-readtheorg ()
   (interactive)
   (insert "#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup")
@@ -562,7 +579,7 @@ package-archive-priorities '(("melpa" . 1)))
 
 (defhydra hydra-org-menu (:hint nil)
   "Org Mode Commands"
-  ("p" org-pomodoro "Pomodoro" :color blue)
+  ;;("p" org-pomodoro "Pomodoro" :color blue)
   ("t" hydra-org-html-menu/body "Html" :color blue)
     )
 
