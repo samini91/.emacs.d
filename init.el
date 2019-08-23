@@ -482,13 +482,16 @@ package-archive-priorities '(("melpa" . 1)))
 )
 
 ;;;;;;;;;;;; Javascript ;;;;;;;;;;;;
-
-(define-key js-mode-map (kbd "C-c C-c") 'comment-region)
-(define-key js-mode-map (kbd "C-c C-d") 'uncomment-region)
+(with-eval-after-load 'js
+  (define-key js-mode-map (kbd "C-c C-c") 'comment-region)
+  (define-key js-mode-map (kbd "C-c C-d") 'uncomment-region)
+)
 
 ;;;;;;;;;;;; SQL ;;;;;;;;;;;;;;;;;;
-(define-key sql-mode-map (kbd "C-c C-c") 'comment-region)
-(define-key sql-mode-map (kbd "C-c C-d") 'uncomment-region)
+(with-eval-after-load 'sql
+  (define-key sql-mode-map (kbd "C-c C-c") 'comment-region)
+  (define-key sql-mode-map (kbd "C-c C-d") 'uncomment-region)
+)
 
 ;;;;;;;;;;;; Lsp-Python ;;;;;;;;;;;;
 (add-hook 'python-mode-hook 'lsp)
