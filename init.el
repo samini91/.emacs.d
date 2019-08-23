@@ -135,7 +135,10 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package helm-rg)
 (use-package swiper-helm)
 (use-package smartparens)
-(use-package restclient)
+(use-package restclient
+  :config
+  (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
+  )
 (use-package helm-jira)
 (use-package helm-make
   :config
