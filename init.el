@@ -242,6 +242,7 @@ package-archive-priorities '(("melpa" . 1)))
     ("r" intero-repl-load "Repl Load" :color blue)
     ("s" intero-apply-suggestions "Apply Suggestions" :color blue)
     ("a" intero-repl "Repl" :color blue)
+    ("t" (intero-type-at 't) "Repl" :color blue)
     )
   
   (key-chord-define haskell-mode-map ";c" 'hydra-haskell-menu/body)
