@@ -181,6 +181,7 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package magit
   :config
   (key-chord-define-global ";m" 'magit-status)
+  (add-hook 'magit-mode-hook 'helm-mode)
   )
 (use-package forge
   :after magit)
@@ -340,11 +341,12 @@ package-archive-priorities '(("melpa" . 1)))
     "Omnisharp Commands"
     ("u" omnisharp-find-usages "Find Usages" :color blue)
     ("l" omnisharp-reload-solution "Reload Solution" :color blue)
+    ("q" omnisharp-stop-server "Stop Server" :color blue)
     ("r" omnisharp-rename "Rename" :color blue)
     ("e" omnisharp-solution-errors "Solution Errors" :color blue)
     ("o" open-in-visual-studio "Open in Visual Studio" :color blue)
     ("f" omnisharp-code-format-entire-file "Format Entire File" :color blue)
-    ("g" omnisharp-code-format-region "Format Region" :color blue)
+    ("g" omnisharp-code-format-region "Format Region" :color blue)    
     )
 
   (key-chord-define csharp-mode-map ";c" 'hydra-c-sharp-menu/body)
