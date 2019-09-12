@@ -181,7 +181,6 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package magit
   :config
   (key-chord-define-global ";m" 'magit-status)
-  (add-hook 'magit-mode-hook 'helm-mode)
   )
 (use-package forge
   :after magit)
@@ -570,6 +569,7 @@ package-archive-priorities '(("melpa" . 1)))
 ;;;;;;;;;;;;;;;;;;;; Global-Modes ;;;;;;;;;;;;;;;;;;
 (add-hook 'after-init-hook 'show-paren-mode)
 (add-hook 'after-init-hook 'projectile-mode)
+(add-hook 'after-init-hook 'helm-mode)
 (setq company-idle-delay '0)
 (setq company-tooltip-idle-delay '0)
 
