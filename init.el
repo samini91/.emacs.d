@@ -208,7 +208,8 @@ package-archive-priorities '(("melpa" . 1)))
 
 
 ;;;;;;;;;;;;HTML;;;;;;;;;;;;;;;
- (add-hook 'html-mode-hook
+(add-hook 'html-mode-hook
+	  (setq-default indent-tabs-mode nil)
         (lambda ()
           (set (make-local-variable 'sgml-basic-offset) 4)))
 
@@ -442,12 +443,16 @@ package-archive-priorities '(("melpa" . 1)))
 ;;;;;;;;;;;Html;;;;;;;;;;;;;;;
 
 (add-hook 'html-mode-hook
+;;	  (define-key html-mode-map (kbd "C-c C-c") 'comment-region)
+;;	  (define-key html-mode-map (kbd "C-c C-d") 'uncomment-region)
 ;;	  (setq 'web-mode-markup-indent-offset 4)
 ;;	  )
-(lambda () (set (make-local-variable 'sgml-basic-offset) 4)))
+	  (lambda () (set (make-local-variable 'sgml-basic-offset) 4))
+	  
+)
 
 ;;;;;;;;;;;PowerShell;;;;;;;;;;
-(use-package powershell )
+(use-package powershell)
 
 ;;;;;;;;;;;; LSP ;;;;;;;;;;;;
 (use-package lsp-mode
@@ -488,6 +493,7 @@ package-archive-priorities '(("melpa" . 1)))
 
 ;;;;;;;;;;;; Javascript ;;;;;;;;;;;;
 (with-eval-after-load 'js
+  (setq-default indent-tabs-mode nil)
   (define-key js-mode-map (kbd "C-c C-c") 'comment-region)
   (define-key js-mode-map (kbd "C-c C-d") 'uncomment-region)
 )
@@ -674,6 +680,12 @@ _~_: modified
   "Edit the `user-init-file', in another window."
   (interactive)
   (find-file user-init-file))
+
+(setq redisplay-dont-pause t
+  scroll-margin 1
+  scroll-step 1
+  scroll-conservatively 10000
+  scroll-preserve-screen-position 1)
 
 ;;;;;;;;;;;;;;;;;;Custom File;;;;;;;;;;;;;;;;;;
 (setq custom-file "~/.emacs.d/custom.el")
