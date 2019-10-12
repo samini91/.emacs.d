@@ -243,7 +243,7 @@ package-archive-priorities '(("melpa" . 1)))
     ("r" intero-repl-load "Repl Load" :color blue)
     ("s" intero-apply-suggestions "Apply Suggestions" :color blue)
     ("a" intero-repl "Repl" :color blue)
-    ("t" (intero-type-at 't) "Repl" :color blue)
+    ("t" (intero-type-at 't) "Insert Type At Point" :color blue)
     )
   
   (key-chord-define haskell-mode-map ";c" 'hydra-haskell-menu/body)
@@ -681,9 +681,10 @@ _~_: modified
   (interactive)
   (find-file user-init-file))
 
+(display-time)
 (setq redisplay-dont-pause t
   scroll-margin 1
-  scroll-step 1
+  scroll-step 3
   scroll-conservatively 10000
   scroll-preserve-screen-position 1)
 
