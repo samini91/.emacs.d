@@ -35,11 +35,15 @@ package-archive-priorities '(("melpa" . 1)))
 ;;;;;;;;;;;; Automatically downloads "use-package" packages if missing ;;;;;;;;;;
 (setq use-package-always-ensure t)
 
+
 ;;;;;;;;;;;;;;; Themes ;;;;;;;;;;;;;;;
 (use-package spacemacs-theme
   :defer t
   )
 
+(use-package all-the-icons
+  )
+;;(when (member "Inconsolata" (font-family-list)) (set-frame-font "Inconsolata-8:bold" t t))
 (use-package hydra)
 
 (use-package key-chord
@@ -92,10 +96,51 @@ package-archive-priorities '(("melpa" . 1)))
   :config
   (add-hook 'after-init-hook 'global-company-mode)
   )
-
-(use-package powerline
+(use-package doom-themes
   :config
-  (powerline-default-theme)
+  (setq doom-themes-enable-bold t )
+  (setq doom-themes-treemacs-theme "doom-colors") 
+  (doom-themes-treemacs-config)
+  (setq column-number-mode t)
+  
+  )
+
+;;;;; Need to run (all-the-icons-install-fonts) for this to work properly
+(use-package doom-modeline
+  :hook (after-init . doom-modeline-mode)
+  :config
+  (setq doom-modeline-buffer-file-name-style 'relative-to-project)
+  (setq doom-modeline-icon (display-graphic-p))
+  (setq doom-modeline-major-mode-icon t)
+  (setq doom-modeline-major-mode-color-icon t)
+  (setq doom-modeline-buffer-state-icon t)
+  (setq doom-modeline-buffer-modification-icon t)
+  (setq doom-modeline-minor-modes (featurep 'minions))
+  (setq doom-modeline-enable-word-count t)
+  (setq doom-modeline-buffer-encoding t)
+  (setq doom-modeline-checker-simple-format t)
+  (setq doom-modeline-vcs-max-length 30)
+  (setq doom-modeline-persp-name t)
+  (setq doom-modeline-persp-name-icon nil)
+  (setq doom-modeline-lsp t)
+  ;; Whether display GitHub notifications or not. Requires `ghub` package.
+  ;;(setq doom-modeline-github nil)
+  ;;
+  ;;  ;; The interval of checking GitHub.
+  ;;  (setq doom-modeline-github-interval (* 30 60))
+  ;;  ;; Whether display mu4e notifications or not. Requires `mu4e-alert' package.
+  ;;  (setq doom-modeline-mu4e t)
+  ;;  ;; Whether display irc notifications or not. Requires `circe' package.
+  ;;  (setq doom-modeline-irc t)
+  ;;  ;; Function to stylize the irc buffer names.
+  ;;  (setq doom-modeline-irc-stylize 'identity)
+  ;;
+  ;;  ;; Whether display environment version or not
+  ;;  (setq doom-modeline-env-version t)
+  ;;  ;; Or for individual languages
+  ;;    ;; Change the executables to use for the language version string
+  ;;  (setq doom-modeline-env-load-string "...")
+
   )
 
 (use-package flycheck)
@@ -163,7 +208,7 @@ package-archive-priorities '(("melpa" . 1)))
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
   
-)
+  )
 
 (use-package company-auctex
   :defer t 
@@ -206,6 +251,16 @@ package-archive-priorities '(("melpa" . 1)))
   ("g" text-scale-increase "in")
   ("l" text-scale-decrease "out"))
 
+
+;;;;;;;;;;;; Rainbow ;;;;;;;;;;;;;;;;
+(use-package rainbow-delimiters
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+  )
+;;(use-package rainbow-identifiers
+;;  :config
+;;  (setq rainbow-identifiers-mode t)
+;;)
 
 ;;;;;;;;;;;;HTML;;;;;;;;;;;;;;;
 (add-hook 'html-mode-hook
@@ -443,13 +498,18 @@ package-archive-priorities '(("melpa" . 1)))
 ;;;;;;;;;;;Html;;;;;;;;;;;;;;;
 
 (add-hook 'html-mode-hook
-;;	  (define-key html-mode-map (kbd "C-c C-c") 'comment-region)
-;;	  (define-key html-mode-map (kbd "C-c C-d") 'uncomment-region)
+	  ;;(define-key smgl-mode-map (kbd "C-c C-c") 'comment-region)
+	  ;;(define-key smgl-mode-map (kbd "C-c C-d") 'uncomment-region)
 ;;	  (setq 'web-mode-markup-indent-offset 4)
 ;;	  )
 	  (lambda () (set (make-local-variable 'sgml-basic-offset) 4))
-	  
-)
+          )
+
+(use-package web-mode
+  :config
+  (define-key web-mode-map (kbd "C-c C-c") 'comment-region)
+  (define-key web-mode-map (kbd "C-c C-d") 'uncomment-region)
+  )
 
 ;;;;;;;;;;;PowerShell;;;;;;;;;;
 (use-package powershell)
@@ -576,6 +636,7 @@ package-archive-priorities '(("melpa" . 1)))
 (add-hook 'after-init-hook 'show-paren-mode)
 (add-hook 'after-init-hook 'projectile-mode)
 (add-hook 'after-init-hook 'helm-mode)
+
 (setq company-idle-delay '0)
 (setq company-tooltip-idle-delay '0)
 
@@ -665,6 +726,8 @@ _~_: modified
 ;; No bell
 (setq ring-bell-function 'ignore)
 
+
+
 ;;;;;;;;;; Moves Backup Files to another directory ;;;;;;;;;;
 (setq backup-directory-alist `(("." . ,(concat user-emacs-directory "backups"))))
 (setq auto-save-file-name-transforms `((".*" "~/" t)))
@@ -681,7 +744,7 @@ _~_: modified
   (interactive)
   (find-file user-init-file))
 
-(display-time)
+;;(display-time)
 (setq redisplay-dont-pause t
   scroll-margin 1
   scroll-step 3
