@@ -35,15 +35,19 @@ package-archive-priorities '(("melpa" . 1)))
 ;;;;;;;;;;;; Automatically downloads "use-package" packages if missing ;;;;;;;;;;
 (setq use-package-always-ensure t)
 
-
-;;;;;;;;;;;;;;; Themes ;;;;;;;;;;;;;;;
-(use-package spacemacs-theme
-  :defer t
+;;;;;;;;;;Themes;;;;;;;;;;;;
+(use-package doom-themes
+  :config
+  (setq doom-themes-enable-bold t )
+  (setq doom-themes-treemacs-theme "doom-colors") 
+  (doom-themes-treemacs-config)
+  (setq column-number-mode t)
+  (add-hook 'after-init-hook (lambda () (load-theme 'doom-city-lights)))
   )
 
-(use-package all-the-icons
-  )
+(use-package all-the-icons)
 ;;(when (member "Inconsolata" (font-family-list)) (set-frame-font "Inconsolata-8:bold" t t))
+
 (use-package hydra)
 
 (use-package key-chord
@@ -95,14 +99,6 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package company
   :config
   (add-hook 'after-init-hook 'global-company-mode)
-  )
-(use-package doom-themes
-  :config
-  (setq doom-themes-enable-bold t )
-  (setq doom-themes-treemacs-theme "doom-colors") 
-  (doom-themes-treemacs-config)
-  (setq column-number-mode t)
-  
   )
 
 ;;;;; Need to run (all-the-icons-install-fonts) for this to work properly
@@ -575,7 +571,11 @@ package-archive-priorities '(("melpa" . 1)))
   (dap-ui-mode t))
 
 ;;;;;;;;;;;;;;; LeetCode;;;;;;;;;;;;;;;;
-(use-package leetcode)
+(use-package leetcode
+  :config
+  (setq leetcode-prefer-language "csharp")
+  (setq leetcode-prefer-sql "mssql")
+  )
 
 ;;;;;;;;;;;;;;; Docker ;;;;;;;;;;;;;;;;;;
 (use-package docker)
