@@ -1,0 +1,9 @@
+# key: func
+# --
+function(${1:Args}) {
+    return ${2:ActualFunc}
+        .catch(function(error){
+            HANDLE ERROR
+        });
+}
+

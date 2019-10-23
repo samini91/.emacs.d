@@ -1,0 +1,8 @@
+# key: IO
+# --
+function(${1:Args}) {
+    return $http.${2:Verb}()
+        .catch(function(error){
+            HANDLE ERROR
+        });
+}

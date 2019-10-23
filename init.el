@@ -519,7 +519,6 @@ package-archive-priorities '(("melpa" . 1)))
     (add-hook 'lsp-mode-hook
 	    (lambda ()
 	      (setq-local company-backends (list 'company-lsp))))
-    (add-hook 'javascript-mode-hook 'lsp)
     (add-hook 'html-mode-hook 'lsp)
   )
 (use-package lsp-ui
@@ -548,11 +547,15 @@ package-archive-priorities '(("melpa" . 1)))
 )
 
 ;;;;;;;;;;;; Javascript ;;;;;;;;;;;;
-(with-eval-after-load 'js
+
+(use-package js2-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+  (add-hook 'js2-mode-hook 'lsp)
   (setq-default indent-tabs-mode nil)
-  (define-key js-mode-map (kbd "C-c C-c") 'comment-region)
-  (define-key js-mode-map (kbd "C-c C-d") 'uncomment-region)
-)
+  (define-key js2-mode-map (kbd "C-c C-c") 'comment-region)
+  (define-key js2-mode-map (kbd "C-c C-d") 'uncomment-region)
+  )
 
 ;;;;;;;;;;;; SQL ;;;;;;;;;;;;;;;;;;
 (with-eval-after-load 'sql
