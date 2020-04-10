@@ -99,6 +99,8 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package company
   :config
   (add-hook 'after-init-hook 'global-company-mode)
+  (setq company-minimum-prefix-length 1
+      company-idle-delay 0.0)
   )
 
 ;;;;; Need to run (all-the-icons-install-fonts) for this to work properly
@@ -328,28 +330,31 @@ package-archive-priorities '(("melpa" . 1)))
 
 ;;;;;;;;;;;; PureScript ;;;;;;;;;
 
-(use-package flycheck-purescript)
-(use-package psci)
-(use-package purescript-mode)
-(use-package psc-ide
-  :config
-  (add-hook 'purescript-mode-hook
-  (lambda ()
-    (psc-ide-mode)
-    (flycheck-mode)
-    (turn-on-purescript-indentation)))
+;;(use-package flycheck-purescript)
+;;(use-package psci)
+;;(use-package purescript-mode)
+;;(use-package psc-ide
+;;  :config
+;;  (add-hook 'purescript-mode-hook
+;;  (lambda ()
+;;    (psc-ide-mode)
+;;    (flycheck-mode)
+;;    (turn-on-purescript-indentation)))
+;;
+;;  (key-chord-define purescript-mode-map  ";t" 'psc-ide-show-type)
+;;
+;;  (defhydra hydra-purescript-menu (:hint nil)
+;;    "Purescript Commands"
+;;    ("l" psc-ide-server-start "Start Server" :color blue)
+;;    ("q" psc-ide-server-quit "Quit Server" :color blue)
+;;    ("b" psc-ide-rebuild "Rebuild" :color blue)
+;;    )
+;;  (setq psc-ide-rebuild-on-save t)
+;;  (key-chord-define purescript-mode-map ";c" 'hydra-purescript-menu/body)
+;;  )
 
-  (key-chord-define purescript-mode-map  ";t" 'psc-ide-show-type)
-
-  (defhydra hydra-purescript-menu (:hint nil)
-    "Purescript Commands"
-    ("l" psc-ide-server-start "Start Server" :color blue)
-    ("q" psc-ide-server-quit "Quit Server" :color blue)
-    ("b" psc-ide-rebuild "Rebuild" :color blue)
-    )
-  (setq psc-ide-rebuild-on-save t)
-  (key-chord-define purescript-mode-map ";c" 'hydra-purescript-menu/body)
-  )
+;;;;;;;;;;;; F Sharp ;;;;;;;;;;;;
+(use-package fsharp-mode)
 
 ;;;;;;;;;;;; C Sharp ;;;;;;;;;;;;
 (use-package csharp-mode)
@@ -514,12 +519,16 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package lsp-mode
   :ensure t
   :config
+  (setq lsp-prefer-capf t)
   (add-hook 'lsp-mode-hook 'flycheck-mode t)
   (add-hook 'lsp-mode-hook 'lsp-ui-mode t)
-    (add-hook 'lsp-mode-hook
+  (add-hook 'lsp-mode-hook
 	    (lambda ()
 	      (setq-local company-backends (list 'company-lsp))))
-    (add-hook 'html-mode-hook 'lsp)
+  :hook
+  (html-mode . lsp)
+  (fsharp-mode . lsp)
+  (sql-mode . lsp)
   )
 (use-package lsp-ui
   :ensure t
@@ -527,6 +536,17 @@ package-archive-priorities '(("melpa" . 1)))
   (setq lsp-ui-sideline-update-mode 'point)
   (setq lsp-ui-sideline-delay 0)
   )
+(use-package lsp-mssql
+  :config
+  (setq lsp-mssql-connections
+        [
+         (:server "localhost"
+                  :database "master"
+                  :user "sa"
+                  :password "asdf")
+         ])
+  )
+
 
 (use-package company-lsp
   :after  company
@@ -537,6 +557,7 @@ package-archive-priorities '(("melpa" . 1)))
 
   (push 'company-lsp company-backends)
   )
+(use-package lsp-treemacs)
 
 ;;;;;;;;;;;; Lsp-Java ;;;;;;;;;;;;
 (use-package lsp-java
@@ -753,6 +774,12 @@ _~_: modified
   scroll-step 3
   scroll-conservatively 10000
   scroll-preserve-screen-position 1)
+
+;; Garbage Collection Threshold
+(setq gc-cons-threshold 100000000)
+
+;; Read more bytes from a process
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
 
 ;;;;;;;;;;;;;;;;;;Custom File;;;;;;;;;;;;;;;;;;
 (setq custom-file "~/.emacs.d/custom.el")
