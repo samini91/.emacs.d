@@ -762,6 +762,13 @@ _~_: modified
     (interactive)
     (save-some-buffers t))
 
+;; Colorized MakeFile Buffer
+(require 'ansi-color)
+(defun my/ansi-colorize-buffer ()
+  (let ((buffer-read-only nil))
+    (ansi-color-apply-on-region (point-min) (point-max))))
+(add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer)
+
 ;; Jump to Init File
 (defun init-file ()
   "Edit the `user-init-file', in another window."
