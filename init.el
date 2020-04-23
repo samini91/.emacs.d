@@ -1,6 +1,12 @@
 (package-initialize)
 (require 'package)
 
+;; Garbage Collection Threshold
+(setq gc-cons-threshold 1000000000)
+
+;; Read more bytes from a process
+(setq read-process-output-max 100000000) ;; 1mb
+
 ;;;;;;;;;;;;;;; Allows specific setting loading ;;;;;;;;;;;;;;;
 (defconst user-init-dir
   (cond ((boundp 'user-emacs-directory)
@@ -529,6 +535,7 @@ package-archive-priorities '(("melpa" . 1)))
   (html-mode . lsp)
   (fsharp-mode . lsp)
   (sql-mode . lsp)
+  (python-mode . lsp)
   )
 (use-package lsp-ui
   :ensure t
@@ -547,6 +554,7 @@ package-archive-priorities '(("melpa" . 1)))
          ])
   )
 
+(use-package lsp-python-ms)
 
 (use-package company-lsp
   :after  company
@@ -781,12 +789,6 @@ _~_: modified
   scroll-step 3
   scroll-conservatively 10000
   scroll-preserve-screen-position 1)
-
-;; Garbage Collection Threshold
-(setq gc-cons-threshold 100000000)
-
-;; Read more bytes from a process
-(setq read-process-output-max (* 1024 1024)) ;; 1mb
 
 ;;;;;;;;;;;;;;;;;;Custom File;;;;;;;;;;;;;;;;;;
 (setq custom-file "~/.emacs.d/custom.el")
