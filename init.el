@@ -635,6 +635,7 @@ package-archive-priorities '(("melpa" . 1)))
 
 
 (setq compilation-always-kill t)
+(setq compilation-scroll-output t)
 (global-set-key (kbd "<f5>") (lambda ()
                                (interactive)
 			       (save-all)
