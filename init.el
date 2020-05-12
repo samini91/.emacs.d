@@ -230,6 +230,7 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package magit
   :config
   (key-chord-define-global ";m" 'magit-status)
+  (setq magit-display-buffer-function (quote magit-display-buffer-same-window-except-diff-v1))
   )
 (use-package forge
   :after magit)
