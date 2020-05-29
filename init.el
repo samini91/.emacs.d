@@ -15,10 +15,6 @@
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 
-
-;;(package-initialize)
-;;(require 'package)
-
 ;; Garbage Collection Threshold
 (setq gc-cons-threshold 100000000)
 
@@ -38,16 +34,6 @@
   (interactive "f")
   "Load a file in current user's configuration directory"
   (load-file (expand-file-name file user-init-dir)))
-
-;;;;;;;;;;;;;;; Use-Package ;;;;;;;;;;;;;;;
-;;(package-initialize)
-;;(when (not package-archive-contents)
-;;  (package-refresh-contents)
-;;  (package-install 'use-package))
-;;(require 'use-package)
-
-;;;;;;;;;;;; Automatically downloads "use-package" packages if missing ;;;;;;;;;;
-;;(setq use-package-always-ensure t)
 
 ;;;;;;;;;;Themes;;;;;;;;;;;;
 (use-package doom-themes
