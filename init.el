@@ -1,11 +1,29 @@
-(package-initialize)
-(require 'package)
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
+
+
+;;(package-initialize)
+;;(require 'package)
 
 ;; Garbage Collection Threshold
-(setq gc-cons-threshold 1000000000)
+(setq gc-cons-threshold 100000000)
 
 ;; Read more bytes from a process
-(setq read-process-output-max 100000000) ;; 1mb
+(setq read-process-output-max (* 1000 1000)) ;; 1mb
 
 ;;;;;;;;;;;;;;; Allows specific setting loading ;;;;;;;;;;;;;;;
 (defconst user-init-dir
@@ -21,25 +39,15 @@
   "Load a file in current user's configuration directory"
   (load-file (expand-file-name file user-init-dir)))
 
-;;;;;;;;;;;;;;; Melpa ;;;;;;;;;;;;;;;
-(setq
- package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                    ;; ("org" . "http://orgmode.org/elpa/")
-                    ("melpa" . "http://melpa.org/packages/")
-                    ("melpa-stable" . "http://stable.melpa.org/packages/"))
-;; For Stable Packages
-;; package-archive-priorities '(("melpa-stable" . 1)))
-package-archive-priorities '(("melpa" . 1)))
-
 ;;;;;;;;;;;;;;; Use-Package ;;;;;;;;;;;;;;;
-(package-initialize)
-(when (not package-archive-contents)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(require 'use-package)
+;;(package-initialize)
+;;(when (not package-archive-contents)
+;;  (package-refresh-contents)
+;;  (package-install 'use-package))
+;;(require 'use-package)
 
 ;;;;;;;;;;;; Automatically downloads "use-package" packages if missing ;;;;;;;;;;
-(setq use-package-always-ensure t)
+;;(setq use-package-always-ensure t)
 
 ;;;;;;;;;;Themes;;;;;;;;;;;;
 (use-package doom-themes
@@ -89,7 +97,7 @@ package-archive-priorities '(("melpa" . 1)))
   
   (defhydra hydra-global-execute (:color blue :hint nil)
     "Execute"
-    ("j" hydra-jira-menu/body "Hydra-Jira")
+    ;;("j" hydra-jira-menu/body "Hydra-Jira")
     ("e" projectile-run-eshell "Projectile Eshell")
     ("s" (lambda () (interactive) (eshell) (rename-uniquely) ) "Eshell")
     ("i" init-file "Init-File")
@@ -188,36 +196,10 @@ package-archive-priorities '(("melpa" . 1)))
   :config
   (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
   )
-(use-package helm-jira)
+
 (use-package helm-make
   :config
   (setq helm-make-named-buffer t)
-  )
-(use-package org-jira
-  :config
-  ;;(setq jiralib-url "https://???.atlassian.net")
-
-    (defhydra hydra-jira-menu (:hint nil)
-    "Org Jira"
-    ("g" org-jira-get-issues "Get all issues" :color blue)
-    ("i" org-jira-get-issue "Get issue" :color blue)
-    )
-  
-    )
-(use-package auctex
-  :defer t ;; need to defer it
-  :config
-  (require 'tex-site)
-  (setq TeX-PDF-mode t)
-  (setq TeX-auto-save t)
-  (setq TeX-parse-self t)
-  
-  )
-
-(use-package company-auctex
-  :defer t 
-  :config
-  (push 'company-auctex company-backends)
   )
 
 (use-package pdf-tools)
@@ -226,14 +208,14 @@ package-archive-priorities '(("melpa" . 1)))
   (add-hook 'dired-mode-hook 'org-download-enable)
   )
 (use-package htmlize)
-
-(use-package magit
+(use-package async)
+(use-package magit  
   :config
   (key-chord-define-global ";m" 'magit-status)
   (setq magit-display-buffer-function (quote magit-display-buffer-same-window-except-diff-v1))
   )
 (use-package forge
-  :after magit)
+  :requires (magit))
 
 (use-package treemacs
   :config
@@ -247,7 +229,7 @@ package-archive-priorities '(("melpa" . 1)))
   )
 ;;(use-package yasnippet-snippets)
 
-(use-package async)
+
 
 ;;;;;;;;;;;; Zoom In-Out;;;;;;;;;;
 
@@ -366,7 +348,7 @@ package-archive-priorities '(("melpa" . 1)))
 ;;;;;;;;;;;; C Sharp ;;;;;;;;;;;;
 (use-package csharp-mode)
 (use-package omnisharp
-  :ensure t
+;;  :ensure t
   :config
   (defun my-csharp-mode-setup ()
     (setq indent-tabs-mode nil)
@@ -458,7 +440,7 @@ package-archive-priorities '(("melpa" . 1)))
 
 ;;;;;;;;;;;; C/C++ ;;;;;;;;;;;;
 (use-package irony
-  :ensure t
+;;  :ensure t
   :config
   (add-hook 'c-mode-hook
             (lambda ()
@@ -524,7 +506,7 @@ package-archive-priorities '(("melpa" . 1)))
 
 ;;;;;;;;;;;; LSP ;;;;;;;;;;;;
 (use-package lsp-mode
-  :ensure t
+  ;;:ensure t
   :config
   (setq lsp-prefer-capf t)
   (add-hook 'lsp-mode-hook 'flycheck-mode t)
@@ -539,7 +521,7 @@ package-archive-priorities '(("melpa" . 1)))
   (python-mode . lsp)
   )
 (use-package lsp-ui
-  :ensure t
+;;  :ensure t
   :config
   (setq lsp-ui-sideline-update-mode 'point)
   (setq lsp-ui-sideline-delay 0)
@@ -559,7 +541,7 @@ package-archive-priorities '(("melpa" . 1)))
 
 (use-package company-lsp
   :after  company
-  :ensure t
+;;  :ensure t
   :config
   (setq company-lsp-cache-candidates t
         company-lsp-async t)
@@ -570,7 +552,7 @@ package-archive-priorities '(("melpa" . 1)))
 
 ;;;;;;;;;;;; Lsp-Java ;;;;;;;;;;;;
 (use-package lsp-java
-  :ensure t
+;;  :ensure t
 
   :config
   (add-hook 'java-mode-hook 'lsp)
@@ -598,7 +580,7 @@ package-archive-priorities '(("melpa" . 1)))
 
 ;;;;;;;;;;;;;;;; Lsp-Dap;;;;;;;;;;;;;;;;;; 
 (use-package dap-mode
-  :ensure t :after lsp-mode
+;;  :ensure t :after lsp-mode
   :config
   (dap-mode t)
   (dap-ui-mode t))
@@ -795,3 +777,13 @@ _~_: modified
 ;;;;;;;;;;;;;;;;;;Custom File;;;;;;;;;;;;;;;;;;
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
+
+;;;;;;;;;;;;;;; Melpa ;;;;;;;;;;;;;;;
+(setq
+ package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                    ;; ("org" . "http://orgmode.org/elpa/")
+                    ("melpa" . "http://melpa.org/packages/")
+                    ("melpa-stable" . "http://stable.melpa.org/packages/"))
+;; For Stable Packages
+;; package-archive-priorities '(("melpa-stable" . 1)))
+package-archive-priorities '(("melpa" . 1)))
