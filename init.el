@@ -42,7 +42,7 @@
   (setq doom-themes-treemacs-theme "doom-colors") 
   (doom-themes-treemacs-config)
   (setq column-number-mode t)
-  (add-hook 'after-init-hook (lambda () (load-theme 'doom-city-lights)))
+  (add-hook 'after-init-hook (lambda () (load-theme 'doom-city-lights t)))
   )
 
 (use-package all-the-icons)
