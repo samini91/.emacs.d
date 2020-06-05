@@ -87,6 +87,7 @@
     ("e" projectile-run-eshell "Projectile Eshell")
     ("s" (lambda () (interactive) (eshell) (rename-uniquely) ) "Eshell")
     ("i" init-file "Init-File")
+    ("n" nixos-file "NixOS Configuration")
     ("r" replace-string "Replace String")
     ("m" helm-make-projectile "Makefile")
     ("w" ace-window "Window Management")
