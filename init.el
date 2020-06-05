@@ -215,7 +215,9 @@
   )
 ;;(use-package yasnippet-snippets)
 
-
+;;;;;;;;;;;; Nix ;;;;;;;;;;;;;;;;;
+(use-package nix-mode)
+(use-package company-nixos-options)
 
 ;;;;;;;;;;;; Zoom In-Out;;;;;;;;;;
 
@@ -749,9 +751,16 @@ _~_: modified
 
 ;; Jump to Init File
 (defun init-file ()
-  "Edit the `user-init-file', in another window."
+  "Edit the `user-init-file', in window."
   (interactive)
   (find-file user-init-file))
+
+;; Jump to Nix Config
+(defun nixos-file ()
+  "Edit the `nixos configuration', in window."
+  (interactive)
+  (find-file "\etc\nixos\configuration.nix"))
+
 
 ;;(display-time)
 (setq redisplay-dont-pause t
