@@ -174,10 +174,12 @@
   )
 (use-package helm
   :config
-  (global-set-key (kbd "M-x") 'helm-M-x)
-  (define-key helm-find-files-map "\t" 'helm-execute-persistent-action)
+  (global-set-key (kbd "M-x") 'helm-M-x)  
 )
-(use-package helm-projectile)
+(use-package helm-projectile
+  :config
+  (define-key helm-find-files-map "\t" 'helm-execute-persistent-action)
+  )
 (use-package helm-rg)
 (use-package swiper-helm)
 (use-package smartparens)
