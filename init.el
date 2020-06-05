@@ -760,7 +760,7 @@ _~_: modified
 (defun nixos-file ()
   "Edit the `nixos configuration', in window."
   (interactive)
-  (find-file "\etc\nixos\configuration.nix"))
+  (find-file "/etc/nixos/configuration.nix"))
 
 
 ;;(display-time)
