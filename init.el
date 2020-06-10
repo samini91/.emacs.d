@@ -69,6 +69,7 @@
     ("f" helm-semantic-or-imenu "Functions")
     ("d" helm-show-kill-ring "Kill-Ring")
     ("z" helm-rg "RipGrep")
+    ("h" helm-resume "Helm-Resume")
 
     )
   (key-chord-define-global ";f" 'hydra-global-helm/body)
@@ -91,6 +92,7 @@
     ("r" replace-string "Replace String")
     ("m" helm-make-projectile "Makefile")
     ("w" ace-window "Window Management")
+    ("k" view-lossage "KeyStrokes")
     )
   
   (key-chord-define-global ";x" 'hydra-global-execute/body)
@@ -148,6 +150,8 @@
   (global-set-key (kbd "C->") 'mc/mark-next-like-this)
   (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
   (setq mc/always-repeat-command t)
+  (setq mc/always-run-for-all t)
+  
   )
 
 ;; Rectanlge Edits
@@ -175,10 +179,11 @@
 (use-package helm
   :config
   (global-set-key (kbd "M-x") 'helm-M-x)
-  (define-key helm-find-files-map "\t" 'helm-execute-persistent-action)
 )
 (use-package helm-projectile)
-(use-package helm-rg)
+(use-package helm-rg
+  :requires (helm)
+  )
 (use-package swiper-helm)
 (use-package smartparens)
 (use-package restclient
