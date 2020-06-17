@@ -179,7 +179,6 @@
 (use-package helm
   :config
   (global-set-key (kbd "M-x") 'helm-M-x)
-  (define-key helm-buffer-map (kbd "C-d") 'helm-buffer-run-kill-persistent)
 )
 (use-package helm-projectile)
 (use-package helm-rg
@@ -226,7 +225,11 @@
 
 ;;;;;;;;;;;; Nix ;;;;;;;;;;;;;;;;;
 (use-package nix-mode)
-(use-package company-nixos-options)
+(use-package nixos-options)
+(use-package company-nixos-options
+  :config
+  (add-to-list 'company-backends 'company-nixos-options))
+(use-package helm-nixos-options)
 
 ;;;;;;;;;;;; Zoom In-Out;;;;;;;;;;
 
