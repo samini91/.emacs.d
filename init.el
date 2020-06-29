@@ -176,10 +176,15 @@
   (key-chord-define-global ";u" 'hydra-undo-tree-menu/body)
 
   )
-(use-package helm
+
+(use-package helm  
   :config
+  (helm-mode 1)
   (global-set-key (kbd "M-x") 'helm-M-x)
-)
+  (setq helm-buffer-details-flag nil)
+  (define-key helm-buffer-map (kbd "C-d") 'helm-buffer-run-kill-persistent)
+  )
+
 (use-package helm-projectile)
 (use-package helm-rg
   :requires (helm)
@@ -228,7 +233,9 @@
 (use-package nixos-options)
 (use-package company-nixos-options
   :config
-  (add-to-list 'company-backends 'company-nixos-options))
+  ;; fix this... bind this backend only to nixos files. 
+  ;;(add-to-list 'company-backends 'company-nixos-options)
+  ) 
 (use-package helm-nixos-options)
 
 ;;;;;;;;;;;; Zoom In-Out;;;;;;;;;;
@@ -248,12 +255,6 @@
 ;;  :config
 ;;  (setq rainbow-identifiers-mode t)
 ;;)
-
-;;;;;;;;;;;;HTML;;;;;;;;;;;;;;;
-(add-hook 'html-mode-hook
-	  (setq-default indent-tabs-mode nil)
-        (lambda ()
-          (set (make-local-variable 'sgml-basic-offset) 4)))
 
 ;;;;;;;;;;;; Emacs-Lisp ;;;;;;;;;;
 
@@ -494,9 +495,12 @@
 ;;	  )
 	  (lambda () (set (make-local-variable 'sgml-basic-offset) 4))
           )
-
+;;;;;;;;; WebMode ;;;;;;;;;;;;;
 (use-package web-mode
   :config
+  (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+  (setq web-mode-enable-current-column-highlight t)
+  (setq web-mode-enable-current-element-highlight t)
   (define-key web-mode-map (kbd "C-c C-c") 'comment-region)
   (define-key web-mode-map (kbd "C-c C-d") 'uncomment-region)
   )
@@ -515,7 +519,8 @@
 	    (lambda ()
 	      (setq-local company-backends (list 'company-lsp))))
   :hook
-  (html-mode . lsp)
+  (web-mode . lsp)
+  (js2-mode . lsp)
   (fsharp-mode . lsp)
   (sql-mode . lsp)
   (python-mode . lsp)
@@ -563,7 +568,6 @@
 (use-package js2-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-  (add-hook 'js2-mode-hook 'lsp)
   (setq-default indent-tabs-mode nil)
   (define-key js2-mode-map (kbd "C-c C-c") 'comment-region)
   (define-key js2-mode-map (kbd "C-c C-d") 'uncomment-region)
