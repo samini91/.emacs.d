@@ -58,7 +58,7 @@
  ("ht.el" . "fff8c43f0e03d5b98deb9f988522b839ce2ca253")
  ("hydra" . "8a9124f80b6919ad5288172b3e9f46c5332763ca")
  ("intero" . "fdb0550a2ddb5692d470336aa4a057717d572695")
- ("irony-eldoc" . "0df5831eaae264a25422b061eb2792aadde8b3f2")
+ ("irony-eldoc" . "73e79a89fad982a2ba072f2fcc1b4e41f0aa2978")
  ("irony-mode" . "5f75fc0c9274f4622470e2324e2f4457087aa643")
  ("js2-mode" . "90e1434146988e855ade79c5acefc156f6420d7a")
  ("json-mode" . "0e819e519ae17a2686e0881c4ca51fa873fa9b83")
