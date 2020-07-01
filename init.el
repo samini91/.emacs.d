@@ -185,7 +185,11 @@
   (define-key helm-buffer-map (kbd "C-d") 'helm-buffer-run-kill-persistent)
   )
 
-(use-package helm-projectile)
+;;(use-package projectile) helm-projectile might import it already
+(use-package helm-projectile
+  :config
+  (setq projectile-enable-caching t)
+  )
 (use-package helm-rg
   :requires (helm)
   )
