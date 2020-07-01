@@ -188,7 +188,8 @@
 ;;(use-package projectile) helm-projectile might import it already
 (use-package helm-projectile
   :config
-  (setq projectile-enable-caching t)
+  ;; doesnt invalidate the cache as expected....
+  ;;(setq projectile-enable-caching t)
   )
 (use-package helm-rg
   :requires (helm)
