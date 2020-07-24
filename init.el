@@ -616,14 +616,16 @@
 ;;;;;;;;;;;;;;; Universal KeyChords ;;;;;;;;;;;;;;;
 
 (global-set-key (kbd "M-n")
-            (lambda ()
-              (interactive)
-              (ignore-errors (next-line 5))))
+                (lambda ()
+                  (interactive)
+                  (ignore-errors (next-line 5))))
 
 (global-set-key (kbd "M-p")
 		(lambda ()
 		  (interactive)
 		  (ignore-errors (previous-line 5))))
+
+(global-set-key (kbd "C-M-SPC") 'mark-whole-buffer)
 
 
 (setq compilation-always-kill t)
@@ -755,6 +757,7 @@ _~_: modified
 
 
 
+
 ;;;;;;;;;; Moves Backup Files to another directory ;;;;;;;;;;
 (setq backup-directory-alist `(("." . ,(concat user-emacs-directory "backups"))))
 (setq auto-save-file-name-transforms `((".*" "~/" t)))
@@ -765,7 +768,7 @@ _~_: modified
     (interactive)
     (save-some-buffers t))
 
-;; Colorized MakeFile Buffer
+
 (require 'ansi-color)
 (defun my/ansi-colorize-buffer ()
   (let ((buffer-read-only nil))
