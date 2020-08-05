@@ -683,17 +683,23 @@
 (defhydra hydra-org-menu (:hint nil)
   "Org Mode Commands"
   ;;("p" org-pomodoro "Pomodoro" :color blue)
-  ("c" hydra-org-html-menu/body "Convert To" :color blue)
+  ("c" hydra-org-convert-menu/body "Convert To" :color blue)
   ("t" org-table-create-or-convert-from-region "Create Table Or Convert Region" :color blue)
+  ("s" hydra-org-source-menu/body "Insert Source Block" :color blue)
   )
 
-(defhydra hydra-org-html-menu (:hint nil)
+(defhydra hydra-org-convert-menu (:hint nil)
     "Convert to "
     ("r" org-html-header-readtheorg "Read the Org Header" :color blue)
     ("b" org-html-header-bigblow "Big Blow Header" :color blue)
     ("h" org-html-export-to-html "Export to Html" :color blue)
     ("m" org-md-export-as-markdown "Export to MarkDown" :color blue)
     )
+
+(defhydra hydra-org-source-menu (:hint nil)
+  "Source Blocks "
+  ("s" (insert "#+BEGIN_SRC sql \n \n #+END_SRC") "SQL" :color blue)
+  )
 
 (key-chord-define org-mode-map ";c" 'hydra-org-menu/body)
 
