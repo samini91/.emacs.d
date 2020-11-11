@@ -272,49 +272,56 @@
 
 ;;;;;;;;;;;; Haskell ;;;;;;;;;;;;
 (use-package haskell-mode)
-(use-package intero
+(use-package lsp-haskell
+  :after lsp
   :config
-  (add-hook 'haskell-mode-hook 'intero-mode)
-
-  (define-key haskell-mode-map (kbd "<f12>") 'intero-goto-definition)
-  (key-chord-define haskell-mode-map  ";t" 'intero-type-at)
-  
-  (define-key intero-mode-map (kbd "C-c C-c") nil)
-  (define-key haskell-mode-map (kbd "C-c C-c") 'comment-region)
-  (define-key haskell-mode-map (kbd "C-c C-d") 'uncomment-region)
-
-  (defhydra hydra-haskell-menu (:hint nil)
-    "Haskell Commands"
-    ("u" intero-uses-at "Find Usages" :color blue)
-    ("l" intero-restart "Reload Intero" :color blue)
-    ("c" intero-repl-eval-region "Repl Eval Region" :color blue)
-    ("r" intero-repl-load "Repl Load" :color blue)
-    ("s" intero-apply-suggestions "Apply Suggestions" :color blue)
-    ("a" intero-repl "Repl" :color blue)
-    ("t" (intero-type-at 't) "Insert Type At Point" :color blue)
-    )
-  
-  (key-chord-define haskell-mode-map ";c" 'hydra-haskell-menu/body)
+  (setq lsp-log-io t)
+;;  (setq lsp-haskell-st)
   )
 
-(use-package ghc)
+;;(use-package intero
+;;  :config
+;;  (add-hook 'haskell-mode-hook 'intero-mode)
+;;
+;;  (define-key haskell-mode-map (kbd "<f12>") 'intero-goto-definition)
+;;  (key-chord-define haskell-mode-map  ";t" 'intero-type-at)
+;;  
+;;  (define-key intero-mode-map (kbd "C-c C-c") nil)
+;;  (define-key haskell-mode-map (kbd "C-c C-c") 'comment-region)
+;;  (define-key haskell-mode-map (kbd "C-c C-d") 'uncomment-region)
+;;
+;;  (defhydra hydra-haskell-menu (:hint nil)
+;;    "Haskell Commands"
+;;    ("u" intero-uses-at "Find Usages" :color blue)
+;;    ("l" intero-restart "Reload Intero" :color blue)
+;;    ("c" intero-repl-eval-region "Repl Eval Region" :color blue)
+;;    ("r" intero-repl-load "Repl Load" :color blue)
+;;    ("s" intero-apply-suggestions "Apply Suggestions" :color blue)
+;;    ("a" intero-repl "Repl" :color blue)
+;;    ("t" (intero-type-at 't) "Insert Type At Point" :color blue)
+;;    )
+;;  
+;;  (key-chord-define haskell-mode-map ";c" 'hydra-haskell-menu/body)
+;;  )
+
+;;(use-package ghc)
 (use-package haskell-snippets)
 (use-package company-cabal
   :config
-  (push 'company-cabal company-backends)
+;;  (push 'company-cabal company-backends)
   )
-(use-package company-ghci
-    :config
-  (push 'company-ghci company-backends)
-  )
-(use-package company-ghc
-    :config
-  (push 'company-ghc company-backends)
-  )
-(use-package hindent)
-(use-package hlint-refactor)
+;;(use-package company-ghci
+;;    :config
+;;  (push 'company-ghci company-backends)
+;;  )
+;;(use-package company-ghc
+;;    :config
+;;  (push 'company-ghc company-backends)
+;;  )
+;;(use-package hindent)
+;;(use-package hlint-refactor)
 (use-package helm-hoogle)
-(use-package flycheck-haskell)
+;;(use-package flycheck-haskell)
 
 ;;;;;;;;;;; Elm ;;;;;;;;;;;;;;;;;
 (use-package elm-mode
@@ -353,62 +360,62 @@
 
 ;;;;;;;;;;;; C Sharp ;;;;;;;;;;;;
 (use-package csharp-mode)
-(use-package omnisharp
-;;  :ensure t
-  :config
-  (defun my-csharp-mode-setup ()
-    (setq indent-tabs-mode nil)
-    (setq c-syntactic-indentation f)
-    (c-set-style "ellemtel")
-    (setq c-basic-offset 4)
-    (setq truncate-lines t)
-    (setq tab-width 4)
-    (setq comment-start "/* "
-	  comment-end " */"
-	  comment-style 'multi-line
-	  comment-empty-lines t)
-    (setq evil-shift-width 4))
-
-  (setq omnisharp-auto-complete-want-documentation nil)
-  (setq omnisharp-company-match-type (quote company-match-server))
-  (setq omnisharp-eldoc-support nil)
-  (setq omnisharp-imenu-support t)
-  
-  (define-key csharp-mode-map (kbd "C-.") 'omnisharp-run-code-action-refactoring)
-  (define-key csharp-mode-map (kbd "<f12>") 'omnisharp-go-to-definition)
-
-  (define-key csharp-mode-map (kbd "C-c C-c") 'comment-region)
-  (define-key csharp-mode-map (kbd "C-c C-d") 'uncomment-region)
-  (key-chord-define csharp-mode-map  ";t" 'omnisharp-current-type-information)
-
-  (defun open-in-visual-studio ()
-    "Opens file in visual studios make sure you have the desired version of devenv.exe"
-    (interactive)
-    ;;(shell-command (concat "devenv.exe /\Edit " (buffer-file-name)))
-    (shell-command (concat "devenv.exe /\Edit " (file-name-nondirectory(buffer-file-name))))
-    )
-
-  (defhydra hydra-c-sharp-menu (:hint nil)
-    "Omnisharp Commands"
-    ("u" omnisharp-find-usages "Find Usages" :color blue)
-    ("l" omnisharp-reload-solution "Reload Solution" :color blue)
-    ("q" omnisharp-stop-server "Stop Server" :color blue)
-    ("r" omnisharp-rename "Rename" :color blue)
-    ("e" omnisharp-solution-errors "Solution Errors" :color blue)
-    ("o" open-in-visual-studio "Open in Visual Studio" :color blue)
-    ("f" omnisharp-code-format-entire-file "Format Entire File" :color blue)
-    ("g" omnisharp-code-format-region "Format Region" :color blue)    
-    )
-
-  (key-chord-define csharp-mode-map ";c" 'hydra-c-sharp-menu/body)
-
-  (add-hook 'csharp-mode-hook 'omnisharp-mode)
-  (add-hook 'csharp-mode-hook 'flycheck-mode)
-  (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)
-  (add-hook 'omnisharp-mode-hook
-	    (lambda ()
-	      (setq-local company-backends (list 'company-omnisharp))))
-  )
+;;(use-package omnisharp
+;;;;  :ensure t
+;;  :config
+;;  (defun my-csharp-mode-setup ()
+;;    (setq indent-tabs-mode nil)
+;;    (setq c-syntactic-indentation f)
+;;    (c-set-style "ellemtel")
+;;    (setq c-basic-offset 4)
+;;    (setq truncate-lines t)
+;;    (setq tab-width 4)
+;;    (setq comment-start "/* "
+;;	  comment-end " */"
+;;	  comment-style 'multi-line
+;;	  comment-empty-lines t)
+;;    (setq evil-shift-width 4))
+;;
+;;  (setq omnisharp-auto-complete-want-documentation nil)
+;;  (setq omnisharp-company-match-type (quote company-match-server))
+;;  (setq omnisharp-eldoc-support nil)
+;;  (setq omnisharp-imenu-support t)
+;;  
+;;  (define-key csharp-mode-map (kbd "C-.") 'omnisharp-run-code-action-refactoring)
+;;  (define-key csharp-mode-map (kbd "<f12>") 'omnisharp-go-to-definition)
+;;
+;;  (define-key csharp-mode-map (kbd "C-c C-c") 'comment-region)
+;;  (define-key csharp-mode-map (kbd "C-c C-d") 'uncomment-region)
+;;  (key-chord-define csharp-mode-map  ";t" 'omnisharp-current-type-information)
+;;
+;;  (defun open-in-visual-studio ()
+;;    "Opens file in visual studios make sure you have the desired version of devenv.exe"
+;;    (interactive)
+;;    ;;(shell-command (concat "devenv.exe /\Edit " (buffer-file-name)))
+;;    (shell-command (concat "devenv.exe /\Edit " (file-name-nondirectory(buffer-file-name))))
+;;    )
+;;
+;;  (defhydra hydra-c-sharp-menu (:hint nil)
+;;    "Omnisharp Commands"
+;;    ("u" omnisharp-find-usages "Find Usages" :color blue)
+;;    ("l" omnisharp-reload-solution "Reload Solution" :color blue)
+;;    ("q" omnisharp-stop-server "Stop Server" :color blue)
+;;    ("r" omnisharp-rename "Rename" :color blue)
+;;    ("e" omnisharp-solution-errors "Solution Errors" :color blue)
+;;    ("o" open-in-visual-studio "Open in Visual Studio" :color blue)
+;;    ("f" omnisharp-code-format-entire-file "Format Entire File" :color blue)
+;;    ("g" omnisharp-code-format-region "Format Region" :color blue)    
+;;    )
+;;
+;;  (key-chord-define csharp-mode-map ";c" 'hydra-c-sharp-menu/body)
+;;
+;;  (add-hook 'csharp-mode-hook 'omnisharp-mode)
+;;  (add-hook 'csharp-mode-hook 'flycheck-mode)
+;;  (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)
+;;  (add-hook 'omnisharp-mode-hook
+;;	    (lambda ()
+;;	      (setq-local company-backends (list 'company-omnisharp))))
+;;  )
 
 ;;;;;;;;;;;; Scala ;;;;;;;;;;;;
 
@@ -520,16 +527,20 @@
   (setq lsp-prefer-capf t)
   (add-hook 'lsp-mode-hook 'flycheck-mode t)
   (add-hook 'lsp-mode-hook 'lsp-ui-mode t)
-  (add-hook 'lsp-mode-hook
-	    (lambda ()
-	      (setq-local company-backends (list 'company-lsp))))
+;;  (add-hook 'lsp-mode-hook
+;;	    (lambda ()
+;;	      (setq-local company-backends (list 'company-capf))))
   :hook
   (web-mode . lsp)
   (js2-mode . lsp)
   (fsharp-mode . lsp)
   (sql-mode . lsp)
   (python-mode . lsp)
+  (csharp-mode . lsp)
+  (haskell-mode . lsp)
+  (haskell-literate-mode . lsp)
   )
+
 (use-package lsp-ui
 ;;  :ensure t
   :config
@@ -549,15 +560,6 @@
 
 (use-package lsp-python-ms)
 
-(use-package company-lsp
-  :after  company
-;;  :ensure t
-  :config
-  (setq company-lsp-cache-candidates t
-        company-lsp-async t)
-
-  (push 'company-lsp company-backends)
-  )
 (use-package lsp-treemacs)
 
 ;;;;;;;;;;;; Lsp-Java ;;;;;;;;;;;;
