@@ -271,7 +271,11 @@
 (key-chord-define emacs-lisp-mode-map ";c" 'hydra-emacs-lisp-menu/body)
 
 ;;;;;;;;;;;; Haskell ;;;;;;;;;;;;
-(use-package haskell-mode)
+(use-package haskell-mode
+  :config
+  (define-key haskell-mode-map (kbd "C-c C-c") 'comment-region)
+  (define-key haskell-mode-map (kbd "C-c C-d") 'uncomment-region)
+  )
 (use-package lsp-haskell
   :after lsp
   :config
@@ -416,8 +420,7 @@
 ;;	    (lambda ()
 ;;	      (setq-local company-backends (list 'company-omnisharp))))
 ;;  )
-
-;;;;;;;;;;;; Scala ;;;;;;;;;;;;
+;;;;;;;;;;; Scala ;;;;;;;;;;;;
 
 (use-package scala-mode)
 (use-package sbt-mode)
