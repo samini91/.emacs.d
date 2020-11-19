@@ -530,6 +530,7 @@
   (setq lsp-prefer-capf t)
   (add-hook 'lsp-mode-hook 'flycheck-mode t)
   (add-hook 'lsp-mode-hook 'lsp-ui-mode t)
+  (define-key lsp-mode-map (kbd "C-.") 'lsp-execute-code-action)
 ;;  (add-hook 'lsp-mode-hook
 ;;	    (lambda ()
 ;;	      (setq-local company-backends (list 'company-capf))))
