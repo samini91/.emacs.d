@@ -42,7 +42,8 @@
   (setq doom-themes-treemacs-theme "doom-colors") 
   (doom-themes-treemacs-config)
   (setq column-number-mode t)
-  (add-hook 'after-init-hook (lambda () (load-theme 'doom-city-lights t)))
+  (add-hook 'after-init-hook (lambda () (load-theme 'doom-molokai t)))
+  ;;(add-hook 'after-init-hook (lambda () (load-theme 'doom-city-lights t)))
   )
 
 (use-package all-the-icons)
@@ -520,9 +521,7 @@
   (setq lsp-prefer-capf t)
   (add-hook 'lsp-mode-hook 'flycheck-mode t)
   (add-hook 'lsp-mode-hook 'lsp-ui-mode t)
-  (add-hook 'lsp-mode-hook
-	    (lambda ()
-	      (setq-local company-backends (list 'company-lsp))))
+
   :hook
   (web-mode . lsp)
   (js2-mode . lsp)
@@ -548,16 +547,6 @@
   )
 
 (use-package lsp-python-ms)
-
-(use-package company-lsp
-  :after  company
-;;  :ensure t
-  :config
-  (setq company-lsp-cache-candidates t
-        company-lsp-async t)
-
-  (push 'company-lsp company-backends)
-  )
 (use-package lsp-treemacs)
 
 ;;;;;;;;;;;; Lsp-Java ;;;;;;;;;;;;
