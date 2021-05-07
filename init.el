@@ -423,6 +423,7 @@
 ;;;;;;;;;;; Scala ;;;;;;;;;;;;
 
 (use-package scala-mode)
+(use-package lsp-metals)
 (use-package sbt-mode)
 ;;(use-package lsp-scala)
 
@@ -541,8 +542,11 @@
   (sql-mode . lsp)
   (python-mode . lsp)
   (csharp-mode . lsp)
+  (scala-mode . lsp)
   (haskell-mode . lsp)
   (haskell-literate-mode . lsp)
+  (typescript-mode . lsp)
+  (go-mode . lsp)
   )
 
 (use-package lsp-ui
@@ -574,6 +578,15 @@
   (add-hook 'java-mode-hook 'lsp)
 )
 
+;;;;;;;;;;;; TypeScript ;;;;;;;;;;;;
+(use-package typescript-mode)
+
+;;;;;;;;;;;; Go ;;;;;;;;;;;;;;;;;
+(use-package go-mode)
+
+;;;;;;;;;;;; Python ;;;;;;;;;;;;;;
+(use-package python-mode)
+
 ;;;;;;;;;;;; Javascript ;;;;;;;;;;;;
 
 (use-package js2-mode
@@ -589,9 +602,6 @@
   (define-key sql-mode-map (kbd "C-c C-c") 'comment-region)
   (define-key sql-mode-map (kbd "C-c C-d") 'uncomment-region)
 )
-
-;;;;;;;;;;;; Lsp-Python ;;;;;;;;;;;;
-(add-hook 'python-mode-hook 'lsp)
 
 ;;;;;;;;;;;;;;;; Lsp-Dap;;;;;;;;;;;;;;;;;; 
 (use-package dap-mode
