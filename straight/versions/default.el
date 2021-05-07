@@ -65,6 +65,7 @@
  ("log4e" . "7df0c1ff4656f8f993b87064b1567618eadb5546")
  ("lsp-haskell" . "7efbef3d206989faa8b691a4230a3ed872542187")
  ("lsp-java" . "ba347ab575e17e7fb101101ac7537dd0df6e55d9")
+ ("lsp-metals" . "5aea52dfe08b8f5936ea3982be6c25339f652eba")
  ("lsp-mode" . "b9679516af36b20331694256f3ac6582614d3859")
  ("lsp-mssql" . "88319a61a06e27fc1d3ea2e7b853ec1692b4c166")
  ("lsp-python-ms" . "8d228b0f6dde3a4d1327650c17b21539ff4a08ee")

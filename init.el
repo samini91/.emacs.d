@@ -580,6 +580,7 @@
 
 ;;;;;;;;;;;; TypeScript ;;;;;;;;;;;;
 (use-package typescript-mode)
+(require 'dap-node)
 
 ;;;;;;;;;;;; Go ;;;;;;;;;;;;;;;;;
 (use-package go-mode)
