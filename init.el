@@ -526,9 +526,10 @@
 
 ;;;;;;;;;;;; LSP ;;;;;;;;;;;;
 
-(defhydra hydra-emacs-lisp-menu (:hint nil)
+(defhydra hydra-lsp-menu (:hint nil)
   "Lsp Commands"
   ("i" lsp-goto-implementation "Go To Implementation" :color blue)
+  ("p" lsp-ui-peek-find-references "UI find referencese" :color blue)
   )
 
 (use-package lsp-mode
@@ -540,7 +541,8 @@
   (define-key lsp-mode-map (kbd "C-.") 'lsp-execute-code-action)
   (define-key lsp-mode-map (kbd "C-c C-c") 'comment-region)
   (define-key lsp-mode-map (kbd "C-c C-d") 'uncomment-region)
-  (key-chord-define lsp-mode-map ";c" 'hydra-emacs-lisp-menu/body)
+
+  (key-chord-define lsp-mode-map ";c" 'hydra-lsp-menu/body)
   
 ;;  (add-hook 'lsp-mode-hook
 ;;	    (lambda ()
