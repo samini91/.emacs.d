@@ -338,7 +338,7 @@
 
 ;;(use-package flycheck-purescript)
 ;;(use-package psci)
-;;(use-package purescript-mode)
+ ;;(use-package purescript-mode)
 ;;(use-package psc-ide
 ;;  :config
 ;;  (add-hook 'purescript-mode-hook
@@ -525,6 +525,12 @@
 (use-package powershell)
 
 ;;;;;;;;;;;; LSP ;;;;;;;;;;;;
+
+(defhydra hydra-emacs-lisp-menu (:hint nil)
+  "Lsp Commands"
+  ("i" lsp-goto-implementation "Go To Implementation" :color blue)
+  )
+
 (use-package lsp-mode
   ;;:ensure t
   :config
@@ -532,6 +538,10 @@
   (add-hook 'lsp-mode-hook 'flycheck-mode t)
   (add-hook 'lsp-mode-hook 'lsp-ui-mode t)
   (define-key lsp-mode-map (kbd "C-.") 'lsp-execute-code-action)
+  (define-key lsp-mode-map (kbd "C-c C-c") 'comment-region)
+  (define-key lsp-mode-map (kbd "C-c C-d") 'uncomment-region)
+  (key-chord-define lsp-mode-map ";c" 'hydra-emacs-lisp-menu/body)
+  
 ;;  (add-hook 'lsp-mode-hook
 ;;	    (lambda ()
 ;;	      (setq-local company-backends (list 'company-capf))))
@@ -676,6 +686,12 @@
 
 (global-unset-key (kbd "C-x C-c"))
 
+;;;;;;;;;;;;;;;;;;;; Perspective ;;;;;;;;;;;;;;;;;;;;;;
+(use-package perspective
+  :bind
+  ("C-x C-b" . persp-list-buffers)   ; or use a nicer switcher, see below
+  :config
+  (persp-mode))
 ;;;;;;;;;;;;;;;;;;;; Global-Modes ;;;;;;;;;;;;;;;;;;
 (add-hook 'after-init-hook 'show-paren-mode)
 (add-hook 'after-init-hook 'projectile-mode)
