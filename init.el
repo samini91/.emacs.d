@@ -359,6 +359,9 @@
 ;;  (key-chord-define purescript-mode-map ";c" 'hydra-purescript-menu/body)
 ;;  )
 
+;;;;;;;;;;;; Groovy ;;;;;;;;;;;;
+(use-package groovy-mode)
+
 ;;;;;;;;;;;; F Sharp ;;;;;;;;;;;;
 (use-package fsharp-mode)
 
@@ -559,6 +562,7 @@
   (haskell-literate-mode . lsp)
   (typescript-mode . lsp)
   (go-mode . lsp)
+  (groovy-mode . lsp)
   )
 
 (use-package lsp-ui
