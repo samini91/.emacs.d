@@ -39,10 +39,20 @@
 (use-package doom-themes
   :config
   (setq doom-themes-enable-bold t )
-  (setq doom-themes-treemacs-theme "doom-colors") 
+  (setq doom-themes-treemacs-theme "doom-colors")
   (doom-themes-treemacs-config)
   (setq column-number-mode t)
-  (add-hook 'after-init-hook (lambda () (load-theme 'doom-city-lights t)))
+  (add-hook 'after-init-hook (lambda ()
+                               (load-theme 'doom-city-lights t)
+                               (custom-set-faces
+                                ;; custom-set-faces was added by Custom.
+                                ;; If you edit it by hand, you could mess it up, so be careful.
+                                ;; Your init file should contain only one such instance.
+                                ;; If there is more than one, they won't work right.
+                                ;;'(face-remap-add-relative 'hl-line 'highlight 'bold))
+                                '(hl-line ((t (:extend t :background "#b6e3fc")))))
+
+                               ))
   )
 
 (use-package all-the-icons)
@@ -224,6 +234,14 @@
 (use-package treemacs
   :config
   (key-chord-define-global ";l" 'treemacs)
+
+  (defun improve-hl-line-contrast ()
+    "`hl-line' doesn't stand out enough in some themes."
+    (face-remap-add-relative 'hl-line 'highlight 'bold))
+ 
+  (add-hook 'treemacs-mode-hook #'improve-hl-line-contrast)
+  (add-hook 'after-init-hook #'improve-hl-line-contrast)
+
   )
 (use-package treemacs-projectile)
 
@@ -598,8 +616,10 @@
 (use-package typescript-mode)
 (require 'dap-node)
 
+
 ;;;;;;;;;;;; Go ;;;;;;;;;;;;;;;;;
 (use-package go-mode)
+(require 'dap-go)
 
 ;;;;;;;;;;;; Python ;;;;;;;;;;;;;;
 (use-package python-mode)
@@ -620,12 +640,22 @@
   (define-key sql-mode-map (kbd "C-c C-d") 'uncomment-region)
 )
 
-;;;;;;;;;;;;;;;; Lsp-Dap;;;;;;;;;;;;;;;;;; 
+;;;;;;;;;;;;;;;; Lsp-Dap;;;;;;;;;;;;;;;;;;
 (use-package dap-mode
 ;;  :ensure t :after lsp-mode
   :config
   (dap-mode t)
-  (dap-ui-mode t))
+  (dap-ui-mode t)
+  (dap-ui-controls-mode 0)
+  (dap-tooltip-mode 1)
+  (tooltip-mode 1)
+  ;;(dap-ui-breakpoints-mode 1)
+  ;; Enabling only some features
+  ;;(setq dap-auto-configure-features '(locals tooltip))
+  (setq dap-auto-configure-features '(locals tooltip))
+
+  (key-chord-define-global ";v" 'dap-hydra/body)
+  )
 
 ;;;;;;;;;;;;;;; LeetCode;;;;;;;;;;;;;;;;
 (use-package leetcode
@@ -738,6 +768,7 @@
 (defhydra hydra-org-source-menu (:hint nil)
   "Source Blocks "
   ("s" (insert "#+BEGIN_SRC sql \n \n #+END_SRC") "SQL" :color blue)
+  ("j" (insert "#+BEGIN_SRC json \n \n #+END_SRC") "JSON" :color blue)
   )
 
 (key-chord-define org-mode-map ";c" 'hydra-org-menu/body)
@@ -778,6 +809,14 @@ _~_: modified
   ("q" quit-window "quit" :color blue))
 
 (define-key Buffer-menu-mode-map "." 'hydra-buffer-menu/body)
+
+;;;;;;;;;;;;; Dired Management ;;;;;;;;;;;;;;;;;;;
+(defhydra hydra-dired-menu (:hint nil)
+  "Dired Commands"
+  ("e" wdired-change-to-wdired-mode "Edit Dired Buffer" :color blue)
+)
+
+(key-chord-define dired-mode-map ";c" 'hydra-dired-menu/body)
 
 
 ;;;;;;;;;;;;; Miscelanous Functions ;;;;;;;;;;;;;;
@@ -853,3 +892,4 @@ _~_: modified
 ;; For Stable Packages
 ;; package-archive-priorities '(("melpa-stable" . 1)))
 package-archive-priorities '(("melpa" . 1)))
+	
