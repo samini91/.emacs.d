@@ -352,6 +352,9 @@
   )
 (use-package flycheck-elm)
 
+;;;;;;;;;;;; rust ;;;;;;;;;;;;
+(use-package rust-mode)
+
 ;;;;;;;;;;;; PureScript ;;;;;;;;;
 
 ;;(use-package flycheck-purescript)
