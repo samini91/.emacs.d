@@ -584,6 +584,7 @@
   (typescript-mode . lsp)
   (go-mode . lsp)
   (groovy-mode . lsp)
+  (rust-mode . lsp)
   )
 
 (use-package lsp-ui
