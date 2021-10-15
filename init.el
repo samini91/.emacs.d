@@ -622,7 +622,10 @@
 
 
 ;;;;;;;;;;;; Go ;;;;;;;;;;;;;;;;;
-(use-package go-mode)
+(use-package go-mode
+  :config
+  (add-hook 'before-save-hook 'lsp-format-buffer)
+  )
 (require 'dap-go)
 
 ;;;;;;;;;;;; Python ;;;;;;;;;;;;;;
