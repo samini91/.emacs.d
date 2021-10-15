@@ -573,7 +573,11 @@
   
 ;;  (add-hook 'lsp-mode-hook
 ;;	    (lambda ()
-;;	      (setq-local company-backends (list 'company-capf))))
+  ;;	      (setq-local company-backends (list 'company-capf))))
+
+
+  (add-hook 'go-mode-hook (lambda () (add-hook 'before-save-hook 'lsp-format-buffer nil 'local)))
+  
   :hook
   (web-mode . lsp)
   (js2-mode . lsp)
@@ -625,10 +629,7 @@
 
 
 ;;;;;;;;;;;; Go ;;;;;;;;;;;;;;;;;
-(use-package go-mode
-  :config
-  (add-hook 'before-save-hook 'lsp-format-buffer)
-  )
+(use-package go-mode)
 (require 'dap-go)
 
 ;;;;;;;;;;;; Python ;;;;;;;;;;;;;;
