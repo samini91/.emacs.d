@@ -558,6 +558,7 @@
 (defhydra hydra-lsp-menu (:hint nil)
   "Lsp Commands"
   ("i" lsp-goto-implementation "Go To Implementation" :color blue)
+  ("d" lsp-find-definition "Find Definition" :color blue)
   ("p" lsp-ui-peek-find-references "UI find referencese" :color blue)
   )
 
