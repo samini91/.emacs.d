@@ -214,6 +214,8 @@
   (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
   )
 
+(use-package wgrep-helm)
+
 (use-package helm-make
   :config
   (setq helm-make-named-buffer t)
@@ -592,6 +594,7 @@
   (go-mode . lsp)
   (groovy-mode . lsp)
   (rust-mode . lsp)
+  (nix-mode . lsp)
   )
 
 (use-package lsp-ui
