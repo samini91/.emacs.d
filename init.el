@@ -216,16 +216,17 @@
 
 (use-package wgrep-helm)
 
-(use-package helm-make
-  :config
-  (setq helm-make-named-buffer t)
-  (setq helm-make-makefile-names '("SA" "Command" "command" "COMMAND" "Makefile"))
-  (setq helm-make-nproc 0)
-  (add-to-list 'auto-mode-alist '("SA\\'" . makefile-mode))
-  (add-to-list 'auto-mode-alist '("Command\\'" . makefile-mode))
-  (add-to-list 'auto-mode-alist '("command\\'" . makefile-mode))
-  (add-to-list 'auto-mode-alist '("COMMAND\\'" . makefile-mode))
- )
+
+(load-user-file "helm-make.el")
+(require 'helm-make)
+
+(setq helm-make-named-buffer t)
+(setq helm-make-makefile-names '("SA" "Command" "command" "COMMAND" "Makefile"))
+(setq helm-make-nproc 0)
+(add-to-list 'auto-mode-alist '("SA\\'" . makefile-mode))
+(add-to-list 'auto-mode-alist '("Command\\'" . makefile-mode))
+(add-to-list 'auto-mode-alist '("command\\'" . makefile-mode))
+(add-to-list 'auto-mode-alist '("COMMAND\\'" . makefile-mode))
 
 (use-package pdf-tools)
 (use-package org-download

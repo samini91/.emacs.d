@@ -45,7 +45,6 @@
  ("haskell-snippets" . "1c29c4a68ce89848b8d371c6510d1de3b586c8b3")
  ("helm" . "837e5b8c99715791023dd47911f5f280808cb3c4")
  ("helm-hoogle" . "73969a9d46d2121a849a01a9f7ed3636d01f7bbc")
- ("helm-make" . "ebd71e85046d59b37f6a96535e01993b6962c559")
  ("helm-projectile" . "58123f14c392021714fc5d23b9f95c7f95ce07f1")
  ("helm-rg" . "ee0a3c09da0c843715344919400ab0a0190cc9dc")
  ("ht.el" . "c4c1be487d6ecb353d07881526db05d7fc90ea87")
