@@ -214,7 +214,6 @@ ninja.build file."
           (shell-quote-argument file)
           (replace-regexp-in-string
            "^/\\(scp\\|ssh\\).+?:.+?:" ""
-           ;; satodo hmm
            (shell-quote-argument (file-name-directory file)))
           (let ((jobs (abs (if arg (prefix-numeric-value arg)
                              (if (= helm-make-nproc 0) (helm--make-get-nproc)
