@@ -176,10 +176,14 @@ If it fails to do so, `1' will be returned.
                            (unless (equal (car (helm-marked-candidates)) target)
                              (setq target (car (helm-marked-candidates))) nil))
                        (mapconcat 'identity (helm-marked-candidates) " ")))
-         (make-command (format helm-make-command (or targets target)))
+         (make-command (helm--wrap-in-make helm-make-filename (or targets target)))
          (compile-buffer (compile make-command helm-make-comint)))
+
     (when helm-make-named-buffer
-      (helm--make-rename-buffer compile-buffer (or targets target)))))
+      (helm--make-rename-buffer compile-buffer (or targets target)))
+    )
+
+  )
 
 (defun helm--make-rename-buffer (buffer target)
   "Rename the compilation BUFFER based on the make TARGET."
@@ -195,22 +199,34 @@ If it fails to do so, `1' will be returned.
   "Will be 'ninja if the file name is `build.ninja',
 and if the file exists 'make otherwise.")
 
-(defun helm--make-construct-command (arg file)
-  "Construct the `helm-make-command'.
+(defun helm--wrap-in-make (file targets)
+  (cond
+   ((equal (substring file -8) "pure.nix")
+    (helm--wrap-in-nix-pure (build-make-command file targets)))
+   ((equal (file-name-extension file) "nix")
+    (helm--wrap-in-nix (build-make-command file targets)))
+   (t
+    (build-make-command file targets))
+   )
+  )
 
-ARG should be universal prefix value passed to `helm-make' or
-`helm-make-projectile', and file is the path to the Makefile or the
-ninja.build file."
-  ;; we build the command here
-  (format (concat "%s%s -f %s -C %s " helm-make-arguments " %%s")
+(defun helm--wrap-in-nix (originalCommand)
+  (format "nix-shell --command \"%s\""originalCommand))
+
+(defun helm--wrap-in-nix-pure (originalCommand)
+  (format "nix-shell --pure --command \"%s\"" originalCommand ))
+
+(defun build-make-command (file targets)
+  (format (concat "%s%s -f %s -C %s " helm-make-arguments " %s")
           (if (= helm-make-niceness 0)
               ""
             (format "nice -n %d " helm-make-niceness))
           (cond
-            ((equal helm--make-build-system 'ninja)
-             helm-make-ninja-executable)
-            (t
-             helm-make-executable))
+           ((equal helm--make-build-system 'ninja)
+            helm-make-ninja-executable)
+           (t
+            helm-make-executable)
+           )
           (shell-quote-argument file)
           (replace-regexp-in-string
            "^/\\(scp\\|ssh\\).+?:.+?:" ""
@@ -218,7 +234,10 @@ ninja.build file."
           (let ((jobs (abs (if arg (prefix-numeric-value arg)
                              (if (= helm-make-nproc 0) (helm--make-get-nproc)
                                helm-make-nproc)))))
-            (if (> jobs 0) jobs 1))))
+            (if (> jobs 0) jobs 1))
+          targets
+          )
+  )
 
 (defcustom helm-make-directory-functions-list
   '(helm-make-current-directory helm-make-project-directory helm-make-dominating-directory)
@@ -241,7 +260,7 @@ ninja.build file."
      helm-make-directory-functions-list)
     (if (not makefile)
         (error "No build file in %s" default-directory)
-      (setq helm-make-command (helm--make-construct-command arg makefile))
+      (setq helm-make-filename makefile)
       (helm--make makefile))))
 
 (defconst helm--make-ninja-target-regexp "^\\(.+\\): "
@@ -451,7 +470,7 @@ setting the buffer local variable `helm-make-build-dir'."
                      `(,@helm-make-build-dir "" "build")))))
     (if (not makefile)
         (error "No build file found for project %s" (projectile-project-root))
-      (setq helm-make-command (helm--make-construct-command arg makefile))
+      (setq helm-make-filename makefile)
       (helm--make makefile))))
 
 (defvar project-roots)

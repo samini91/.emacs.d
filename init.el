@@ -221,8 +221,10 @@
 (require 'helm-make)
 
 (setq helm-make-named-buffer t)
-(setq helm-make-makefile-names '("SA" "Command" "command" "COMMAND" "Makefile"))
+(setq helm-make-makefile-names '("SA" "SA.nix" "SA.pure.nix" "Command" "command" "COMMAND" "Makefile"))
 (setq helm-make-nproc 0)
+(add-to-list 'auto-mode-alist '("SA.pure.nix\\'" . makefile-mode))
+(add-to-list 'auto-mode-alist '("SA.nix\\'" . makefile-mode))
 (add-to-list 'auto-mode-alist '("SA\\'" . makefile-mode))
 (add-to-list 'auto-mode-alist '("Command\\'" . makefile-mode))
 (add-to-list 'auto-mode-alist '("command\\'" . makefile-mode))
