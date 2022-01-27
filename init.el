@@ -230,6 +230,10 @@
 (add-to-list 'auto-mode-alist '("command\\'" . makefile-mode))
 (add-to-list 'auto-mode-alist '("COMMAND\\'" . makefile-mode))
 
+;; Open compile buffer in the origin buffer
+(add-to-list 'display-buffer-alist
+             '("*compilation*" display-buffer-same-window))
+
 (use-package pdf-tools)
 (use-package org-download
   :config
