@@ -78,7 +78,7 @@
     ("q" helm-projectile "Projectile")
     ("f" helm-semantic-or-imenu "Functions")
     ("d" helm-show-kill-ring "Kill-Ring")
-    ("z" helm-rg "RipGrep")
+    ("z" helm-rg "RipGrep-Helm")
     ("h" helm-resume "Helm-Resume")
 
     )
@@ -98,11 +98,19 @@
     ("e" projectile-run-eshell "Projectile Eshell")
     ("s" (lambda () (interactive) (eshell) (rename-uniquely) ) "Eshell")
     ("i" init-file "Init-File")
+    ("g" hydra-grep/body "grep")
     ("n" nixos-file "NixOS Configuration")
     ("r" replace-string "Replace String")
     ("m" helm-make-projectile "Makefile")
     ("w" ace-window "Window Management")
     ("k" view-lossage "KeyStrokes")
+    )
+
+  (defhydra hydra-grep (:color blue :hint nil)
+    "Grep tools"
+    ("g" rgrep "rgrep")
+    ("r" ripgrep-regexp "RipGrep")
+    ("e" wgrep-change-to-wgrep-mode "Write Grep")
     )
   
   (key-chord-define-global ";x" 'hydra-global-execute/body)
@@ -207,6 +215,8 @@
 (use-package helm-rg
   :requires (helm)
   )
+(use-package ripgrep)
+  
 (use-package swiper-helm)
 (use-package smartparens)
 (use-package restclient
