@@ -652,6 +652,7 @@
 
 ;;;;;;;;;;;; TypeScript ;;;;;;;;;;;;
 (use-package typescript-mode)
+(use-package mocha)
 (require 'dap-node)
 
 
