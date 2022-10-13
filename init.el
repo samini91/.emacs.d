@@ -573,6 +573,9 @@
   (define-key web-mode-map (kbd "C-c C-d") 'uncomment-region)
   )
 
+;;;;;;;;; JSON ;;;;;;;;;;;;;
+(use-package json-mode)
+
 ;;;;;;;;;;;PowerShell;;;;;;;;;;
 (use-package powershell)
 
