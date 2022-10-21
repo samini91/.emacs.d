@@ -1,11 +1,11 @@
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
+      (bootstrap-version 6))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
         (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
          'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
@@ -233,12 +233,13 @@
 (setq helm-make-named-buffer t)
 (setq helm-make-makefile-names '("SA" "SA.nix" "SA.pure.nix" "Command" "command" "COMMAND" "Makefile" "command.nix" "commands.nix" "Commands.nix"))
 (setq helm-make-nproc 0)
-(add-to-list 'auto-mode-alist '("SA.pure.nix\\'" . makefile-mode))
-(add-to-list 'auto-mode-alist '("SA.nix\\'" . makefile-mode))
-(add-to-list 'auto-mode-alist '("SA\\'" . makefile-mode))
-(add-to-list 'auto-mode-alist '("Command\\'" . makefile-mode))
-(add-to-list 'auto-mode-alist '("command\\'" . makefile-mode))
-(add-to-list 'auto-mode-alist '("COMMAND\\'" . makefile-mode))
+(add-to-list 'auto-mode-alist '("SA.pure.nix" . makefile-mode))
+(add-to-list 'auto-mode-alist '("SA.nix" . makefile-mode))
+(add-to-list 'auto-mode-alist '("commands.nix" . makefile-mode))
+(add-to-list 'auto-mode-alist '("SA" . makefile-mode))
+(add-to-list 'auto-mode-alist '("Command" . makefile-mode))
+(add-to-list 'auto-mode-alist '("command" . makefile-mode))
+(add-to-list 'auto-mode-alist '("COMMAND" . makefile-mode))
 
 ;; Open compile buffer in the origin buffer
 (add-to-list 'display-buffer-alist
