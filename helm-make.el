@@ -201,9 +201,9 @@ and if the file exists 'make otherwise.")
 
 (defun helm--wrap-in-make (file targets)
   (cond
-   ((equal (substring file -8) "pure.nix")
+   ((equal (substring file -8) "pure.nixwrap")
     (helm--wrap-in-nix-pure (build-make-command file targets)))
-   ((equal (file-name-extension file) "nix")
+   ((equal (file-name-extension file) "nixwrap")
     (helm--wrap-in-nix (build-make-command file targets)))
    (t
     (build-make-command file targets))
