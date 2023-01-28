@@ -201,20 +201,60 @@ and if the file exists 'make otherwise.")
 
 (defun helm--wrap-in-make (file targets)
   (cond
-   ((equal (substring file -8) "pure.nixwrap")
-    (helm--wrap-in-nix-pure (build-make-command file targets)))
-   ((equal (file-name-extension file) "nixwrap")
-    (helm--wrap-in-nix (build-make-command file targets)))
+   ;; check if flake.nix exists and pipe accordingly
+   ;; if we find a file called nixwrap
+   (
+    (equal (file-name-extension file) "nixwrap")
+    (run-wrap file targets)
+    )
+   ;; if we find a file called pure.nixwrap
+   (
+    (equal (substring file -8) "pure.nixwrap")
+    (run-wrap-pure file targets)
+    )
+   ;; default case
    (t
     (build-make-command file targets))
+   )
+  )
+
+(defun run-wrap-pure (file targets)
+  (cond
+     (
+      (file-exists-p "flake.nix")
+      (helm--wrap-in-nix-pure-flake (build-make-command file targets))
+      )
+     (t
+      (helm--wrap-in-nix-pure (build-make-command file targets))
+      )
+     )
+  )
+
+(defun run-wrap (file targets)
+  (cond
+   (
+    (file-exists-p "flake.nix")
+    (helm--wrap-in-nix-flake (build-make-command file targets))
+    )
+
+   (t
+    (helm--wrap-in-nix (build-make-command file targets))
+    )
+   
    )
   )
 
 (defun helm--wrap-in-nix (originalCommand)
   (format "nix-shell --command \"%s\""originalCommand))
 
+(defun helm--wrap-in-nix-flake (originalCommand)
+  (format "nix develop --command %s" originalCommand))
+
 (defun helm--wrap-in-nix-pure (originalCommand)
   (format "nix-shell --pure --command \"%s\"" originalCommand ))
+
+(defun helm--wrap-in-nix-pure-flake (originalCommand)
+  (format "nix develop --pure-eval --command %s" originalCommand))
 
 (defun build-make-command (file targets)
   (format (concat "%s%s -f %s -C %s " helm-make-arguments " %s")
