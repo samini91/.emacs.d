@@ -13,3 +13,4 @@ Macros are <f3> to start and <f4> to finish
 C-h k 
 will describe the key 
 
+pull-all then freeze
