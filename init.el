@@ -656,6 +656,7 @@
 (use-package typescript-mode)
 (use-package mocha)
 (require 'dap-node)
+(use-package coffee-mode)
 
 
 ;;;;;;;;;;;; Go ;;;;;;;;;;;;;;;;;
