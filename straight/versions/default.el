@@ -57,7 +57,7 @@
  ("js2-mode" . "dd7abb28844f745f7520db87695b7aa579cbe683")
  ("json-mode" . "eedb4560034f795a7950fa07016bd4347c368873")
  ("json-snatcher" . "b28d1c0670636da6db508d03872d96ffddbc10f2")
- ("key-chord" . "e724def60fdf6473858f2962ae276cf4413473eb")
+ ("key-chord" . "7f7fd7c5bd2b996fa054779357e1566f7989e07d")
  ("kubernetes-el" . "b0fb60564e818c30d6fc8744e229c8ed0707ce7a")
  ("kubernetes-helm" . "f70e2efa6ef869143ccb2f158f4ab7df91dcc58f")
  ("kubernetes-tramp" . "8713571b66940f8f3f496b55baa23cdf1df7a869")
