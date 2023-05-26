@@ -46,7 +46,7 @@
  ("groovy-emacs-modes" . "7b8520b2e2d3ab1d62b35c426e17ac25ed0120bb")
  ("haskell-mode" . "98d0e193a6157a810330e83e46717a37d5a4d236")
  ("haskell-snippets" . "1c29c4a68ce89848b8d371c6510d1de3b586c8b3")
- ("helm" . "494adcecf3b248e5bb7bf1b0aa5ffe2ac93f74e6")
+ ("helm" . "114b405b2feb7d2d293086802dd3cb4e1522d96d")
  ("helm-hoogle" . "73969a9d46d2121a849a01a9f7ed3636d01f7bbc")
  ("helm-projectile" . "35a2111d00c0c0c9d8743280d3f1243bb217118a")
  ("helm-rg" . "ee0a3c09da0c843715344919400ab0a0190cc9dc")
