@@ -46,7 +46,7 @@
  ("groovy-emacs-modes" . "7b8520b2e2d3ab1d62b35c426e17ac25ed0120bb")
  ("haskell-mode" . "98d0e193a6157a810330e83e46717a37d5a4d236")
  ("haskell-snippets" . "1c29c4a68ce89848b8d371c6510d1de3b586c8b3")
- ("helm" . "dfd6403947c5cd9f32afcd6bc92a1756cc958c82")
+ ("helm" . "dfd6403947c5cd9f32afcd6bc92a1756cc958c82") ;; NOTE (5/2023): The later versions do not allow full helm-rg runs.
  ("helm-hoogle" . "73969a9d46d2121a849a01a9f7ed3636d01f7bbc")
  ("helm-projectile" . "35a2111d00c0c0c9d8743280d3f1243bb217118a")
  ("helm-rg" . "ee0a3c09da0c843715344919400ab0a0190cc9dc")
@@ -57,7 +57,7 @@
  ("js2-mode" . "dd7abb28844f745f7520db87695b7aa579cbe683")
  ("json-mode" . "eedb4560034f795a7950fa07016bd4347c368873")
  ("json-snatcher" . "b28d1c0670636da6db508d03872d96ffddbc10f2")
- ("key-chord" . "7f7fd7c5bd2b996fa054779357e1566f7989e07d")
+ ("key-chord" . "7f7fd7c5bd2b996fa054779357e1566f7989e07d") ;; NOTE (5/2023): The later versions lag
  ("kubernetes-el" . "b0fb60564e818c30d6fc8744e229c8ed0707ce7a")
  ("kubernetes-helm" . "f70e2efa6ef869143ccb2f158f4ab7df91dcc58f")
  ("kubernetes-tramp" . "8713571b66940f8f3f496b55baa23cdf1df7a869")
