@@ -43,7 +43,7 @@
   (doom-themes-treemacs-config)
   (setq column-number-mode t)
   (add-hook 'after-init-hook (lambda ()
-                               (load-theme 'doom-city-lights t)
+                               (load-theme 'doom-monokai-machine t)
                                (custom-set-faces
                                 ;; custom-set-faces was added by Custom.
                                 ;; If you edit it by hand, you could mess it up, so be careful.
@@ -640,7 +640,7 @@
          ])
   )
 
-(use-package lsp-python-ms)
+(use-package lsp-pyright)
 
 (use-package lsp-treemacs)
 
