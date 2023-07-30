@@ -58,6 +58,53 @@
 (use-package all-the-icons)
 ;;(when (member "Inconsolata" (font-family-list)) (set-frame-font "Inconsolata-8:bold" t t))
 
+(use-package helm  
+  :config
+  (helm-mode 1)
+  (global-set-key (kbd "M-x") 'helm-M-x)
+  (setq helm-buffer-details-flag nil)
+  (define-key helm-buffer-map (kbd "C-d") 'helm-buffer-run-kill-persistent)
+  )
+
+;;(use-package projectile) helm-projectile might import it already
+(use-package helm-projectile
+  :config
+  ;; doesnt invalidate the cache as expected....
+  ;;(setq projectile-enable-caching t)
+  ;; todo clean this up
+  :init (defun helm-projectile-rg ()
+    "Projectile version of `helm-rg'."
+    (interactive)
+    (if (require 'helm-rg nil t)
+        (if (projectile-project-p)
+            (let* ((helm-rg-prepend-file-name-line-at-top-of-matches nil)
+                   (helm-rg-include-file-on-every-match-line t)
+                   (ignored-files (mapcan (lambda (path)
+                                            (list "--glob" (concat "!" (glob-quote path))))
+                                          (cl-union (projectile-ignored-files-rel)  grep-find-ignored-files)))
+                   (ignored-directories (mapcan (lambda (path)
+                                                  (list "--glob" (concat "!" (glob-quote path) "/**")))
+                                                (cl-union (mapcar 'directory-file-name (projectile-ignored-directories-rel))
+                                                          grep-find-ignored-directories)))
+                   (helm-rg--extra-args `(,@ignored-files ,@ignored-directories)))
+              (let ((default-directory (projectile-project-root)))
+                (helm-do-grep-ag ()
+                                 )))
+          (error "You're not in a project"))
+      (when (yes-or-no-p "`helm-rg' is not installed. Install? ")
+        (condition-case nil
+            (progn
+              (package-install 'helm-rg)
+              (helm-projectile-rg))
+          (error "`helm-rg' is not available.  Is MELPA in your `package-archives'?")))))
+  )
+(use-package helm-rg
+  :requires (helm)
+  )
+(use-package ripgrep)
+
+
+
 (use-package hydra)
 
 (use-package key-chord
@@ -78,7 +125,7 @@
     ("q" helm-projectile "Projectile")
     ("f" helm-semantic-or-imenu "Functions")
     ("d" helm-show-kill-ring "Kill-Ring")
-    ("z" helm-rg "RipGrep-Helm")
+    ("z" helm-do-grep-ag "RipGrep-Helm")
     ("h" helm-resume "Helm-Resume")
 
     )
@@ -104,6 +151,7 @@
     ("m" helm-make-projectile "Makefile")
     ("w" ace-window "Window Management")
     ("k" view-lossage "KeyStrokes")
+    ("d" docker "Docker Management")
     )
 
   (defhydra hydra-grep (:color blue :hint nil)
@@ -198,24 +246,6 @@
 
   )
 
-(use-package helm  
-  :config
-  (helm-mode 1)
-  (global-set-key (kbd "M-x") 'helm-M-x)
-  (setq helm-buffer-details-flag nil)
-  (define-key helm-buffer-map (kbd "C-d") 'helm-buffer-run-kill-persistent)
-  )
-
-;;(use-package projectile) helm-projectile might import it already
-(use-package helm-projectile
-  :config
-  ;; doesnt invalidate the cache as expected....
-  ;;(setq projectile-enable-caching t)
-  )
-(use-package helm-rg
-  :requires (helm)
-  )
-(use-package ripgrep)
   
 (use-package swiper-helm)
 (use-package smartparens)
@@ -414,7 +444,9 @@
 (use-package fsharp-mode)
 
 ;;;;;;;;;;;; C Sharp ;;;;;;;;;;;;
-(use-package csharp-mode)
+;; This is apart of emacs 29
+;; (use-package csharp-mode)
+
 ;;(use-package omnisharp
 ;;;;  :ensure t
 ;;  :config
@@ -709,14 +741,18 @@
 ;;;;;;;;;;;;;;; Docker ;;;;;;;;;;;;;;;;;;
 (use-package docker)
 (use-package docker-api)
-(use-package docker-tramp)
 (use-package helm-tramp)
 
 ;;;;;;;;;;;;;;;; Kubernetes ;;;;;;;;;;;;;;
 (use-package k8s-mode)
 (use-package kubernetes)
 (use-package kubernetes-helm)
-(use-package kubernetes-tramp)
+
+
+;;;;;;;;;;;;;;; Tramp ;;;;;;;;;;;;;;;;;;
+;;(use-package tramp-container)
+;;(use-package docker-tramp)
+;;(use-package kubernetes-tramp)
 
 ;;;;;;;;;;;;;;; Universal KeyChords ;;;;;;;;;;;;;;;
 
@@ -934,4 +970,37 @@ _~_: modified
 ;; For Stable Packages
 ;; package-archive-priorities '(("melpa-stable" . 1)))
 package-archive-priorities '(("melpa" . 1)))
-	
+
+
+;; This works with this docker file ./testdockerfile 
+
+;(lsp-register-client
+; (make-lsp-client
+;  :new-connection
+;  (lsp-tramp-connection (lambda ()
+;                          (cons "pyright-langserver"
+;                                lsp-pyright-langserver-command-args)))
+;  :major-modes '(python-mode python-ts-mode)
+;  :server-id 'pyright-remote
+;  :multi-root lsp-pyright-multi-root
+;  :remote? t
+;  :priority 1
+;  :initialized-fn (lambda (workspace)
+;                    (with-lsp-workspace workspace
+;                      ;; we send empty settings initially, LSP server will ask for the
+;                      ;; configuration of each workspace folder later separately
+;                      (lsp--set-configuration
+;                       (make-hash-table :test 'equal))))
+;  :notification-handlers (lsp-ht ("pyright/beginProgress" 'lsp-pyright--begin-progress-callback)
+;                                 ("pyright/reportProgress" 'lsp-pyright--report-progress-callback)
+;                                 ("pyright/endProgress" 'lsp-pyright--end-progress-callback))))
+;
+;
+;(setq python-shell-interpreter "/docker:test:/usr/bin/python3")
+;
+
+
+
+
+
+;;(setq python-shell-interpreter "python")
