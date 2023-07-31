@@ -1,12 +1,19 @@
 FROM ubuntu:latest
+#FROM nixos/nix
 
 RUN apt-get update
-
-RUN apt-get -y install python3-pip curl 
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - &&\
-     apt-get install -y nodejs
-
-
+RUN apt-get -y install python3-pip curl git
 RUN python3 -m pip install pyright
+
+RUN curl -L https://nixos.org/nix/install > nix_script && sh ./nix_script --daemon
+RUN cd ~/ && git clone https://github.com/samini91/nixos.git
+RUN cd ~/ && git clone https://github.com/samini91/.emacs.d.git
+
+RUN mkdir -p ~/.config/nix
+RUN echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
+
+#SHELL ["/bin/sh", "-c"]
+#RUN bash -c "source ${HOME}/.bashrc" && cd ~/nixos && nix develop && emacs --daemon
+
 
 COPY . src/
