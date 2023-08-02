@@ -649,7 +649,7 @@ package-archive-priorities '(("melpa" . 1)))
   (js2-mode . lsp)
   (fsharp-mode . lsp)
   (sql-mode . lsp)
-  (python-mode . lsp) 
+;  (python-mode . lsp) 
   (csharp-mode . lsp)
   (scala-mode . lsp)
   (haskell-mode . lsp)
@@ -703,9 +703,9 @@ package-archive-priorities '(("melpa" . 1)))
 
 ;;;;;;;;;;;; Python ;;;;;;;;;;;;;;
 (use-package python-mode
-;;  :hook
-;  (python-mode . eglot-ensure)
-;  (python-ts-mode . eglot-ensure)
+  :hook
+  (python-mode . eglot-ensure)
+  (python-ts-mode . eglot-ensure)
   )
 
 ;;;;;;;;;;;; Javascript ;;;;;;;;;;;;
