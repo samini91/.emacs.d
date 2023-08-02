@@ -12,6 +12,17 @@
   (load bootstrap-file nil 'nomessage))
 
 
+;;;;;;;;;;;;;;; Package Repos ;;;;;;;;;;;;;;;
+(setq
+ package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                    ;; ("org" . "http://orgmode.org/elpa/")
+                    ("melpa" . "http://melpa.org/packages/")
+                    ("melpa-stable" . "http://stable.melpa.org/packages/"))
+
+;; For Stable Packages
+;; package-archive-priorities '(("melpa-stable" . 1)))
+package-archive-priorities '(("melpa" . 1)))
+
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 
@@ -72,7 +83,7 @@
   ;; doesnt invalidate the cache as expected....
   ;;(setq projectile-enable-caching t)
   ;; todo clean this up
-  :init (defun helm-projectile-rg ()
+  :init (defun projectile-helm-do-grep-ag ()
     "Projectile version of `helm-rg'."
     (interactive)
     (if (require 'helm-rg nil t)
@@ -98,11 +109,11 @@
               (helm-projectile-rg))
           (error "`helm-rg' is not available.  Is MELPA in your `package-archives'?")))))
   )
+
 (use-package helm-rg
   :requires (helm)
   )
 (use-package ripgrep)
-
 
 
 (use-package hydra)
@@ -121,7 +132,7 @@
     "Helm"
     ("s" swiper-helm "Swiper-Helm")
     ("a" helm-buffers-list "Buffer-List")
-    ("w" helm-projectile-rg "RipGrep-Projectile")
+    ("w" projectile-helm-do-grep-ag "RipGrep-Projectile")
     ("q" helm-projectile "Projectile")
     ("f" helm-semantic-or-imenu "Functions")
     ("d" helm-show-kill-ring "Kill-Ring")
@@ -630,11 +641,6 @@
   (define-key lsp-mode-map (kbd "C-c C-d") 'uncomment-region)
 
   (key-chord-define lsp-mode-map ";c" 'hydra-lsp-menu/body)
-  
-;;  (add-hook 'lsp-mode-hook
-;;	    (lambda ()
-  ;;	      (setq-local company-backends (list 'company-capf))))
-
 
   (add-hook 'go-mode-hook (lambda () (add-hook 'before-save-hook 'lsp-format-buffer nil 'local)))
   
@@ -643,7 +649,7 @@
   (js2-mode . lsp)
   (fsharp-mode . lsp)
   (sql-mode . lsp)
-  (python-mode . lsp)
+;;  (python-mode . lsp) using eglot since it does a better job at tramp
   (csharp-mode . lsp)
   (scala-mode . lsp)
   (haskell-mode . lsp)
@@ -696,7 +702,11 @@
 (require 'dap-go)
 
 ;;;;;;;;;;;; Python ;;;;;;;;;;;;;;
-(use-package python-mode)
+(use-package python-mode
+  :hook
+  (python-mode . eglot-ensure)
+  (python-ts-mode . eglot-ensure)
+  )
 
 ;;;;;;;;;;;; Javascript ;;;;;;;;;;;;
 
@@ -961,46 +971,4 @@ _~_: modified
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
-;;;;;;;;;;;;;;; Melpa ;;;;;;;;;;;;;;;
-(setq
- package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                    ;; ("org" . "http://orgmode.org/elpa/")
-                    ("melpa" . "http://melpa.org/packages/")
-                    ("melpa-stable" . "http://stable.melpa.org/packages/"))
-;; For Stable Packages
-;; package-archive-priorities '(("melpa-stable" . 1)))
-package-archive-priorities '(("melpa" . 1)))
 
-
-;; This works with this docker file ./testdockerfile 
-
-;(lsp-register-client
-; (make-lsp-client
-;  :new-connection
-;  (lsp-tramp-connection (lambda ()
-;                          (cons "pyright-langserver"
-;                                lsp-pyright-langserver-command-args)))
-;  :major-modes '(python-mode python-ts-mode)
-;  :server-id 'pyright-remote
-;  :multi-root lsp-pyright-multi-root
-;  :remote? t
-;  :priority 1
-;  :initialized-fn (lambda (workspace)
-;                    (with-lsp-workspace workspace
-;                      ;; we send empty settings initially, LSP server will ask for the
-;                      ;; configuration of each workspace folder later separately
-;                      (lsp--set-configuration
-;                       (make-hash-table :test 'equal))))
-;  :notification-handlers (lsp-ht ("pyright/beginProgress" 'lsp-pyright--begin-progress-callback)
-;                                 ("pyright/reportProgress" 'lsp-pyright--report-progress-callback)
-;                                 ("pyright/endProgress" 'lsp-pyright--end-progress-callback))))
-;
-;
-;(setq python-shell-interpreter "/docker:test:/usr/bin/python3")
-;
-
-
-
-
-
-;;(setq python-shell-interpreter "python")
