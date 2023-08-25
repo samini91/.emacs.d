@@ -142,13 +142,22 @@ package-archive-priorities '(("melpa" . 1)))
     )
   (key-chord-define-global ";f" 'hydra-global-helm/body)
 
+  (key-chord-define-global ";q" 'hydra-persp/body)
+
+    (defhydra hydra-persp (:color blue :hint nil)
+    "Helm"
+    ("s" persp-switch "Persp-Switch")
+    ("m" persp-merge "Persp-Merge")
+    ("u" persp-unmerge "Persp-UnMerge")
+    )
+
+
   (defhydra hydra-global-bookmarks (:color blue :hint nil)
     "Bookmarks"
     ("b" helm-bookmarks "Bookmarks")
     ("s" bookmark-set "Set Bookmark")
     )
   (key-chord-define-global ";b" 'hydra-global-bookmarks/body)
-
   
   (defhydra hydra-global-execute (:color blue :hint nil)
     "Execute"
@@ -649,7 +658,7 @@ package-archive-priorities '(("melpa" . 1)))
   (js2-mode . lsp)
   (fsharp-mode . lsp)
   (sql-mode . lsp)
-;;  (python-mode . lsp) using eglot since it does a better job at tramp
+  (python-mode . lsp)
   (csharp-mode . lsp)
   (scala-mode . lsp)
   (haskell-mode . lsp)
@@ -703,9 +712,9 @@ package-archive-priorities '(("melpa" . 1)))
 
 ;;;;;;;;;;;; Python ;;;;;;;;;;;;;;
 (use-package python-mode
-  :hook
-  (python-mode . eglot-ensure)
-  (python-ts-mode . eglot-ensure)
+ ;; :hook
+;  (python-mode . eglot-ensure)
+;  (python-ts-mode . eglot-ensure)
   )
 
 ;;;;;;;;;;;; Javascript ;;;;;;;;;;;;
