@@ -142,16 +142,6 @@ package-archive-priorities '(("melpa" . 1)))
     )
   (key-chord-define-global ";f" 'hydra-global-helm/body)
 
-  (key-chord-define-global ";q" 'hydra-persp/body)
-
-    (defhydra hydra-persp (:color blue :hint nil)
-    "Helm"
-    ("s" persp-switch "Persp-Switch")
-    ("m" persp-merge "Persp-Merge")
-    ("u" persp-unmerge "Persp-UnMerge")
-    )
-
-
   (defhydra hydra-global-bookmarks (:color blue :hint nil)
     "Bookmarks"
     ("b" helm-bookmarks "Bookmarks")
@@ -821,10 +811,21 @@ package-archive-priorities '(("melpa" . 1)))
 
 ;;;;;;;;;;;;;;;;;;;; Perspective ;;;;;;;;;;;;;;;;;;;;;;
 (use-package perspective
-  :bind
-  ("C-x C-b" . persp-list-buffers)   ; or use a nicer switcher, see below
+  :after (key-chord)
   :config
-  (persp-mode))
+
+  (defhydra hydra-persp (:color blue :hint nil)
+    "Persp Mode"
+    ("s" persp-switch "Persp-Switch")
+    ("m" persp-merge "Persp-Merge")
+    ("u" persp-unmerge "Persp-UnMerge")
+    )
+  
+  (key-chord-define-global ";q" 'hydra-persp/body)    
+  (persp-mode)
+  )
+
+
 ;;;;;;;;;;;;;;;;;;;; Global-Modes ;;;;;;;;;;;;;;;;;;
 (add-hook 'after-init-hook 'show-paren-mode)
 (add-hook 'after-init-hook 'projectile-mode)
