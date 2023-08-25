@@ -816,7 +816,7 @@ package-archive-priorities '(("melpa" . 1)))
 
   (defhydra hydra-persp (:color blue :hint nil)
     "Persp Mode"
-    ("s" persp-switch "Persp-Switch")
+    ("a" persp-switch "Persp-Switch")
     ("m" persp-merge "Persp-Merge")
     ("u" persp-unmerge "Persp-UnMerge")
     )
