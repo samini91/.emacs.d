@@ -124,7 +124,7 @@ package-archive-priorities '(("melpa" . 1)))
   (setq key-chord-two-keys-delay .040)
   ;;;;;;;;;;;;;;; Helm KeyChords ;;;;;;;;;;;;;;;
   (key-chord-define-global ";s" 'swiper-helm)
-  (key-chord-define-global ";a" 'helm-buffers-list)
+  (key-chord-define-global ";a" 'helm-buffers-list-sa)
   (key-chord-define-global ";f" 'helm-semantic-or-imenu)
   (key-chord-define-global ";d" 'helm-show-kill-ring)
 
@@ -977,8 +977,535 @@ _~_: modified
   scroll-conservatively 10000
   scroll-preserve-screen-position 1)
 
+
+(defun helm-fuzzy-matching-default-sort-fn-1 (candidates &optional use-real basename preserve-tie-order)
+  "The transformer for sorting candidates in fuzzy matching.
+It sorts on the display part by default.
+
+It sorts CANDIDATES by their scores as calculated by
+`helm-score-candidate-for-pattern'.  Set USE-REAL to non-nil to
+sort on the real part.  If BASENAME is non-nil assume we are
+completing filenames and sort on basename of candidates.  If
+PRESERVE-TIE-ORDER is nil, ties in scores are sorted by length of
+the candidates."
+  (if (string= helm-pattern "")
+      candidates
+    (let ((table-scr (make-hash-table :test 'equal)))
+      (sort candidates
+            (lambda (s1 s2)
+              ;; Score and measure the length on real or display part of candidate
+              ;; according to `use-real'.
+              (let* ((real-or-disp-fn (if use-real #'cdr #'car))
+                     (cand1 (cond ((and basename (consp s1))
+                                   (helm-basename (funcall real-or-disp-fn s1)))
+                                  ((consp s1) (funcall real-or-disp-fn s1))
+                                  (basename (helm-basename s1))
+                                  (t s1)))
+                     (cand2 (cond ((and basename (consp s2))
+                                   (helm-basename (funcall real-or-disp-fn s2)))
+                                  ((consp s2) (funcall real-or-disp-fn s2))
+                                  (basename (helm-basename s2))
+                                  (t s2)))
+                     (data1 (or (gethash cand1 table-scr)
+                                (puthash cand1
+                                         (list (helm-score-candidate-for-pattern
+                                                cand1 helm-pattern)
+                                               (length (helm-stringify cand1)))
+                                         table-scr)))
+                     (data2 (or (gethash cand2 table-scr)
+                                (puthash cand2
+                                         (list (helm-score-candidate-for-pattern
+                                                cand2 helm-pattern)
+                                               (length (helm-stringify cand2)))
+                                         table-scr)))
+                     (len1 (cadr data1))
+                     (len2 (cadr data2))
+                     (scr1 (car data1))
+                     (scr2 (car data2)))
+                (cond ((= scr1 scr2)
+                       (unless preserve-tie-order
+                         (< len1 len2)))
+                      ((> scr1 scr2)))))))))
+
+
+
+(defun helm-fuzzy-matching-default-sort-fn (candidates _source)
+  "Default `filtered-candidate-transformer' to sort in fuzzy matching."
+  (helm-fuzzy-matching-default-sort-fn-1 candidates))
+
+;(setq helm-buffers-sort-fn 'helm-fuzzy-matching-default-sort-fn)
+
+
 ;;;;;;;;;;;;;;;;;;Custom File;;;;;;;;;;;;;;;;;;
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
+(load "~/.emacs.d/buffers.el")
 
+
+
+
+
+
+
+
+
+
+
+
+
+;;; ibuffer-vc.el --- Group ibuffer's list by VC project, or show VC status  -*- lexical-binding: t -*-
+;;
+;; Copyright (C) 2011-2014 Steve Purcell
+;;
+;; Author: Steve Purcell <steve@sanityinc.com>
+;; Keywords: convenience
+;; Package-Requires: ((emacs "25.1") (seq "2"))
+;; URL: https://github.com/purcell/ibuffer-vc
+;; Version: 0.12
+;;
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+;;
+;;; Commentary:
+;;
+;; Adds functionality to ibuffer for grouping buffers by their parent
+;; vc root directory, and for displaying and/or sorting by the vc
+;; status of listed files.
+;;
+;;; Use:
+;;
+;; To group buffers by vc parent dir:
+;;
+;;   M-x ibuffer-vc-set-filter-groups-by-vc-root
+;;
+;; or, make this the default:
+;;
+;;   (add-hook 'ibuffer-hook
+;;     (lambda ()
+;;       (ibuffer-vc-set-filter-groups-by-vc-root)
+;;       (unless (eq ibuffer-sorting-mode 'alphabetic)
+;;         (ibuffer-do-sort-by-alphabetic))))
+;;
+;; Alternatively, use `ibuffer-vc-generate-filter-groups-by-vc-root'
+;; to programmatically obtain a list of filter groups that you can
+;; combine with your own custom groups.
+;;
+;; To include vc status info in the ibuffer list, add either
+;; vc-status-mini or vc-status to `ibuffer-formats':
+;;
+;; (setq ibuffer-formats
+;;       '((mark modified read-only vc-status-mini " "
+;;               (name 18 18 :left :elide)
+;;               " "
+;;               (size 9 -1 :right)
+;;               " "
+;;               (mode 16 16 :left :elide)
+;;               " "
+;;               (vc-status 16 16 :left)
+;;               " "
+;;               vc-relative-file)))
+;;
+;; To sort by vc status, use `ibuffer-do-sort-by-vc-status', which can
+;; also be selected by repeatedly executing
+;; `ibuffer-toggle-sorting-mode' (bound to "," by default).
+;;
+;;; Code:
+
+;; requires
+
+(require 'ibuffer)
+(require 'ibuf-ext)
+(require 'vc-hooks)
+(require 'seq)
+
+
+(defgroup ibuffer-vc nil
+  "Group ibuffer entries according to their version control status."
+  :prefix "ibuffer-vc-"
+  :group 'convenience)
+
+(defcustom ibuffer-vc-skip-if-remote t
+  "If non-nil, don't query the VC status of remote files."
+  :type 'boolean
+  :group 'ibuffer-vc)
+
+(defcustom ibuffer-vc-include-function 'identity
+  "A function which tells whether a given file should be grouped.
+
+The function is passed a filename, and should return non-nil if the file
+is to be grouped.
+
+This option can be used to exclude certain files from the grouping mechanism."
+  :type 'function
+  :group 'ibuffer-vc)
+
+(defcustom ibuffer-vc-buffer-file-name-function 'ibuffer-vc-buffer-file-truename
+  "Function which tells the file name associated with a buffer.
+
+The function is passed a buffer, and should return the file name
+to associate with that buffer.
+
+This option can be configured along with
+`ibuffer-vc-include-function' to include or exclude certain
+buffers from the grouping mechanism."
+  :type 'function
+  :group 'ibuffer-vc)
+
+;;; Group and filter ibuffer entries by parent vc directory
+
+(defun ibuffer-vc-buffer-file-truename (buf)
+  "Return the truename of the file associated with BUF.
+
+The file associated with BUF is the one that BUF is visiting,
+whose file name is stored in the buffer-local variable
+`buffer-file-name'.
+
+If that is nil, but BUF sets the variable
+`list-buffers-directory' (for example, Dired and Magit buffers),
+then consider that directory to be the file associated with the
+buffer.
+
+If neither of those is set for BUF, return nil."
+  (with-current-buffer buf
+    (when-let ((file-name (or buffer-file-name
+                              list-buffers-directory)))
+      (file-truename file-name))))
+
+(defun ibuffer-vc--include-file-p (file)
+  "Return t iff FILE should be included in ibuffer-vc's filtering."
+  (and file
+       (or (null ibuffer-vc-skip-if-remote)
+           (not (file-remote-p file)))
+       (funcall ibuffer-vc-include-function file)))
+
+(defun ibuffer-vc--deduce-backend (file)
+  "Return the vc backend for FILE, or nil if not under VC supervision."
+  (if (fboundp 'vc-responsible-backend)
+      (ignore-errors (vc-responsible-backend file))
+    (or (vc-backend file)
+        (seq-filter (lambda (b) (vc-call-backend b 'responsible-p file)) vc-handled-backends))))
+
+(defun ibuffer-vc-root (buf)
+  "Return a cons cell (backend-name . root-dir) for BUF.
+If the file is not under version control, nil is returned instead."
+  (let ((file-name (funcall ibuffer-vc-buffer-file-name-function buf)))
+    (when (ibuffer-vc--include-file-p file-name)
+      (when-let ((backend (ibuffer-vc--deduce-backend file-name)))
+        (let* ((root-fn-name (intern (format "vc-%s-root" (downcase (symbol-name backend)))))
+               (root-dir
+                (cond
+                 ((fboundp root-fn-name) (funcall root-fn-name file-name)) ; git, svn, hg, bzr (at least)
+                 ((memq backend '(darcs DARCS)) (vc-darcs-find-root file-name))
+                 ((memq backend '(cvs CVS)) (vc-find-root file-name "CVS"))
+                 ((memq backend '(rcs RCS)) (or (vc-find-root file-name "RCS")
+                                                (concat file-name ",v")))
+                 ((memq backend '(sccs SCCS)) (or (vc-find-root file-name "SCCS")
+                                                  (concat "s." file-name)))
+                 ((memq backend '(src SRC)) (or (vc-find-root file-name ".src")
+                                                (concat file-name ",v")))
+                 (t (error "ibuffer-vc: don't know how to find root for vc backend '%s' - please submit a bug report or patch" backend)))))
+          (cons backend root-dir))))))
+
+(defun ibuffer-vc-read-filter ()
+  "Read a cons cell of (backend-name . root-dir)."
+  (cons (car (read-from-string
+              (completing-read "VC backend: " vc-handled-backends nil t)))
+        (read-directory-name "Root directory: " nil nil t)))
+
+(define-ibuffer-filter vc-root
+    "Toggle current view to buffers with vc root dir QUALIFIER."
+  (:description "vc root dir"
+                :reader (ibuffer-vc-read-filter))
+  (when-let ((it (ibuffer-vc-root buf)))
+    (equal qualifier it)))
+
+;;;###autoload
+(defun ibuffer-vc-generate-filter-groups-by-vc-root ()
+  "Create a set of ibuffer filter groups based on the vc root dirs of buffers."
+  (let ((roots (seq-uniq
+                (delq nil (mapcar 'ibuffer-vc-root (buffer-list))))))
+    (mapcar (lambda (vc-root)
+              (cons (format "%s: %s" (car vc-root) (cdr vc-root))
+                    `((vc-root . ,vc-root))))
+            roots)))
+
+;;;###autoload
+(defun ibuffer-vc-set-filter-groups-by-vc-root ()
+  "Set the current filter groups to filter by vc root dir."
+  (interactive)
+  (setq ibuffer-filter-groups (ibuffer-vc-generate-filter-groups-by-vc-root))
+  (message "ibuffer-vc: groups set")
+  (when-let ((ibuf (get-buffer "*Ibuffer*")))
+    (with-current-buffer ibuf
+      (pop-to-buffer ibuf)
+      (ibuffer-update nil t))))
+
+
+;;; Display vc status info in the ibuffer list
+
+(defun ibuffer-vc--state (file)
+  "Return the `vc-state' for FILE, or nil if unregistered."
+  (ignore-errors (vc-state file)))
+
+(defun ibuffer-vc--status-string ()
+  "Return a short string to represent the current buffer's status."
+  (when (and buffer-file-name (ibuffer-vc--include-file-p buffer-file-name))
+    (let ((state (ibuffer-vc--state buffer-file-name)))
+      (if state
+          (symbol-name state)
+        "-"))))
+
+;;;###autoload (autoload 'ibuffer-make-column-vc-status "ibuffer-vc")
+(define-ibuffer-column vc-status
+  (:name "VC status")
+  (ibuffer-vc--status-string))
+
+;;;###autoload (autoload 'ibuffer-make-column-vc-relative-file "ibuffer-vc")
+(define-ibuffer-column vc-relative-file
+  (:name "Filename")
+  (if buffer-file-name
+      (let ((root (cdr (ibuffer-vc-root buffer))))
+        (if root
+            (file-relative-name buffer-file-name root)
+          (abbreviate-file-name buffer-file-name)))
+    ""))
+
+;;;###autoload (autoload 'ibuffer-make-column-vc-status-mini "ibuffer-vc")
+(define-ibuffer-column vc-status-mini
+  (:name "V")
+  (if (and buffer-file-name (ibuffer-vc--include-file-p buffer-file-name))
+      (let ((state (ibuffer-vc--state buffer-file-name)))
+        (cond
+         ((eq 'added state) "A")
+         ((eq 'removed state) "D")
+         ((eq 'up-to-date state) "=")
+         ((eq 'edited state) "*")
+         ((eq 'needs-update state) "O")
+         ((memq state '(conflict needs-merge unlocked-changes)) "!")
+         ((eq 'ignored state) "I")
+         ((memq state '(() unregistered missing)) "?")))
+    " "))
+
+;;;###autoload (autoload 'ibuffer-do-sort-by-vc-status "ibuffer-vc")
+(define-ibuffer-sorter vc-status
+  "Sort the buffers by their vc status."
+  (:description "vc status")
+  (let ((file1 (with-current-buffer (car a)
+                 buffer-file-name))
+        (file2 (with-current-buffer (car b)
+                 buffer-file-name)))
+    (if (and file1 file2)
+        (string-lessp (with-current-buffer (car a)
+                        (ibuffer-vc--status-string))
+                      (with-current-buffer (car b)
+                        (ibuffer-vc--status-string)))
+      (not (null file1)))))
+
+
+(provide 'ibuffer-vc)
+;;; ibuffer-vc.el ends here
+
+
+
+
+
+;;; ibuffer-projectile.el --- Group ibuffer's list by projectile root  -*- lexical-binding: t -*-
+;;
+;; Copyright (C) 2011-2014 Steve Purcell
+;;
+;; Author: Steve Purcell <steve@sanityinc.com>
+;; Keywords: convenience
+;; Package-Requires: ((projectile "0.11.0") (emacs "25.1") (seq "2"))
+;; URL: https://github.com/purcell/ibuffer-projectile
+;; Package-Version: 0.4
+;;
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+;;
+;;; Commentary:
+;;
+;; Adds functionality to ibuffer for grouping buffers by their projectile
+;; root directory.
+;;
+;;; Use:
+;;
+;; To group buffers by projectile root dir:
+;;
+;;   M-x ibuffer-projectile-set-filter-groups
+;;
+;; or, make this the default:
+;;
+;;   (add-hook 'ibuffer-hook
+;;     (lambda ()
+;;       (ibuffer-projectile-set-filter-groups)
+;;       (unless (eq ibuffer-sorting-mode 'alphabetic)
+;;         (ibuffer-do-sort-by-alphabetic))))
+;;
+;; Alternatively, use `ibuffer-projectile-generate-filter-groups'
+;; to programmatically obtain a list of filter groups that you can
+;; combine with your own custom groups.
+;;
+;; To display filenames relative to the project root, use project-relative-file
+;; in `ibuffer-formats', e.g.:
+;;
+;; (setq ibuffer-formats
+;;       '((mark modified read-only " "
+;;               (name 18 18 :left :elide)
+;;               " "
+;;               (size 9 -1 :right)
+;;               " "
+;;               (mode 16 16 :left :elide)
+;;               " "
+;;               project-relative-file)))
+
+;;; Code:
+
+(require 'ibuffer)
+(require 'ibuf-ext)
+(require 'projectile)
+(require 'seq)
+
+
+(defgroup ibuffer-projectile nil
+  "Group ibuffer entries according to their projectile root directory."
+  :prefix "ibuffer-projectile-"
+  :group 'convenience)
+
+(defcustom ibuffer-projectile-skip-if-remote t
+  "If non-nil, don't query the status of remote files."
+  :type 'boolean
+  :group 'ibuffer-projectile)
+
+(defcustom ibuffer-projectile-include-function 'identity
+  "A function which tells whether a given file should be grouped.
+
+The function is passed a filename, and should return non-nil if the file
+is to be grouped.
+
+This option can be used to exclude certain files from the grouping mechanism."
+  :type 'function
+  :group 'ibuffer-projectile)
+
+(defcustom ibuffer-projectile-prefix "Projectile:"
+  "Prefix string for generated filter groups."
+  :type 'string
+  :group 'ibuffer-projectile)
+
+(defcustom ibuffer-projectile-group-name-function 'ibuffer-projectile-default-group-name
+  "Function used to produce the name for a group.
+The function is passed two arguments: the projectile project
+name, and the root directory path."
+  :type 'function
+  :group 'ibuffer-projectile)
+
+(defun ibuffer-projectile-default-group-name (project-name root-dir)
+  "Produce an ibuffer group name string for PROJECT-NAME and ROOT-DIR."
+  (format "%s%s" ibuffer-projectile-prefix project-name))
+
+(defun ibuffer-projectile--include-file-p (file)
+  "Return t iff FILE should be included in ibuffer-projectile's filtering."
+  (and file
+       (or (null ibuffer-projectile-skip-if-remote)
+           (not (file-remote-p file)))
+       (funcall ibuffer-projectile-include-function file)))
+
+(defun ibuffer-projectile-root (buf)
+  "Return a cons cell (project-name . root-dir) for BUF.
+If the file is not in a project, then nil is returned instead."
+  (with-current-buffer buf
+    (let ((file-name (ibuffer-buffer-file-name))
+          (root (ignore-errors (projectile-project-root))))
+      (when (and file-name
+                 root
+                 (ibuffer-projectile--include-file-p file-name))
+        (cons (projectile-project-name) root)))))
+
+(define-ibuffer-filter projectile-root
+    "Toggle current view to buffers with projectile root dir QUALIFIER."
+  (:description "projectile root dir"
+                :reader (read-regexp "Filter by projectile root dir (regexp): "))
+  (when-let ((it (ibuffer-projectile-root buf)))
+    (if (stringp qualifier)
+        (or (string-match-p qualifier (car it))
+            (string-match-p qualifier (cdr-safe it)))
+      (equal qualifier it))))
+
+;;;###autoload (autoload 'ibuffer-make-column-project-name "ibuffer-projectile")
+(define-ibuffer-column project-name
+  (:name "Project")
+  (projectile-project-name))
+
+;;;###autoload (autoload 'ibuffer-do-sort-by-project-name "ibuffer-projectile")
+(define-ibuffer-sorter project-name
+  "Sort the buffers by their project name."
+  (:description "project")
+  (let ((project1 (with-current-buffer (car a)
+                    (projectile-project-name)))
+        (project2 (with-current-buffer (car b)
+                    (projectile-project-name))))
+    (if (and project1 project2)
+        (string-lessp project1 project2)
+      (not (null project1)))))
+
+;;;###autoload (autoload 'ibuffer-make-column-project-relative-file "ibuffer-projectile")
+(define-ibuffer-column project-relative-file
+  (:name "Filename")
+  (when buffer-file-name
+    (let ((root (cdr (ibuffer-projectile-root buffer))))
+      (if root
+          (file-relative-name buffer-file-name root)
+        (abbreviate-file-name buffer-file-name)))))
+
+;;;###autoload
+(defun ibuffer-projectile-generate-filter-groups ()
+  "Create a set of ibuffer filter groups based on the projectile root dirs of buffers."
+  (let ((roots (seq-uniq
+                (delq nil (mapcar 'ibuffer-projectile-root (buffer-list))))))
+    (mapcar (lambda (root)
+              (cons (funcall ibuffer-projectile-group-name-function (car root) (cdr root))
+                    `((projectile-root . ,root))))
+            roots)))
+
+;;;###autoload
+(defun ibuffer-projectile-set-filter-groups ()
+  "Set the current filter groups to filter by projectile root dir."
+  (interactive)
+  (setq ibuffer-filter-groups (ibuffer-projectile-generate-filter-groups))
+  (message "ibuffer-projectile: groups set")
+  (when-let ((ibuf (get-buffer "*Ibuffer*")))
+    (with-current-buffer ibuf
+      (pop-to-buffer ibuf)
+      (ibuffer-update nil t))))
+
+
+(provide 'ibuffer-projectile)
+;;; ibuffer-projectile.el ends here
+
+
+
+(add-hook 'ibuffer-hook
+    (lambda ()
+      (ibuffer-projectile-set-filter-groups)
+      (unless (eq ibuffer-sorting-mode 'alphabetic)
+        (ibuffer-do-sort-by-alphabetic))))
