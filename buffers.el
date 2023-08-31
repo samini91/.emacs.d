@@ -20,7 +20,8 @@
 
 (defun helm-buffers-group-by-projectile-root ()
   (interactive)
-  (let* ((sources (mapcar (lambda (l)
+  (let* (
+         (projectile-grouping (mapcar (lambda (l)
                           (let*
                               (
                                (buffer-title
@@ -35,8 +36,14 @@
                             res
                             )
                           ) (helm-buffer-group-by-projectile-root)) 
-             ))
-    (helm :sources sources
+                  )
+;         (visible-buffers
+;          (list (helm-make-source "Visible" helm-source-buffers :buffer-list #'helm-buffer-list ))
+;          )
+         ;;(all-buffers (nconc projectile-grouping visible-buffers ) )
+         (all-buffers projectile-grouping)
+         )
+    (helm :sources all-buffers
           :buffer "*helm buffers*"
           :truncate-lines helm-buffers-truncate-lines
           :left-margin-width helm-buffers-left-margin-width))
