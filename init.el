@@ -812,17 +812,17 @@ package-archive-priorities '(("melpa" . 1)))
 ;;;;;;;;;;;;;;;;;;;; Perspective ;;;;;;;;;;;;;;;;;;;;;;
 (use-package perspective
   :after (key-chord)
-  :config
+ ; :config
 
-  (defhydra hydra-persp (:color blue :hint nil)
-    "Persp Mode"
-    ("a" persp-switch "Persp-Switch")
-    ("m" persp-merge "Persp-Merge")
-    ("u" persp-unmerge "Persp-UnMerge")
-    )
-  
-  (key-chord-define-global ";q" 'hydra-persp/body)    
-  (persp-mode)
+;  (defhydra hydra-persp (:color blue :hint nil)
+;    "Persp Mode"
+;    ("a" persp-switch "Persp-Switch")
+;    ("m" persp-merge "Persp-Merge")
+;    ("u" persp-unmerge "Persp-UnMerge")
+;    )
+;  
+;  (key-chord-define-global ";q" 'hydra-persp/body)    
+;  (persp-mode)
   )
 
 
