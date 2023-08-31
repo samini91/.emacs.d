@@ -11,7 +11,7 @@
                         (error nil)
                         )
            for root = (if (eq fbn nil) nil (projectile-project-root fbn)) 
-           ;unless (member bn visibles)
+           unless (member bn visibles)
            collect (cons root bn)))
 
 (defun helm-buffer-group-by-projectile-root ()
@@ -23,13 +23,18 @@
   (let* ((sources (mapcar (lambda (l)
                           (let*
                               (
-                               (buffname (if (eq (car l) nil) "No Project" (car l)) )
+                               (buffer-title
+                                (if (eq (car l) nil)
+                                    "No Project"
+                                  (concat (file-name-nondirectory (directory-file-name (file-name-directory (car l)))) " --- " (car l))
+                                  )
+                                )
                                (buffers (seq-map (lambda (x) (cdr x) ) (cdr l)) )
-                               (res (helm-make-source buffname helm-source-buffers :buffer-list (lambda () buffers )) )
+                               (res (helm-make-source buffer-title helm-source-buffers :buffer-list (lambda () buffers )) )
                                )
                             res
                             )
-                          )    (helm-buffer-group-by-projectile-root)) 
+                          ) (helm-buffer-group-by-projectile-root)) 
              ))
     (helm :sources sources
           :buffer "*helm buffers*"
