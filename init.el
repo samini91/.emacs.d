@@ -124,7 +124,7 @@ package-archive-priorities '(("melpa" . 1)))
   (setq key-chord-two-keys-delay .040)
   ;;;;;;;;;;;;;;; Helm KeyChords ;;;;;;;;;;;;;;;
   (key-chord-define-global ";s" 'swiper-helm)
-  (key-chord-define-global ";a" 'helm-buffers-list-sa)
+  (key-chord-define-global ";a" 'helm-buffers-group-by-projectile-root)
   (key-chord-define-global ";f" 'helm-semantic-or-imenu)
   (key-chord-define-global ";d" 'helm-show-kill-ring)
 
