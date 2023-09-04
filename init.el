@@ -182,6 +182,32 @@ package-archive-priorities '(("melpa" . 1)))
       company-idle-delay 0.0)
   )
 
+;;;;;;;;;;;;;Tab Bars;;;;;;;;;;;;
+(tab-bar-mode t)
+(tab-bar-history-mode t)
+
+(defhydra hydra-tab-bar-execute (:color blue :hint nil)
+  "Tab Bar"
+  ("t" tab-bar-new-tab "Create new Tab")
+  ("r" tab-bar-rename-tab "Rename new Tab")
+
+  ("n" tab-bar-switch-to-next-tab "Forward")
+  ("p" tab-bar-switch-to-prev-tab "Back")
+
+  ("h" tab-bar-history-back "Back in History")
+  ("l" tab-bar-history-forward "Forward in History")
+  )
+
+(key-chord-define-global ";t" 'hydra-tab-bar-execute/body)
+
+(define-prefix-command 'sa-tab-bar-map)
+(global-set-key (kbd "C-t") 'sa-tab-bar-map)
+
+(define-key sa-tab-bar-map (kbd "n") 'tab-bar-switch-to-next-tab)
+(define-key sa-tab-bar-map (kbd "p") 'tab-bar-switch-to-prev-tab)
+(define-key sa-tab-bar-map (kbd "h") 'tab-bar-history-back)
+(define-key sa-tab-bar-map (kbd "l") 'tab-bar-history-forward)
+
 ;;;;; Need to run (all-the-icons-install-fonts) for this to work properly
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode)
