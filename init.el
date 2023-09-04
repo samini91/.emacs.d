@@ -206,9 +206,16 @@ package-archive-priorities '(("melpa" . 1)))
 (global-set-key (kbd "C-t") 'sa-tab-bar-map)
 
 (define-key sa-tab-bar-map (kbd "n") 'tab-bar-switch-to-next-tab)
+(define-key sa-tab-bar-map (kbd "C-n") 'tab-bar-switch-to-next-tab)
+
 (define-key sa-tab-bar-map (kbd "p") 'tab-bar-switch-to-prev-tab)
+(define-key sa-tab-bar-map (kbd "C-p") 'tab-bar-switch-to-prev-tab)
+
 (define-key sa-tab-bar-map (kbd "h") 'tab-bar-history-back)
+(define-key sa-tab-bar-map (kbd "C-h") 'tab-bar-history-back)
+
 (define-key sa-tab-bar-map (kbd "l") 'tab-bar-history-forward)
+(define-key sa-tab-bar-map (kbd "C-l") 'tab-bar-history-forward)
 
 ;;;;; Need to run (all-the-icons-install-fonts) for this to work properly
 (use-package doom-modeline
