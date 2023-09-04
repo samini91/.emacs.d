@@ -196,6 +196,8 @@ package-archive-priorities '(("melpa" . 1)))
 
   ("h" tab-bar-history-back "Back in History")
   ("l" tab-bar-history-forward "Forward in History")
+
+  ("c" tab-bar-close-tab "Close Tab")
   )
 
 (key-chord-define-global ";t" 'hydra-tab-bar-execute/body)
