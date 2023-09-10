@@ -986,65 +986,6 @@ _~_: modified
   scroll-conservatively 10000
   scroll-preserve-screen-position 1)
 
-
-(defun helm-fuzzy-matching-default-sort-fn-1 (candidates &optional use-real basename preserve-tie-order)
-  "The transformer for sorting candidates in fuzzy matching.
-It sorts on the display part by default.
-
-It sorts CANDIDATES by their scores as calculated by
-`helm-score-candidate-for-pattern'.  Set USE-REAL to non-nil to
-sort on the real part.  If BASENAME is non-nil assume we are
-completing filenames and sort on basename of candidates.  If
-PRESERVE-TIE-ORDER is nil, ties in scores are sorted by length of
-the candidates."
-  (if (string= helm-pattern "")
-      candidates
-    (let ((table-scr (make-hash-table :test 'equal)))
-      (sort candidates
-            (lambda (s1 s2)
-              ;; Score and measure the length on real or display part of candidate
-              ;; according to `use-real'.
-              (let* ((real-or-disp-fn (if use-real #'cdr #'car))
-                     (cand1 (cond ((and basename (consp s1))
-                                   (helm-basename (funcall real-or-disp-fn s1)))
-                                  ((consp s1) (funcall real-or-disp-fn s1))
-                                  (basename (helm-basename s1))
-                                  (t s1)))
-                     (cand2 (cond ((and basename (consp s2))
-                                   (helm-basename (funcall real-or-disp-fn s2)))
-                                  ((consp s2) (funcall real-or-disp-fn s2))
-                                  (basename (helm-basename s2))
-                                  (t s2)))
-                     (data1 (or (gethash cand1 table-scr)
-                                (puthash cand1
-                                         (list (helm-score-candidate-for-pattern
-                                                cand1 helm-pattern)
-                                               (length (helm-stringify cand1)))
-                                         table-scr)))
-                     (data2 (or (gethash cand2 table-scr)
-                                (puthash cand2
-                                         (list (helm-score-candidate-for-pattern
-                                                cand2 helm-pattern)
-                                               (length (helm-stringify cand2)))
-                                         table-scr)))
-                     (len1 (cadr data1))
-                     (len2 (cadr data2))
-                     (scr1 (car data1))
-                     (scr2 (car data2)))
-                (cond ((= scr1 scr2)
-                       (unless preserve-tie-order
-                         (< len1 len2)))
-                      ((> scr1 scr2)))))))))
-
-
-
-(defun helm-fuzzy-matching-default-sort-fn (candidates _source)
-  "Default `filtered-candidate-transformer' to sort in fuzzy matching."
-  (helm-fuzzy-matching-default-sort-fn-1 candidates))
-
-;(setq helm-buffers-sort-fn 'helm-fuzzy-matching-default-sort-fn)
-
-
 ;;;;;;;;;;;;;;;;;;Custom File;;;;;;;;;;;;;;;;;;
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
