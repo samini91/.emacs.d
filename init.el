@@ -77,41 +77,14 @@ package-archive-priorities '(("melpa" . 1)))
   (define-key helm-buffer-map (kbd "C-d") 'helm-buffer-run-kill-persistent)
   )
 
-;;(use-package projectile) helm-projectile might import it already
 (use-package helm-projectile
-  :config
-  ;; doesnt invalidate the cache as expected....
-  ;;(setq projectile-enable-caching t)
-  ;; todo clean this up
-  :init (defun projectile-helm-do-grep-ag ()
-    "Projectile version of `helm-rg'."
-    (interactive)
-    (if (require 'helm-rg nil t)
-        (if (projectile-project-p)
-            (let* ((helm-rg-prepend-file-name-line-at-top-of-matches nil)
-                   (helm-rg-include-file-on-every-match-line t)
-                   (ignored-files (mapcan (lambda (path)
-                                            (list "--glob" (concat "!" (glob-quote path))))
-                                          (cl-union (projectile-ignored-files-rel)  grep-find-ignored-files)))
-                   (ignored-directories (mapcan (lambda (path)
-                                                  (list "--glob" (concat "!" (glob-quote path) "/**")))
-                                                (cl-union (mapcar 'directory-file-name (projectile-ignored-directories-rel))
-                                                          grep-find-ignored-directories)))
-                   (helm-rg--extra-args `(,@ignored-files ,@ignored-directories)))
-              (let ((default-directory (projectile-project-root)))
-                (helm-do-grep-ag ()
-                                 )))
-          (error "You're not in a project"))
-      (when (yes-or-no-p "`helm-rg' is not installed. Install? ")
-        (condition-case nil
-            (progn
-              (package-install 'helm-rg)
-              (helm-projectile-rg))
-          (error "`helm-rg' is not available.  Is MELPA in your `package-archives'?")))))
+  :after (:all helm helm-rg)
   )
 
 (use-package helm-rg
   :requires (helm)
+  :config
+  (load "~/.emacs.d/helm-rg.el")
   )
 (use-package ripgrep)
 
@@ -119,6 +92,7 @@ package-archive-priorities '(("melpa" . 1)))
 (use-package hydra)
 
 (use-package key-chord
+  :defer t
   :config
   (key-chord-mode 1)
   (setq key-chord-two-keys-delay .040)
@@ -132,11 +106,11 @@ package-archive-priorities '(("melpa" . 1)))
     "Helm"
     ("s" swiper-helm "Swiper-Helm")
     ("a" helm-buffers-list "Buffer-List")
-    ("w" projectile-helm-do-grep-ag "RipGrep-Projectile")
+    ("w" projectile-helm-do-grep-rg "RipGrep-Projectile")
     ("q" helm-projectile "Projectile")
     ("f" helm-semantic-or-imenu "Functions")
     ("d" helm-show-kill-ring "Kill-Ring")
-    ("z" helm-do-grep-ag "RipGrep-Helm")
+    ("z" helm-do-grep-rg "RipGrep-Helm")
     ("h" helm-resume "Helm-Resume")
 
     )
