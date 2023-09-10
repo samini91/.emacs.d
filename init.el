@@ -82,9 +82,7 @@ package-archive-priorities '(("melpa" . 1)))
   )
 
 (use-package helm-rg
-  :requires (helm)
-  :config
-  (load "~/.emacs.d/helm-rg.el")
+  :requires (helm) 
   )
 (use-package ripgrep)
 
@@ -991,3 +989,4 @@ _~_: modified
 (load custom-file)
 
 (load "~/.emacs.d/buffers.el")
+(load "~/.emacs.d/helm-rg.el")
