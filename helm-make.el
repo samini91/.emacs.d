@@ -163,7 +163,7 @@ If it fails to do so, `1' will be returned.
     ((member system-type '(darwin))
      (if (executable-find "sysctl")
          (string-to-number (string-trim (shell-command-to-string "sysctl -n hw.logicalcpu")))
-       (warn "Can not retrieve available number of processing units, \"nproc\" not found")
+       (warn "Can not retrieve available number of processing units, \"sysctl\" not found")
        1))
     ;; What about the other systems '(darwin windows-nt aix berkeley-unix hpux usg-unix-v)?
     (t
