@@ -134,6 +134,7 @@ package-archive-priorities '(("melpa" . 1)))
     ("w" ace-window "Window Management")
     ("k" view-lossage "KeyStrokes")
     ("d" docker "Docker Management")
+    ("o" projectile-url-open "Projectile Open in Browser")
     )
 
   (defhydra hydra-grep (:color blue :hint nil)
@@ -990,3 +991,4 @@ _~_: modified
 
 (load "~/.emacs.d/buffers.el")
 (load "~/.emacs.d/helm-rg.el")
+(load "~/.emacs.d/projectile-ext.el")
