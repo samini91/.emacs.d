@@ -40,6 +40,20 @@
    (find-file-target :initform #'helm-grep-quit-an-find-file-fn)
    (group :initform 'helm-grep)))
 
+(defun helm-grep-ag-prepare-cmd-line (pattern directory &optional type)
+  "Prepare AG command line to search PATTERN in DIRECTORY.
+When TYPE is specified it is one of what `helm-grep-ag-get-types'
+returns if available with current AG version."
+  (let* (
+         (patterns (helm-rg--helm-pattern-to-ripgrep-regexp pattern))
+         (cmd (format helm-grep-ag-command
+                      (mapconcat 'identity type " ")
+                      (shell-quote-argument patterns)
+                      (shell-quote-argument directory))))
+    cmd
+    )
+  )
+
 (defun helm-grep-rg-1 (directory &optional type input)
   "Start helm ag in DIRECTORY maybe searching in files of type TYPE.
 If INPUT is provided, use it as the search string."
