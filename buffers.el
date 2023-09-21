@@ -1,6 +1,7 @@
 ;;; -*- lexical-binding: t; -*-
 (require 'projectile)
 (require 'helm)
+(require 'seq)
 
 (defun helm-buffer-list-by-projectile-root (&optional visibles)
   (cl-loop for b in (buffer-list)
@@ -37,13 +38,11 @@
                             )
                           ) (helm-buffer-group-by-projectile-root)) 
                   )
-;         (visible-buffers
-;          (list (helm-make-source "Visible" helm-source-buffers :buffer-list #'helm-buffer-list ))
-;          )
-         ;;(all-buffers (nconc projectile-grouping visible-buffers ) )
-         (all-buffers projectile-grouping)
+         (all-projectile-buffers projectile-grouping)
+         ; todo filter our non wanted items from helm-buffer-list
+         (most-recent-buffers ( helm-make-source "Most Recent" helm-source-buffers :buffer-list (lambda () (seq-subseq (helm-buffer-list) 0 6) )) )
          )
-    (helm :sources all-buffers
+    (helm :sources (append (list most-recent-buffers) all-projectile-buffers)
           :buffer "*helm buffers*"
           :truncate-lines helm-buffers-truncate-lines
           :left-margin-width helm-buffers-left-margin-width))
