@@ -25,6 +25,7 @@
  ("emacs-helm-tramp" . "6683eae65a106d5afd5575b2b05cdb5529ddc926")
  ("emacs-htmlize" . "dd27bc3f26efd728f2b1f01f9e4ac4f61f2ffbf9")
  ("emacs-k8s-mode" . "83266cecd6a39cdf57d124270646047860bfb7ab")
+ ("emacs-kotlin-ts-mode" . "0472c9346e30f8499c87938a323c733628a0dd26")
  ("emacs-reformatter" . "6c4f35dd2b4658140513db978b3b237c45bcad19")
  ("emacs-request" . "01e338c335c07e4407239619e57361944a82cb8a")
  ("emacs-sbt-mode" . "9fe1e8807c22cc1dc56a6233e000969518907f4d")
@@ -56,6 +57,7 @@
  ("json-mode" . "481d5d9f4003fc14d116bf31d1bf71d14960d7d9")
  ("json-snatcher" . "b28d1c0670636da6db508d03872d96ffddbc10f2")
  ("key-chord" . "7f7fd7c5bd2b996fa054779357e1566f7989e07d") ;; NOTE (5/2023): The later versions lag
+ ("kotlin-mode" . "fddd747e5b4736e8b27a147960f369b86179ddff")
  ("kubernetes-el" . "423c216fdef06d32dde835bb91daff353f41b72e")
  ("kubernetes-helm" . "f70e2efa6ef869143ccb2f158f4ab7df91dcc58f")
  ("leetcode.el" . "e5701191a98d043acdc7112f28d67e3d5c848228")

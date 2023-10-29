@@ -667,6 +667,8 @@ package-archive-priorities '(("melpa" . 1)))
   (groovy-mode . lsp)
   (rust-mode . lsp)
   (nix-mode . lsp)
+  (kotlin-mode . lsp)
+  (kotlin-ts-mode . lsp)
   )
 
 (use-package lsp-ui
@@ -697,6 +699,10 @@ package-archive-priorities '(("melpa" . 1)))
   :config
   (add-hook 'java-mode-hook 'lsp)
 )
+
+;;;;;;;;;;;; Kotlin ;;;;;;;;;;;;
+(use-package kotlin-mode)
+(use-package kotlin-ts-mode)
 
 ;;;;;;;;;;;; TypeScript ;;;;;;;;;;;;
 (use-package typescript-mode)
