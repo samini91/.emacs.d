@@ -4,18 +4,7 @@
     (insert-file-contents filePath)
     (split-string (buffer-string) "\n" t)))
 
-(defun projectile-url-open ()
-  (interactive)
-  (let* (
-         (file (concat (file-name-as-directory (projectile-project-root)) ".git/config"))
-         (lines (read-file-as-lines file))
-         (urls (collect-urls lines))
-         (url (build-projectile-url (car urls)))
-         )
-    (browse-url url)
-    )
-  )
-
+;; Should be looking for the tag origin instead of finding the first url
 (defun collect-urls (lines)
   (cl-loop for l in lines
            for parsed = (split-string l "=" t)
@@ -25,7 +14,32 @@
    )
   )
 
+(defun projectile-url-open ()
+  (interactive)
+  (let* (
+         (file (concat (file-name-as-directory (projectile-project-root)) ".git/config"))
+         (lines (read-file-as-lines file))
+         (urls (collect-urls lines))
+         (first-url (car urls))
+         (url (build-projectile-url first-url))
+         )
+    (browse-url url)
+    )
+  )
+
 (defun build-projectile-url (url)
+   (if (string-prefix-p "http" url)
+       (build-projectile-url-http url)
+       (build-projectile-url-ssh url)    
+    )
+  )
+
+
+(defun build-projectile-url-http (url)
+  url
+  )
+
+(defun build-projectile-url-ssh (url)
   (let* (
          (ssh-domain (car  (split-string url ":" t) ))
          (domain (car ( cdr (split-string ssh-domain "@" t) ) ))
