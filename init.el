@@ -585,7 +585,7 @@ package-archive-priorities '(("melpa" . 1)))
   (when (boundp 'w32-pipe-buffer-size)
     (setq irony-server-w32-pipe-buffer-size (* 64 1024)))
 
-  (key-chord-define c-mode-map ";t" 'irony-get-type)
+  ;(key-chord-define c-mode-map ";t" 'irony-get-type)
 
   (add-hook 'c++-mode-hook 'irony-mode)
   (add-hook 'c++-mode-hook 'flycheck-mode)
@@ -636,6 +636,7 @@ package-archive-priorities '(("melpa" . 1)))
   ("i" lsp-goto-implementation "Go To Implementation" :color blue)
   ("d" lsp-find-definition "Find Definition" :color blue)
   ("p" lsp-ui-peek-find-references "UI find referencese" :color blue)
+  ("f" helm-imenu "List Functions/Vars" :color blue)
   )
 
 (use-package lsp-mode
@@ -676,6 +677,7 @@ package-archive-priorities '(("melpa" . 1)))
   :config
   (setq lsp-ui-sideline-update-mode 'point)
   (setq lsp-ui-sideline-delay 0)
+  (setq lsp-ui-sideline-show-hover t)
   )
 (use-package lsp-mssql
   :config
