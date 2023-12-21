@@ -766,7 +766,23 @@ package-archive-priorities '(("melpa" . 1)))
   )
 
 ;;;;;;;;;;;;;;; Docker ;;;;;;;;;;;;;;;;;;
-(use-package docker)
+(use-package docker
+  :custom
+  (docker-container-columns
+   '(("Names" 30 "{{ json .Names }}" nil nil)
+     ("Status" 15 "{{ json .Status }}" nil nil)
+     ("Id" 15 "{{ json .ID }}" nil nil)
+     ("Image" 15 "{{ json .Image }}" nil nil)
+     ("Command" 30 "{{ json .Command }}" nil nil)
+     ("Ports" 10 "{{ json .Ports }}" nil nil)
+     ("Created" 23 "{{ json .CreatedAt }}" nil
+      (lambda
+        (x)
+        (format-time-string "%F %T"
+                            (date-to-time x))))
+     ))
+  )
+
 (use-package docker-api)
 (use-package helm-tramp)
 
