@@ -679,6 +679,10 @@ package-archive-priorities '(("melpa" . 1)))
   (setq lsp-ui-sideline-update-mode 'point)
   (setq lsp-ui-sideline-delay 0)
   (setq lsp-ui-sideline-show-hover t)
+
+  (setq lsp-ui-doc-show-with-cursor t)
+  (setq lsp-ui-doc-delay 0)
+  (setq lsp-ui-doc-position 'top)
   )
 (use-package lsp-mssql
   :config
