@@ -638,7 +638,21 @@ package-archive-priorities '(("melpa" . 1)))
   ("d" lsp-find-definition "Find Definition" :color blue)
   ("p" lsp-ui-peek-find-references "UI find referencese" :color blue)
   ("f" helm-imenu "List Functions/Vars" :color blue)
+  ("t"
+   (lambda ()
+         (interactive)
+         (if (derived-mode-p 'csharp-mode) 
+             (call-interactively #'csharp-test-menu/body)
+             (message "LSP Tests Not Implemented / Hooked up to Hydra") ;; else is second arg
+           )
+         )
+   "Test" :color blue)
   )
+
+(defhydra csharp-test-menu (:hint nil)
+  ("b" lsp-csharp-run-test-at-point "Run Test at Point" :color blue)
+  ("p" lsp-csharp-run-all-tests-in-buffer "Run All Tests in Buffer" :color blue)
+)
 
 (use-package lsp-mode
   ;;:ensure t
