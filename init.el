@@ -650,8 +650,8 @@ package-archive-priorities '(("melpa" . 1)))
   )
 
 (defhydra csharp-test-menu (:hint nil)
-  ("b" lsp-csharp-run-test-at-point "Run Test at Point" :color blue)
-  ("p" lsp-csharp-run-all-tests-in-buffer "Run All Tests in Buffer" :color blue)
+  ("p" lsp-csharp-run-test-at-point "Run Test at Point" :color blue)
+  ("b" lsp-csharp-run-all-tests-in-buffer "Run All Tests in Buffer" :color blue)
 )
 
 (use-package lsp-mode
