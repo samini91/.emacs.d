@@ -773,8 +773,10 @@ package-archive-priorities '(("melpa" . 1)))
   ;;(setq dap-auto-configure-features '(locals tooltip))
   (setq dap-auto-configure-features '(locals tooltip))
 
-  (key-chord-define-global ";v" 'dap-hydra/body)
+  (key-chord-define-global ";v" 'dap-hydra)
   )
+
+  (require 'dap-netcore)
 
 ;;;;;;;;;;;;;;; LeetCode;;;;;;;;;;;;;;;;
 (use-package leetcode
