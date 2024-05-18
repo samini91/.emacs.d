@@ -685,6 +685,7 @@ package-archive-priorities '(("melpa" . 1)))
   (nix-mode . lsp)
   (kotlin-mode . lsp)
   (kotlin-ts-mode . lsp)
+  (yaml-mode . lsp)
   )
 
 (use-package lsp-ui
@@ -697,16 +698,6 @@ package-archive-priorities '(("melpa" . 1)))
   (setq lsp-ui-doc-show-with-cursor t)
   (setq lsp-ui-doc-delay 0)
   (setq lsp-ui-doc-position 'top)
-  )
-(use-package lsp-mssql
-  :config
-  (setq lsp-mssql-connections
-        [
-         (:server "localhost"
-                  :database "master"
-                  :user "sa"
-                  :password "asdf")
-         ])
   )
 
 (use-package lsp-pyright)
