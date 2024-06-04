@@ -765,6 +765,8 @@ package-archive-priorities '(("melpa" . 1)))
   (setq dap-auto-configure-features '(locals tooltip))
 
   (key-chord-define-global ";v" 'dap-hydra)
+  (add-hook 'dap-stopped-hook
+          (lambda (arg) (call-interactively #'dap-hydra)))
   )
 
   (require 'dap-netcore)

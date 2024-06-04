@@ -11,7 +11,7 @@
  ("company-irony-c-headers" . "72c386aeb079fb261d9ec02e39211272f76bbd97")
  ("company-mode" . "57734334e29c0066a237b1001c93782746b6e45c")
  ("compat" . "6da45e886a8385c1c044d1429d122749fdf23c47")
- ("dap-mode" . "11431a26bc4c8ca92b097dbdbcbdc9e3d7fb5583")
+ ("dap-mode" . "a478e03cd1a5dc84ad496234fd57241ff9dca57a")
  ("dash.el" . "1de9dcb83eacfb162b6d9a118a4770b1281bcd84")
  ("docker-api.el" . "206144346b7fa4165223349cfeb64a75d47ddd1b")
  ("docker.el" . "d5255a65b7240d0038cc417f301b43df05a27922")
