@@ -886,13 +886,22 @@ package-archive-priorities '(("melpa" . 1)))
 ;;(use-package org-pomodoro)
 (defun org-html-header-readtheorg ()
   (interactive)
-  (insert "#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup")
+  (insert "#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup")
   )
 
 (defun org-html-header-bigblow ()
   (interactive)
-  (insert "#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-bigblow.setup")
+  (insert "#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup")
   )
+
+(use-package ob-mermaid
+  :config 
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((mermaid . t)
+     ))
+  )
+    
 
 (defhydra hydra-org-menu (:hint nil)
   "Org Mode Commands"
@@ -910,10 +919,35 @@ package-archive-priorities '(("melpa" . 1)))
     ("m" org-md-export-as-markdown "Export to MarkDown" :color blue)
     )
 
+(defhydra hydra-org-mermaid-menu (:hint nil)
+  ("l"
+   (insert
+"#+BEGIN_SRC mermaid :file *ChangeName*.png
+sequenceDiagram
+A-->B: Sample
+B-->C: Sample
+#+END_SRC"
+    ) "Sequence Diagram" :color blue)
+  ("s" (insert
+"#+BEGIN_SRC mermaid :file *ChangeName*.png
+stateDiagram-v2
+    [*] --> Still
+    Still --> [*]: A Transition
+
+    Still --> Moving : A Transition
+    Moving --> Still
+    Moving --> Crash
+    Crash --> [*]
+#+END_SRC"
+        ) "State Diagram" :color blue)
+  
+  )
+
 (defhydra hydra-org-source-menu (:hint nil)
   "Source Blocks "
   ("s" (insert "#+BEGIN_SRC sql \n \n #+END_SRC") "SQL" :color blue)
   ("j" (insert "#+BEGIN_SRC json \n \n #+END_SRC") "JSON" :color blue)
+  ("m" hydra-org-mermaid-menu/body "Mermaid Menu" :color blue)
   )
 
 (key-chord-define org-mode-map ";c" 'hydra-org-menu/body)

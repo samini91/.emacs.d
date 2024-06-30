@@ -81,6 +81,7 @@
  ("nix-emacs" . "053a2d5110ce05b7f99bcc2ac4804b70cbe87916")
  ("nix-mode" . "719feb7868fb567ecfe5578f6119892c771ac5e5")
  ("nongnu-elpa" . "fda0e2eb3117a2bdcd6b07c483935628b1417b56")
+ ("ob-mermaid" . "b4ce25699e3ebff054f523375d1cf5a17bd0dbaf")
  ("org-download" . "19e166f0a8c539b4144cfbc614309d47a9b2a9b7")
  ("pdf-tools" . "30b50544e55b8dbf683c2d932d5c33ac73323a16")
  ("perspective-el" . "f50eb57855f3996ef1e66755bf94620d7342ecfc")
