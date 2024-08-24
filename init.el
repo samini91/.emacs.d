@@ -76,6 +76,7 @@ package-archive-priorities '(("melpa" . 1)))
   (global-set-key (kbd "M-x") 'helm-M-x)
   (setq helm-buffer-details-flag nil)
   (define-key helm-buffer-map (kbd "C-d") 'helm-buffer-run-kill-persistent)
+  (setq helm-move-to-line-cycle-in-source nil)
   )
 
 (use-package helm-projectile
