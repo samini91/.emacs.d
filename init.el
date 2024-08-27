@@ -668,6 +668,43 @@ package-archive-priorities '(("melpa" . 1)))
   (key-chord-define lsp-mode-map ";c" 'hydra-lsp-menu/body)
 
   (add-hook 'go-mode-hook (lambda () (add-hook 'before-save-hook 'lsp-format-buffer nil 'local)))
+
+  ;;; CSHARP Overrides
+
+  (eval-after-load "lsp-csharp"
+    ' (lsp-defun lsp-csharp--handle-os-testcompleted (_workspace (&omnisharp:DotNetTestResult
+                                                                  :method-name
+                                                                  :outcome
+                                                                  :error-message
+                                                                  :error-stack-trace
+                                                                  :standard-output
+                                                                  :standard-error))
+        "Handle the `o#/testcompleted' message from the server.
+
+        Will display the results of the test on the lsp-csharp test output buffer."
+        (let ((passed (string-equal "passed" outcome)))
+          (lsp-csharp--test-message
+           (format "[%s] %s "
+                   (propertize (upcase outcome) 'font-lock-face (if passed 'success 'error))
+                   method-name))
+
+          (unless passed
+            (lsp-csharp--test-message error-message)
+            )          
+
+          (when error-stack-trace
+              (lsp-csharp--test-message error-stack-trace))
+            
+          (unless (seq-empty-p standard-output)
+              (lsp-csharp--test-message "STANDARD OUTPUT:")
+              (seq-doseq (stdout-line standard-output)
+                (lsp-csharp--test-message stdout-line)))
+
+          (unless (seq-empty-p standard-error)
+              (lsp-csharp--test-message "STANDARD ERROR:")
+              (seq-doseq (stderr-line standard-error)
+                (lsp-csharp--test-message stderr-line)))))
+    )
   
   :hook
   (web-mode . lsp)
