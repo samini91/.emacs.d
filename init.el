@@ -137,6 +137,7 @@ package-archive-priorities '(("melpa" . 1)))
     ("w" ace-window "Window Management")
     ("k" view-lossage "KeyStrokes")
     ("d" docker "Docker Management")
+    ("c" docker-compose "Docker Compose")
     ("o" projectile-url-open "Projectile Open in Browser")
     )
 
