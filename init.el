@@ -1,7 +1,11 @@
+;; Bootstrap straight ;;
 (defvar bootstrap-version)
 (let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 6))
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
         (url-retrieve-synchronously
@@ -10,18 +14,6 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
-
-
-;;;;;;;;;;;;;;; Package Repos ;;;;;;;;;;;;;;;
-(setq
- package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                    ;; ("org" . "http://orgmode.org/elpa/")
-                    ("melpa" . "http://melpa.org/packages/")
-                    ("melpa-stable" . "http://stable.melpa.org/packages/"))
-
-;; For Stable Packages
-;; package-archive-priorities '(("melpa-stable" . 1)))
-package-archive-priorities '(("melpa" . 1)))
 
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
