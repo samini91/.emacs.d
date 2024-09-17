@@ -87,7 +87,7 @@
  ("popup-el" . "c83d6e5f5fa693e08a542ea9ad7c06eced652de9")
  ("posframe" . "570273bcf6c21641f02ccfcc9478607728f0a2a2")
  ("powershell.el" . "38727f1cdaf0c937a62b68ee52ec7196b8149f93")
- ("projectile" . "002e52769e5fda5e03fb9069ae02b2d3763c92e8")
+ ("projectile" . "01fb6a5ef023bcfc52b209586dcb4fd13db00218")
  ("python-mode" . "16affa2f0f1a3b918547d665235a24bd57d4b9b2")
  ("queue" . "8df1334d54d4735d2f821790422a850dfaaa08ef")
  ("rainbow-delimiters" . "f40ece58df8b2f0fb6c8576b527755a552a5e763")
