@@ -224,9 +224,6 @@
 
   )
 
-;; Fix performance for very long lines
-(global-so-long-mode 1)
-
 (use-package flycheck)
 (use-package multiple-cursors
   :config
