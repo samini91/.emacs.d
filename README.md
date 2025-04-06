@@ -14,3 +14,7 @@ C-h k
 will describe the key 
 
 pull-all then freeze
+
+
+
+C-u C-M-x to debug a function

@@ -642,8 +642,21 @@
 
 (defhydra csharp-test-menu (:hint nil)
   ("p" lsp-csharp-run-test-at-point "Run Test at Point" :color blue)
+  ("d" lsp-csharp-debug-test-at-point "Debug Test at Point" :color blue)
   ("b" lsp-csharp-run-all-tests-in-buffer "Run All Tests in Buffer" :color blue)
 )
+
+(defun lsp-csharp-debug-test-at-point ()
+  "Start test run at current point (if any)."
+  (interactive)
+  (let* ((stack (lsp-csharp--code-element-stack-at-point))
+         (element-on-point (car (last stack)))
+         (test-method (lsp-csharp--code-element-test-method-p element-on-point))
+         (test-method-name (car test-method))
+         (test-method-framework (car (cdr test-method))))
+    (dap-netcore-debug-test-init (concat "--filter=" test-method-name))
+    )
+  )
 
 (use-package lsp-mode
   ;;:ensure t
