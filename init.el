@@ -759,10 +759,9 @@
 
 ;;;;;;;;;;;; TypeScript ;;;;;;;;;;;;
 (use-package typescript-ts-mode
-  :mode ( ("\\.ts\\'" . typescript-ts-mode ) ))
-
-(use-package tsx-ts-mode
-  :mode ( ("\\.tsx\\'" . tsx-ts-mode ) ))
+  :mode ( ("\\.ts\\'" . typescript-ts-mode )
+          ("\\.tsx\\'" . tsx-ts-mode )
+          ))
 
 (use-package mocha)
 (require 'dap-node)
