@@ -758,7 +758,12 @@
 (use-package kotlin-ts-mode)
 
 ;;;;;;;;;;;; TypeScript ;;;;;;;;;;;;
-(use-package typescript-mode)
+(use-package typescript-ts-mode
+  :mode ( ("\\.ts\\'" . typescript-ts-mode ) ))
+
+(use-package tsx-ts-mode
+  :mode ( ("\\.tsx\\'" . tsx-ts-mode ) ))
+
 (use-package mocha)
 (require 'dap-node)
 (use-package coffee-mode)
