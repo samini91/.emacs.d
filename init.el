@@ -191,6 +191,8 @@
 (use-package inheritenv
   :straight (:type git :host github :repo "purcell/inheritenv"))
 
+(use-package eat)
+
 ;; Try Out Claude
 
 (use-package monet
@@ -209,7 +211,7 @@
   ;; optional IDE integration with Monet
   (add-hook 'claude-code-process-environment-functions #'monet-start-server-function)
   (monet-mode 1)
-  (claude-code-terminal-backend 'vterm)
+
 
   (claude-code-mode))
 

@@ -19,6 +19,7 @@
  ("docker-api.el" . "206144346b7fa4165223349cfeb64a75d47ddd1b")
  ("docker.el" . "375e0ed45bb1edc655d9ae2943a09864bec1fcba")
  ("doom-modeline" . "7d70f29a6005bb403696c0b29ddd267339208c3e")
+ ("eat" . "c8d54d649872bfe7b2b9f49ae5c2addbf12d3b99")
  ("el-get" . "64112351b1f58c77463b8802ddd7f78964c9c5ca")
  ("eldoc" . "6c389a8d223deadedda4d69fe8d7de25068e7d91")
  ("elm-mode" . "90b72cd2c9bc4506f531bcdcd73fa2530d9f4f7c")
