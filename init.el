@@ -69,6 +69,7 @@
   (setq helm-buffer-details-flag nil)
   (define-key helm-buffer-map (kbd "C-d") 'helm-buffer-run-kill-persistent)
   (setq helm-move-to-line-cycle-in-source nil)
+  (setq helm-candidate-number-limit 99999)
   )
 
 (use-package helm-projectile
@@ -103,7 +104,7 @@
                                         ;("f" helm-semantic-or-imenu "Functions")
     ("f" helm-find-rg "Find File")
     ("d" helm-show-kill-ring "Kill-Ring")
-    ("z" helm-do-grep-rg "RipGrep-Helm")
+    ("z" helm-rg "RipGrep-Helm")
     ("h" helm-resume "Helm-Resume")
 
     )
