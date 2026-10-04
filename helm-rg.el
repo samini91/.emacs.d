@@ -6,8 +6,7 @@
   (interactive "P")
   (require 'helm-files)
   (if (projectile-project-p)
-      (helm-rg (projectile-project-root) arg) 
+      (helm-rg nil nil (list (projectile-project-root))) 
     (error "You're not in a project")
     )
-
   )

@@ -104,7 +104,7 @@
                                         ;("f" helm-semantic-or-imenu "Functions")
     ("f" helm-find-rg "Find File")
     ("d" helm-show-kill-ring "Kill-Ring")
-    ("z" helm-rg "RipGrep-Helm")
+    ("z" (helm-rg nil) "RipGrep-Helm")
     ("h" helm-resume "Helm-Resume")
 
     )
