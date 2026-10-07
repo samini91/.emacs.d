@@ -400,49 +400,9 @@
 ;;  (setq lsp-haskell-st)
   )
 
-;;(use-package intero
-;;  :config
-;;  (add-hook 'haskell-mode-hook 'intero-mode)
-;;
-;;  (define-key haskell-mode-map (kbd "<f12>") 'intero-goto-definition)
-;;  (key-chord-define haskell-mode-map  ";t" 'intero-type-at)
-;;  
-;;  (define-key intero-mode-map (kbd "C-c C-c") nil)
-;;  (define-key haskell-mode-map (kbd "C-c C-c") 'comment-region)
-;;  (define-key haskell-mode-map (kbd "C-c C-d") 'uncomment-region)
-;;
-;;  (defhydra hydra-haskell-menu (:hint nil)
-;;    "Haskell Commands"
-;;    ("u" intero-uses-at "Find Usages" :color blue)
-;;    ("l" intero-restart "Reload Intero" :color blue)
-;;    ("c" intero-repl-eval-region "Repl Eval Region" :color blue)
-;;    ("r" intero-repl-load "Repl Load" :color blue)
-;;    ("s" intero-apply-suggestions "Apply Suggestions" :color blue)
-;;    ("a" intero-repl "Repl" :color blue)
-;;    ("t" (intero-type-at 't) "Insert Type At Point" :color blue)
-;;    )
-;;  
-;;  (key-chord-define haskell-mode-map ";c" 'hydra-haskell-menu/body)
-;;  )
-
-;;(use-package ghc)
 (use-package haskell-snippets)
-(use-package company-cabal
-  :config
-;;  (push 'company-cabal company-backends)
-  )
-;;(use-package company-ghci
-;;    :config
-;;  (push 'company-ghci company-backends)
-;;  )
-;;(use-package company-ghc
-;;    :config
-;;  (push 'company-ghc company-backends)
-;;  )
-;;(use-package hindent)
-;;(use-package hlint-refactor)
+(use-package company-cabal)
 (use-package helm-hoogle)
-;;(use-package flycheck-haskell)
 
 ;;;;;;;;;;; Elm ;;;;;;;;;;;;;;;;;
 (use-package elm-mode
@@ -454,30 +414,6 @@
 ;;;;;;;;;;;; rust ;;;;;;;;;;;;
 (use-package rust-mode)
 
-;;;;;;;;;;;; PureScript ;;;;;;;;;
-
-;;(use-package flycheck-purescript)
-;;(use-package psci)
- ;;(use-package purescript-mode)
-;;(use-package psc-ide
-;;  :config
-;;  (add-hook 'purescript-mode-hook
-;;  (lambda ()
-;;    (psc-ide-mode)
-;;    (flycheck-mode)
-;;    (turn-on-purescript-indentation)))
-;;
-;;  (key-chord-define purescript-mode-map  ";t" 'psc-ide-show-type)
-;;
-;;  (defhydra hydra-purescript-menu (:hint nil)
-;;    "Purescript Commands"
-;;    ("l" psc-ide-server-start "Start Server" :color blue)
-;;    ("q" psc-ide-server-quit "Quit Server" :color blue)
-;;    ("b" psc-ide-rebuild "Rebuild" :color blue)
-;;    )
-;;  (setq psc-ide-rebuild-on-save t)
-;;  (key-chord-define purescript-mode-map ";c" 'hydra-purescript-menu/body)
-;;  )
 
 ;;;;;;;;;;;; Groovy ;;;;;;;;;;;;
 (use-package groovy-mode)
@@ -488,97 +424,11 @@
 ;;;;;;;;;;;; C Sharp ;;;;;;;;;;;;
 ;; This is apart of emacs 29
 ;; (use-package csharp-mode)
-
-;;(use-package omnisharp
-;;;;  :ensure t
-;;  :config
-;;  (defun my-csharp-mode-setup ()
-;;    (setq indent-tabs-mode nil)
-;;    (setq c-syntactic-indentation f)
-;;    (c-set-style "ellemtel")
-;;    (setq c-basic-offset 4)
-;;    (setq truncate-lines t)
-;;    (setq tab-width 4)
-;;    (setq comment-start "/* "
-;;	  comment-end " */"
-;;	  comment-style 'multi-line
-;;	  comment-empty-lines t)
-;;    (setq evil-shift-width 4))
-;;
-;;  (setq omnisharp-auto-complete-want-documentation nil)
-;;  (setq omnisharp-company-match-type (quote company-match-server))
-;;  (setq omnisharp-eldoc-support nil)
-;;  (setq omnisharp-imenu-support t)
-;;  
-;;  (define-key csharp-mode-map (kbd "C-.") 'omnisharp-run-code-action-refactoring)
-;;  (define-key csharp-mode-map (kbd "<f12>") 'omnisharp-go-to-definition)
-;;
-;;  (define-key csharp-mode-map (kbd "C-c C-c") 'comment-region)
-;;  (define-key csharp-mode-map (kbd "C-c C-d") 'uncomment-region)
-;;  (key-chord-define csharp-mode-map  ";t" 'omnisharp-current-type-information)
-;;
-;;  (defun open-in-visual-studio ()
-;;    "Opens file in visual studios make sure you have the desired version of devenv.exe"
-;;    (interactive)
-;;    ;;(shell-command (concat "devenv.exe /\Edit " (buffer-file-name)))
-;;    (shell-command (concat "devenv.exe /\Edit " (file-name-nondirectory(buffer-file-name))))
-;;    )
-;;
-;;  (defhydra hydra-c-sharp-menu (:hint nil)
-;;    "Omnisharp Commands"
-;;    ("u" omnisharp-find-usages "Find Usages" :color blue)
-;;    ("l" omnisharp-reload-solution "Reload Solution" :color blue)
-;;    ("q" omnisharp-stop-server "Stop Server" :color blue)
-;;    ("r" omnisharp-rename "Rename" :color blue)
-;;    ("e" omnisharp-solution-errors "Solution Errors" :color blue)
-;;    ("o" open-in-visual-studio "Open in Visual Studio" :color blue)
-;;    ("f" omnisharp-code-format-entire-file "Format Entire File" :color blue)
-;;    ("g" omnisharp-code-format-region "Format Region" :color blue)    
-;;    )
-;;
-;;  (key-chord-define csharp-mode-map ";c" 'hydra-c-sharp-menu/body)
-;;
-;;  (add-hook 'csharp-mode-hook 'omnisharp-mode)
-;;  (add-hook 'csharp-mode-hook 'flycheck-mode)
-;;  (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)
-;;  (add-hook 'omnisharp-mode-hook
-;;	    (lambda ()
-;;	      (setq-local company-backends (list 'company-omnisharp))))
-;;  )
 ;;;;;;;;;;; Scala ;;;;;;;;;;;;
 
 (use-package scala-mode)
 (use-package lsp-metals)
 (use-package sbt-mode)
-;;(use-package lsp-scala)
-
-;;(use-package ensime
-;;  :ensure t
-;;  :config
-;;
-;;  (defun my-scala-mode-setup ()
-;;  (setq comment-start "/* "
-;;	  comment-end " */"
-;;	  comment-style 'multi-line
-;;	  comment-empty-lines t)
-;;  )
-;;  
-;;  (setq ensime-typecheck-idle-interval 0)
-;;  (setq ensime-startup-notification nil)
-;;
-;;  (define-key ensime-mode-map (kbd "M-n") nil)
-;;  (define-key ensime-mode-map (kbd "M-p") nil)
-;;  (define-key ensime-mode-map (kbd "C-c C-c") 'comment-region)
-;;  (define-key ensime-mode-map (kbd "C-c C-d") 'uncomment-region)
-;;  (define-key ensime-mode-map  (kbd "C-.") 'ensime-import-type-at-point)
-;;  (key-chord-define ensime-mode-map ";e" 'ensime-print-errors-at-point)
-;;  (key-chord-define ensime-mode-map ";t" 'ensime-type-at-point)
-;;
-;;  (key-chord-define ensime-mode-map ";c" 'sbt-hydra)
-;;
-;;  (add-hook 'scala-mode-hook 'my-scala-mode-setup t)
-;;  (add-hook 'scala-mode-hook 'ensime)
-;;  )
 
 ;;;;;;;;;;;; C/C++ ;;;;;;;;;;;;
 (use-package irony
